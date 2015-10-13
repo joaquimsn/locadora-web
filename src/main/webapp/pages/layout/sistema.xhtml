@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:jsn="http://xmlns.jcp.org/jsf/composite/pages/components"
     xmlns:f="http://xmlns.jcp.org/jsf/core" 
     xmlns:jsf="http://xmlns.jcp.org/jsf"
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-    xmlns:jsn="http://xmlns.jcp.org/jsf/composite/pages/components"
     xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
     xmlns:p="http://primefaces.org/ui">
 
@@ -28,19 +28,17 @@
 		  ga('send', 'pageview');
 		
 		</script>
-	</h:head>
+	</head>
 	
-	<h:body>
-		<section>
-		</section>
-		<h:panelGroup id="panelGeral"  layout="block" styleClass="body-layout">
+	<body jsf:id="body">
+		<section jsf:id="panelGeral"  class="body-layout">
 			<ui:insert name="pagina" />
-		</h:panelGroup>
+		</section>
 
 		<p:ajaxStatus style="position:fixed; right:33px; bottom:55px; z-index: 12000;"
 			onstart="bloqueiaUI();" oncomplete="desbloqueiaUI();">
 			<f:facet name="start">
-				<p:graphicImage value="/resources/images/layout/ajax-loader.gif" />
+				<p:graphicImage value="resources/images/ajax-loader.gif" style="float:right; margin-right:15px; bottom:5px; z-index: 12000;"/>
 			</f:facet>
 	
 			<f:facet name="complete">
@@ -48,8 +46,8 @@
 			</f:facet>
 		</p:ajaxStatus>
 		
-		<div jsf:id="formPoll">
+		<form jsf:id="formPoll">
 		    <p:poll interval="1770" listener="#{autorizadorBean.fecharSessao}" />
-		</div>
-	</h:body>
+		</form>
+	</body>
 </html>

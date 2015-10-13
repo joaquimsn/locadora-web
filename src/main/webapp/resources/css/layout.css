@@ -1,3 +1,8 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
 html, body {
 	margin: 0;
 	padding: 0;
@@ -7,8 +12,158 @@ html, body {
 	color: #212121;
 }
 
+.accent-color-primary {
+	color: #ff9800;
+}
+
+.accemt-color-second {
+	color: #1C94C4;
+}
+
+.accent-color-thrid {
+	color: #F7B64A;
+}
+
+.light-primaryt-text {
+	font-size: 16px;
+	color: #fff;
+}
+
+.light-primary-text {
+	font-size: 16px;
+	color: #F4F4F4;
+} 
+
+.light-second-text {
+	font-size: 14px;
+	color: #F4F4F4;
+}   
+
+
+.primary-accent-text {
+	font-size: 18px;
+	color: #212121;
+}
+
+.secondaccent-text {
+	font-size: 18px;
+	color: #727272;
+}
+
 .body-layout {
-	
+	height: 100%;
+	background: #fff;
+}
+
+#top-bar {
+	width: 100%;
+	height: 60px;
+	background-color: #616161;
+	position: fixed;
+	display: flex;
+	margin-bottom: 1px solid #fff;
+}
+
+.top-bar-left {
+	width: 20%;
+}
+
+.top-bar-center {
+	width: 30%;
+}
+
+.top-bar-right {
+	width: 50%;	
+}
+
+.logo-sistema {
+	margin-top: 6px;
+	left: 10px;
+	position: absolute;
+}
+
+.menu-home {
+	vertical-align: center;
+	margin: 14px;	
+}
+
+.identificacao-conta {
+	height: 100%;
+	margin: 0 auto;
+	vertical-align: center;
+}
+
+.identificacao-conta ul {
+	list-style: none;
+	 text-align: right;
+	 vertical-align: center;
+	 padding: 10px 20px;	
+}
+
+#nav-left {
+	width: 20%;
+	height: 100%;
+	background: #616161;
+	padding-top: 60px;
+	box-sizing: border-box;
+}
+
+.nav-left-categories {
+	border-top: 1px solid #928D8D;
+	padding: 5px 10px 5px 0;	
+}
+
+.nav-left-categories li {
+	margin-bottom: 5px;
+}
+
+.category-nav {
+	height: 40px;
+	display: flex;
+}
+.text-name-category {
+	height: 40px;
+	line-height: 40px;
+	vertical-align: middle;
+	margin-left: 5px;
+	font-size: 18px;
+	color: #fff;
+}
+
+.category-icon {
+	margin: 7px;
+}
+
+.category-list-items {
+	list-style: none;
+}
+
+.category-list-items li {
+	margin: 0;
+	color: #9E9E9E;
+}
+
+.category-list-items li:HOVER {
+	margin: 0;
+	background: #FF9800;
+	color: #fff !important;
+	opacity: 0.9;
+	font-weight: bold;
+}
+
+.element-list-items-category {
+	padding-left: 50px;
+	height: 30px;
+	line-height: 30px;
+	vertical-align: middle;
+	font-size: 16px;
+}
+.container-funcionalidade {
+	overflow: auto;
+}
+
+.funcionalidade {
+	height: 100%;
 }
 
 .titulo-pagina {
@@ -28,7 +183,6 @@ html, body {
 
 .divider {
 	border-bottom: 1px solid #B6B6B6;
-	margin: 20px 0 30px;
 }
 
 .lable-next-input {

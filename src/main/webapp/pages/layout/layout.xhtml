@@ -1,37 +1,65 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:jove="http://xmlns.jcp.org/jsf/composite/componentes"
-    template="/layout/sistema.xhtml">
+    xmlns:jsn="http://xmlns.jcp.org/jsf/composite/pages/componentes"
+    template="/pages/layout/sistema.xhtml">
 	
 	<ui:define name="pagina">
-		<div>
-			<!-- TOPO -->
-			<div>
-				<div></div>
-				<div></div>
-				<div></div>
+		<!-- TOPO -->
+		<header id="top-bar">
+			<section class="top-bar-left">
+				<img src="resources/images/logo_naleggio_white.png" height="48px" class="logo-sistema"/>
+			</section>
+			<section class="top-bar-center">
+				<form jsf:id="formHeader">
+					<a jsf:action="#{homeBean.abrirPagina()}" >
+						<img src="resources/images/icons/32x32/icon_home.png" alt="Início" title="Tela Inicial" class="menu-home"/>
+						<f:ajax execute="@this" render="@all"/>
+					</a>
+				</form>
+			</section>
+			<section class="top-bar-right">
+				<div class="identificacao-conta">
+					<ul>
+						<li><span class="light-primary-text">Concessionário e locadora Preço Bom LTDA</span></li>
+						<li><span class="light-second-text">João.augusto</span><span class="accent-color-thrid">@precobom</span></li>
+					</ul>
+				</div>
+			</section>
+		</header>
+		<!-- MENU ESQUERDA -->
+		<nav id="nav-left">
+		<form jsf:id="formNavLeft">
+			<ul class="nav-left-categories">
+				<li>
+					<div class="category-nav"><img src="resources/images/icons/24x24/icon_servicos.png" height="24px" class="category-icon"/>
+						<span class="primary-accent-text text-name-category">SERVIÇOS</span>
+					</div>
+					<ul class="category-list-items">
+						<li><div class="element-list-items-category">Locação</div></li>
+						<li><div class="element-list-items-category">Devolução</div></li>
+					</ul>
+				</li>
+				<li></li>
+				<li></li>
+			</ul>
+		</form>
+		</nav>
+		
+		<!-- CONTEUDO  -->
+		<section id="container-funcionalidade">
+			<div class="funcionalidade">
+				<ui:insert name="restrict" />
 			</div>
 			
-			<!-- MENU ESQUERDA -->
-			<div>
-			</div>
-
-			<!-- CONTEUDO  -->
-			<div class="div-conteudo">
-				<div class="div-container-conteudo">
-					<ui:insert name="restrict" />
-				</div>
-				
-				<div id="footer">
-				
-				</div>
-			</div>
-		</div>
+			<footer>
+			
+			</footer>
+		</section>
 	</ui:define>
 	
 </ui:composition>
