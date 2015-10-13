@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+	xmlns:jove="http://xmlns.jcp.org/jsf/composite/componentes">
+
+	<cc:interface>
+		<cc:attribute name="bean" required="true" shortDescription="Bean controlador do CRUD."/>
+		<cc:attribute name="objetoSelecionado" required="true" shortDescription="Objeto selecionado da DataTable."/>
+		<cc:attribute name="showModal" required="true" shortDescription="Evento de show() para confirmação de desativação do objeto."/>
+		<cc:attribute name="update" required="true" shortDescription="Componentes para serem atualizados por Ajax."/>
+	</cc:interface>
+	
+	<cc:implementation>
+		<!-- Mensagem de Somente Leitura -->
+		<jove:labelSomenteLeitura />
+		
+		<h:panelGroup rendered="#{usuarioTmsBean.usuarioLogado.renderizarPorNivelDeAcesso}">
+			<h:panelGroup styleClass="float-left" rendered="#{cc.attrs.bean.readonly}">
+				
+				<!-- Novo Registro -->
+				<p:commandButton value="Novo" update="#{cc.attrs.update}"
+					actionListener="#{cc.attrs.bean.habilitarEdicao}" styleClass="botao1x1" 
+					rendered="#{cc.attrs.objetoSelecionado.dataCadastro == null}" />
+			
+				<!-- Habilitar alteração -->
+				<p:commandButton value="Alterar" update="#{cc.attrs.update}"
+					actionListener="#{cc.attrs.bean.habilitarEdicao}" styleClass="botao1x1" 
+					rendered="#{cc.attrs.objetoSelecionado.dataCadastro != null}" />
+		
+				<!-- Desativar -->
+				<p:commandButton value="Desativar" disabled="#{!cc.attrs.objetoSelecionado.ativo}"
+					onclick="#{cc.attrs.showModal}" styleClass="botao1x1"
+					rendered="#{cc.attrs.objetoSelecionado.dataCadastro != null}" />
+				
+				<!-- Resetar -->
+				<p:commandButton value="Resetar" update="#{cc.attrs.update}"
+					actionListener="#{cc.attrs.bean.inicializarPagina}" styleClass="botao1x1"
+					rendered="#{cc.attrs.objetoSelecionado.dataCadastro != null}" />
+				
+			</h:panelGroup>
+			
+			<h:panelGroup styleClass="float-left" rendered="#{!cc.attrs.bean.readonly}">
+				 
+				<!-- Salvar cadastro -->
+				<p:commandButton value="Salvar" update="#{cc.attrs.update}" icon="ui-icon-disk"
+					actionListener="#{cc.attrs.bean.cadastrar}" styleClass="botao1x1" 
+					rendered="#{cc.attrs.objetoSelecionado.dataCadastro == null}" />
+		
+				<!-- Salvar alteração -->
+				<p:commandButton value="Salvar" update="#{cc.attrs.update}" icon="ui-icon-disk"
+					actionListener="#{cc.attrs.bean.alterar}" styleClass="botao1x1"
+					rendered="#{cc.attrs.objetoSelecionado.dataCadastro != null}" />
+		
+				<!-- Cancelar -->
+				<p:commandButton value="Cancelar" update="#{cc.attrs.update}"
+					actionListener="#{cc.attrs.bean.inicializarPagina}" styleClass="botao1x1" />
+		
+			</h:panelGroup>
+		</h:panelGroup>
+	</cc:implementation>
+
+</html>

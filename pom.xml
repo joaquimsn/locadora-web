@@ -42,7 +42,7 @@
 			<version>2.2.2</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<!-- Pretty-faces -->
 		<dependency>
 			<groupId>org.ocpsoft.rewrite</groupId>
@@ -60,6 +60,12 @@
 			<groupId>org.primefaces</groupId>
 			<artifactId>primefaces</artifactId>
 			<version>5.2</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.primefaces.themes</groupId>
+			<artifactId>ui-lightness</artifactId>
+			<version>1.0.10</version>
 		</dependency>
 
 		<!-- Hibernate for JPA -->
@@ -106,4 +112,13 @@
 			</plugin>
 		</plugins>
 	</build>
+	
+	<repositories>
+		<repository>
+			<id>prime-repo</id>
+			<name>PrimeFaces Maven Repository</name>
+			<url>http://repository.primefaces.org</url>
+			<layout>default</layout>
+		</repository>
+	</repositories>
 </project>

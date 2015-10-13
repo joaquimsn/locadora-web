@@ -1,0 +1,101 @@
+
+.coluna-5-fit {
+	width: 5%;
+}
+
+.coluna-10 {
+	width: 10%;
+	padding-right: 10px; 
+}
+
+.coluna-15 {
+	width: 15%;
+	padding-right: 10px;
+}
+
+.coluna-20 {
+	width: 20%;
+	padding-right: 10px;
+}
+
+.coluna-25 {
+	width: 25%;
+	padding-right: 10px;
+}
+
+.coluna-30 {
+	width: 30%;
+	padding-right: 10px;
+}
+
+.coluna-35 {
+	width: 35%;
+	padding-right: 10px;
+}
+
+.coluna-40 {
+	width: 40%;
+	padding-right: 10px;
+}
+
+.coluna-45 {
+	width: 45%;
+	padding-right: 10px;
+}
+
+.coluna-50 {
+	width: 50%;
+	padding-right: 10px;
+}
+
+.coluna-55 {
+	width: 55%;
+	padding-right: 10px;
+}
+
+.coluna-60 {
+	width: 60%;
+	padding-right: 10px;
+}
+
+.coluna-65 {
+	width: 65%;
+	padding-right: 10px;
+}
+
+.coluna-70 {
+	width: 70%;
+	padding-right: 10px;
+}
+
+.coluna-75 {
+	width: 75%;
+	padding-right: 10px;
+}
+
+.coluna-80 { 
+	width: 80%;
+	padding-right: 10px;
+}
+
+.coluna-85 {
+	width: 85%;
+	padding-right: 10px;
+}
+
+.coluna-90 {
+	width: 90%;
+	padding-right: 10px;
+}
+
+.coluna-90-fit {
+	width: 90%;
+}
+
+.coluna-95-fit {
+	width: 95%;
+}
+
+.border-coluna {
+	border: 1px solid blue;
+}

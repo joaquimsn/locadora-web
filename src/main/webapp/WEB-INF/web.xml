@@ -3,11 +3,7 @@
 	xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
 	<display-name>Noleggio</display-name>
-	
-	<welcome-file-list>
-		<welcome-file>/pages/public/index.xhtml</welcome-file>
-	</welcome-file-list> 
-	
+
 	<context-param>
 		<param-name>javax.faces.CONFIG_FILES</param-name>
 		<param-value>/WEB-INF/faces-config.xml</param-value>
@@ -43,4 +39,10 @@
 		<env-entry-type>java.lang.String</env-entry-type>
 		<env-entry-value>BUukO7YT2GhqQGOQC0kuYw==</env-entry-value>
 	</env-entry>
+	
+	<!-- Tema do PrimeFaces -->
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>ui-lightness</param-value>
+	</context-param>
 </web-app>

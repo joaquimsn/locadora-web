@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+    xmlns:jove="http://xmlns.jcp.org/jsf/composite/componentes">
+    
+    <cc:interface>
+    </cc:interface>
+    
+    <cc:implementation>
+    	<h:form id="formMenuEsquerda">
+	    	<div class="div-menu-esquerda">
+	    	
+	    		<!-- Informações do usuário -->
+	    		<div id="div-informacoes">
+				<div id="div-img" title="Imagem do usuário logado">
+					<h:graphicImage
+						value="imagem/#{usuarioTmsBean.usuarioLogado.nomeImagem}"
+						rendered="#{not empty usuarioTmsBean.usuarioLogado.nomeImagemCadastrada}" 
+						title="Usuário logado" />
+						
+					<h:graphicImage
+						value="/resources/images/layout/user-default.jpg"
+						rendered="#{empty usuarioTmsBean.usuarioLogado.nomeImagemCadastrada}" 
+						title="O usuário logado não possui uma imagem" />
+				</div>
+				<div id="div-user">
+	    			<div class="div-label-user-logado">Você está logado como</div>
+	    				<h:outputText value="#{usuarioTmsBean.usuarioLogado.nome}" styleClass="div-user-logado" />
+	    				
+	    				<div style="width100%; display: flex; justify-content: space-between;">
+		    				<div class="div-icon-user">
+		    					<h:panelGroup rendered="#{usuarioTmsBean.usuarioLogado.master}">
+			    					<div class="icon-user">
+			    						<h:graphicImage value="/resources/images/layout/icon-user-master.png" />
+			    					</div>
+			    					<h:panelGroup layout="block">
+				    					<h:outputText value="Master" styleClass="label-user" /><br />
+				    					<jove:transportadoraLabel objeto="#{usuarioTmsBean.usuarioLogado}" />
+			    					</h:panelGroup>
+			    				</h:panelGroup>
+		    					
+		    					<h:panelGroup rendered="#{not usuarioTmsBean.usuarioLogado.master and usuarioTmsBean.usuarioLogado.administrador}">
+			    					<div class="icon-user">
+			    						<h:graphicImage value="/resources/images/layout/icon-user-admin.png" />
+			    					</div>
+			    					<h:panelGroup layout="block">
+				    					<h:outputText value="Administrador" styleClass="label-user" /><br />
+				    					<jove:transportadoraLabel objeto="#{usuarioTmsBean.usuarioLogado}" />
+			    					</h:panelGroup>
+			    				</h:panelGroup>
+			    				
+		    					<h:panelGroup rendered="#{not usuarioTmsBean.usuarioLogado.master and not usuarioTmsBean.usuarioLogado.administrador}">
+			    					<div class="icon-user">
+			    						<h:graphicImage value="/resources/images/layout/icon-user-funcionario.png" />
+			    					</div>
+			    					<h:panelGroup layout="block">
+				    					<h:outputText value="Funcionário" styleClass="label-user" /><br />
+				    					<jove:transportadoraLabel objeto="#{usuarioTmsBean.usuarioLogado}" />
+			    					</h:panelGroup>
+			    				</h:panelGroup>    				
+		    				</div>
+		    				<h:panelGroup layout="block" id="iconNotificacaoMenu" styleClass="icon-notificacao-menu">
+				   				<div id="notificacaoIcon" class="icon-notificacao" title="Notificações do Sistema" onclick="$('#notificacaoPanel').toggle('100');">
+				 					<p:graphicImage value="/resources/images/icons-menu/icon-notificacao.png" alt="Notificações" 
+				 						width="33" height="25" />
+				 					<h:panelGroup layout="block" styleClass="icon-notificacao-numero" rendered="#{painelNotificacaoBean.renderizarNumero}"
+				 						style="background-color: #{painelNotificacaoBean.corIconeNotificacao}">
+				   						<h:outputText value="#{painelNotificacaoBean.quantidadeNotificacoesNaoVisualizadas}" />
+				 					</h:panelGroup>
+				   				</div>
+			   				</h:panelGroup>
+			   			</div>
+		   				
+	    			</div>
+	    		</div>
+	    		
+	    		<!-- Menu esquerdo -->
+	    		<div id="menu-esquerdo">
+	    			<ul>
+	    				<!--
+	    				<jove:itemMenuEsquerdo icon="/resources/images/icons-menu/icon-modulos.png" action="#{homeBean}" label="Módulos" />
+	    				-->
+    					<jove:itemMenuEsquerdo icon="/resources/images/icons-menu/icon-minha-conta.png" 
+    						action="#{minhaContaBean.abrirPagina}" label="Minha conta" prettyUrl="minha-conta" />
+    						
+    					<jove:itemMenuEsquerdo icon="/resources/images/icons-menu/icon-usuarios.png" 
+    						action="#{usuarioTmsBean.abrirPagina}" label="Usuários" prettyUrl="manutencao-usuario" />
+    						
+   						<jove:itemMenuEsquerdo icon="/resources/images/icons-menu/icon-acesso-usuarios.png" 
+    						action="#{acessoUsuarioBean.abrirPagina}" label="Acesso de usuários" prettyUrl="acesso-usuarios" />
+   							
+    					<jove:itemMenuEsquerdo icon="/resources/images/icons-menu/icon-matriz-filiais.png" 
+    						action="#{transportadoraBean.abrirPagina}" label="Matriz e filiais" prettyUrl="manutencao-transportadora" />
+    						
+    					<jove:itemMenuEsquerdo icon="/resources/images/icons-menu/icon-parametros-do-sistema.png" 
+    						action="#{parametrosSistemaBean.abrirPagina}" label="Parâmetros do sistema" prettyUrl="parametros-sistema" />
+    						
+    					<jove:itemMenuEsquerdo icon="/resources/images/icons-menu/icon-alterar-senha.png" 
+    						action="#{usuarioTmsBean.abrirPaginaAlterarSenha}" label="Alterar senha" prettyUrl="alterar-senha" />
+    						
+    					<jove:itemMenuEsquerdo icon="/resources/images/icons-menu/icon-sair.png" 
+    						action="#{loginBean.efetuarLogout}" label="Sair" prettyUrl="inicio" />
+	    			</ul>
+	    		</div>
+	    		
+	    	</div>
+    	</h:form>
+    </cc:implementation>
+   
+</html>
