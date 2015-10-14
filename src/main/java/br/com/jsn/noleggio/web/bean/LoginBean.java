@@ -5,6 +5,8 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import br.com.jsn.noleggio.ClienteService;
+import br.com.jsn.noleggio.ServicoService;
 import br.com.jsn.noleggio.domain.service.UsuarioService;
 import br.com.jsn.noleggio.web.AbstractBean;
 
@@ -15,6 +17,9 @@ public class LoginBean extends AbstractBean {
 
 	@Inject
 	private UsuarioService usuarioService;
+	
+	@Inject
+	private ServicoService servicoService;
 
 	private String login;
 	private String senha;
@@ -22,10 +27,10 @@ public class LoginBean extends AbstractBean {
 
 	@PostConstruct
 	public void inicializarPagina() {
-
 	}
 
 	public String efetuarLogin() {
+		servicoService.realizarServico();
 		Thread trThread = new Thread();
 		mensagemErro = login + senha;
 		try {
