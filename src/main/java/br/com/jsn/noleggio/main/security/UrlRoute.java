@@ -1,4 +1,4 @@
-package br.com.jsn.noleggio.web;
+package br.com.jsn.noleggio.main.security;
 
 public abstract class UrlRoute {
 	

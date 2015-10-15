@@ -1,14 +1,13 @@
-package br.com.jsn.noleggio.web.bean;
+package br.com.jsn.noleggio.modules.usuario.controller;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.com.jsn.noleggio.ClienteService;
 import br.com.jsn.noleggio.ServicoService;
-import br.com.jsn.noleggio.domain.service.UsuarioService;
-import br.com.jsn.noleggio.web.AbstractBean;
+import br.com.jsn.noleggio.main.controller.AbstractBean;
+import br.com.jsn.noleggio.modules.usuario.service.UsuarioService;
 
 @Named
 @ViewScoped

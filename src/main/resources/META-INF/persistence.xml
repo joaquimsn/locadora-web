@@ -15,7 +15,7 @@
 		<class>br.com.jsn.noleggio.domain.model.Locacao</class>
 		<class>br.com.jsn.noleggio.domain.model.Pagamento</class>
 		<class>br.com.jsn.noleggio.domain.model.Uf</class>
-		<class>br.com.jsn.noleggio.domain.model.Usuario</class>
+		<class>br.com.jsn.noleggio.modules.usuario.model.Usuario</class>
 		<class>br.com.jsn.noleggio.domain.model.Veiculo</class>
 
 		<properties>

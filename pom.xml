@@ -94,6 +94,13 @@
 			<artifactId>cdi-api</artifactId>
 			<version>1.2</version>
 		</dependency>
+		
+		<!-- Authentication -->
+		<dependency>
+		    <groupId>org.picketlink</groupId>
+		    <artifactId>picketlink</artifactId>
+		    <version>2.7.0.Final</version>
+		</dependency>
 
 	</dependencies>
 	<build>
@@ -110,6 +117,15 @@
 					<target>1.8</target>
 				</configuration>
 			</plugin>
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.3</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <outputDirectory>/home/joaquim/openshift-demo/deployments</outputDirectory>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 	
@@ -121,4 +137,25 @@
 			<layout>default</layout>
 		</repository>
 	</repositories>
+
+	<profiles>
+	    <profile>
+	     <id>openshift</id>
+	     <build>
+	        <finalName>demo</finalName>
+	        <plugins>
+	          <plugin>
+	                <groupId>org.apache.maven.plugins</groupId>
+	                <artifactId>maven-war-plugin</artifactId>
+	                <version>2.3</version>
+	                <configuration>
+	                    <failOnMissingWebXml>false</failOnMissingWebXml>
+	                    <outputDirectory>deployments</outputDirectory>
+	              		  <warName>ROOT</warName>
+	                </configuration>
+	            </plugin>
+	        </plugins>
+   			</build>
+	    </profile>
+  	</profiles>
 </project>

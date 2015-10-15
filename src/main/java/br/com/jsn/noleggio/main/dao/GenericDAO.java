@@ -1,4 +1,4 @@
-package br.com.jsn.noleggio.infrastructure.dao;
+package br.com.jsn.noleggio.main.dao;
 
 import java.io.Serializable;
 import java.util.List;

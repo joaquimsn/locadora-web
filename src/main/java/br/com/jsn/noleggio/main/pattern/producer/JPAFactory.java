@@ -1,4 +1,4 @@
-package br.com.jsn.noleggio.infrastructure.producer;
+package br.com.jsn.noleggio.main.pattern.producer;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.SessionScoped;
