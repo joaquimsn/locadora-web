@@ -160,10 +160,12 @@ html, body {
 }
 .container-funcionalidade {
 	overflow: auto;
+	padding: 5px;
 }
 
 .funcionalidade {
 	height: 100%;
+	padding: 10px;
 }
 
 .titulo-pagina {
@@ -205,15 +207,6 @@ html, body {
 .datatable {
 	text-align: center;
 	margin-bottom: 20px;
-}
-
-.botao1x1 {
-	width: 110px;
-	margin-right: 10px;
-}
-
-.botao1x2 {
-	margin-right: 10px;
 }
 
 .texto {
