@@ -4,8 +4,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import br.com.jsn.noleggio.web.AbstractBean;
-import br.com.jsn.noleggio.web.UrlRoute;
+import br.com.jsn.noleggio.main.controller.AbstractBean;
+import br.com.jsn.noleggio.main.security.UrlRoute;
 
 @Named
 @ViewScoped

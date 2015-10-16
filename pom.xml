@@ -123,7 +123,11 @@
                 <version>2.3</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
+<<<<<<< HEAD
                     <outputDirectory>deployments</outputDirectory>
+=======
+                    <outputDirectory>/home/joaquim/openshift-demo/deployments</outputDirectory>
+>>>>>>> branch 'master' of https://github.com/joaquimsn/locadora-web.git
                 </configuration>
             </plugin>
 		</plugins>
@@ -137,6 +141,7 @@
 			<layout>default</layout>
 		</repository>
 	</repositories>
+<<<<<<< HEAD
 	
 	<profiles>
 	    <profile>
@@ -160,6 +165,27 @@
 	            </plugin>
 	        </plugins>
 	      </build>
+=======
+
+	<profiles>
+	    <profile>
+	     <id>openshift</id>
+	     <build>
+	        <finalName>demo</finalName>
+	        <plugins>
+	          <plugin>
+	                <groupId>org.apache.maven.plugins</groupId>
+	                <artifactId>maven-war-plugin</artifactId>
+	                <version>2.3</version>
+	                <configuration>
+	                    <failOnMissingWebXml>false</failOnMissingWebXml>
+	                    <outputDirectory>deployments</outputDirectory>
+	              		  <warName>ROOT</warName>
+	                </configuration>
+	            </plugin>
+	        </plugins>
+   			</build>
+>>>>>>> branch 'master' of https://github.com/joaquimsn/locadora-web.git
 	    </profile>
   	</profiles>
 </project>
