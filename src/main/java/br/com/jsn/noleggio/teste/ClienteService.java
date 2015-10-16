@@ -1,10 +1,10 @@
-package br.com.jsn.noleggio;
+package br.com.jsn.noleggio.teste;
 
 import java.io.Serializable;
 
 import javax.enterprise.event.Observes;
 
-import br.com.jsn.noleggio.domain.model.Cliente;
+import br.com.jsn.noleggio.modules.cliente.model.Cliente;
 
 public class ClienteService implements Serializable {
 	

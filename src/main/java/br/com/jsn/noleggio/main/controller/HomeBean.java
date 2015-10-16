@@ -1,10 +1,9 @@
-package br.com.jsn.noleggio.web.bean;
+package br.com.jsn.noleggio.main.controller;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
-import br.com.jsn.noleggio.main.controller.AbstractBean;
 import br.com.jsn.noleggio.main.security.UrlRoute;
 
 @Named

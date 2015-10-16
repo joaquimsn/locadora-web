@@ -5,18 +5,18 @@
 	<persistence-unit name="locadoraweb" transaction-type="JTA">
 		<jta-data-source>java:jboss/datasources/noleggioDS</jta-data-source>
 
-		<class>br.com.jsn.noleggio.domain.model.AcessorioVeiculo</class>
-		<class>br.com.jsn.noleggio.domain.model.Agencia</class>
-		<class>br.com.jsn.noleggio.domain.model.Bairro</class>
-		<class>br.com.jsn.noleggio.domain.model.Cidade</class>
-		<class>br.com.jsn.noleggio.domain.model.Cliente</class>
-		<class>br.com.jsn.noleggio.domain.model.Endereco</class>
-		<class>br.com.jsn.noleggio.domain.model.Funcionario</class>
-		<class>br.com.jsn.noleggio.domain.model.Locacao</class>
-		<class>br.com.jsn.noleggio.domain.model.Pagamento</class>
-		<class>br.com.jsn.noleggio.domain.model.Uf</class>
+		<class>br.com.jsn.noleggio.modules.veiculo.model.AcessorioVeiculo</class>
+		<class>br.com.jsn.noleggio.modules.agencia.model.Agencia</class>
+		<class>br.com.jsn.noleggio.modules.endereco.model.Bairro</class>
+		<class>br.com.jsn.noleggio.modules.endereco.model.Cidade</class>
+		<class>br.com.jsn.noleggio.modules.cliente.model.Cliente</class>
+		<class>br.com.jsn.noleggio.modules.endereco.model.Endereco</class>
+		<class>br.com.jsn.noleggio.modules.funcionario.model.Funcionario</class>
+		<class>br.com.jsn.noleggio.modules.locacao.model.Locacao</class>
+		<class>br.com.jsn.noleggio.modules.locacao.model.Pagamento</class>
+		<class>br.com.jsn.noleggio.modules.endereco.model.Uf</class>
 		<class>br.com.jsn.noleggio.modules.usuario.model.Usuario</class>
-		<class>br.com.jsn.noleggio.domain.model.Veiculo</class>
+		<class>br.com.jsn.noleggio.modules.veiculo.model.Veiculo</class>
 
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />

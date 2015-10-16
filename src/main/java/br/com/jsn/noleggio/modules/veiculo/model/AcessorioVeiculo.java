@@ -1,4 +1,4 @@
-package br.com.jsn.noleggio.domain.model;
+package br.com.jsn.noleggio.modules.veiculo.model;
 
 import java.io.Serializable;
 

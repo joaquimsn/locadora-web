@@ -1,4 +1,4 @@
-package br.com.jsn.noleggio.domain.model;
+package br.com.jsn.noleggio.modules.funcionario.model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import br.com.jsn.noleggio.modules.agencia.model.Agencia;
 import br.com.jsn.noleggio.modules.usuario.model.Usuario;
 
 /**

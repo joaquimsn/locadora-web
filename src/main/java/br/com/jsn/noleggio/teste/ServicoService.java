@@ -1,4 +1,4 @@
-package br.com.jsn.noleggio;
+package br.com.jsn.noleggio.teste;
 
 import java.io.Serializable;
 

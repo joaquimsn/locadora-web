@@ -1,4 +1,4 @@
-package br.com.jsn.noleggio.domain.model;
+package br.com.jsn.noleggio.modules.veiculo.model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import br.com.jsn.noleggio.modules.agencia.model.Agencia;
 
 /**
  * The persistent class for the veiculo database table.
