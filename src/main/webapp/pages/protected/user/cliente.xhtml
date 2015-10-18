@@ -1,10 +1,223 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsn="http://xmlns.jcp.org/jsf/composite/components"
+    xmlns:jsf="http://xmlns.jcp.org/jsf"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" 
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-    xmlns:p="http://primefaces.org/ui">
-    
-    <h1>Cliente</h1>
-</html>
+    xmlns:p="http://primefaces.org/ui"
+    template="/pages/layout/layout.xhtml">
+
+	<ui:define name="restrict">
+		<jsn:titulo label="Clientes" />
+		
+		<h:form id="formContent">	
+			<fieldset jsf:id="fieldsetGerenciamento" class="fieldset">
+				<p:dataTable id="tableClientes" selection="#{clienteBean.objetoSelecionado}" value="#{clienteBean.listaTodos}" var="objeto"
+					paginator="true" paginatorPosition="bottom" rows="5" rowKey="#{objeto.idCliente}" selectionMode="single"
+					filterEvent="enter" filteredValue="#{clienteBean.listaFiltrada}" styleClass="datatable"
+					emptyMessage="Nenhum registro encontrado">
+					
+					<p:ajax event="rowSelect" update="formContent"/>
+					
+					<p:column filterMatchMode="contains" headerText="Nome" styleClass="coluna-30"
+						filterBy="#{objeto.nome}" filterStyle="width: 80%">
+						#{objeto.nome}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="CNH" styleClass="coluna-15"
+						filterBy="#{objeto.cnh}" filterStyle="width: 80%">
+						#{objeto.cnh}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="Validade CNH" styleClass="coluna-20"
+						filterBy="#{objeto.validadeCnh}" filterStyle="width: 80%">
+						#{objeto.validadeCnh}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="Cidade" styleClass="coluna-20"
+						filterBy="#{objeto.cidade}" filterStyle="width: 80%">
+						#{objeto.cidade}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="Ativo" styleClass="coluna-15"
+						filterBy="#{objeto.statusAtivoDisplay}" filterStyle="width: 80%">
+						#{objeto.statusAtivoDisplay}
+					</p:column>
+				</p:dataTable>
+				
+				<p:fieldset id="fieldsetDetalhe" rendered="#{!clienteBean.disabled || !clienteBean.readonly}">
+					<ui:decorate template="/pages/layout/subtitulo.xhtml">
+						<ui:define name="subtitulo">
+							<label>Informações do cliente</label>
+						</ui:define>
+					</ui:decorate>
+					
+					<h:panelGrid columns="4" width="100%" cellspacing="5"
+						columnClasses="coluna-20, coluna-50, coluna-15, coluna-15">
+						<h:panelGrid width="100%">
+							<h:outputText value="CPF" />
+							<p:inputMask id="cpfUsuario"
+								value="#{clienteBean.objetoSelecionado.cpf}"
+								mask="999.999.999-99" styleClass="input-96"
+								readonly="#{clienteBean.readonly}" onblur="rcValidaCpf();" />
+						</h:panelGrid>
+	
+						<h:panelGrid width="100%">
+							<h:outputText value="Nome completo" />
+							<p:inputText id="nomeUsuario"
+								value="#{clienteBean.objetoSelecionado.nome}"
+								maxlength="60" styleClass="input-98"
+								readonly="#{clienteBean.readonly}" onblur="upperCase(this);" />
+						</h:panelGrid>
+	
+						<h:panelGrid width="100%">
+							<h:outputText value="Género" />
+							<p:selectOneMenu style="width: 100%;"
+								value="#{clienteBean.objetoSelecionado.genero}"
+								disabled="#{clienteBean.readonly}">
+								<f:selectItem itemValue="M"
+									itemLabel="Masculino" />
+								<f:selectItem itemValue="F"
+									itemLabel="Feminino" />
+							</p:selectOneMenu>
+						</h:panelGrid>
+						
+						<h:panelGrid width="100%">
+							<h:outputText value="Data de nascimento" />
+							<p:calendar
+								value="#{clienteBean.objetoSelecionado.dataNascimento}"
+								navigator="true" maxdate="#{clienteBean.dataNascimentoMax}"
+								pattern="dd/MM/yyyy" size="15" effect="explode"
+								style="white-space: nowrap;"
+								readonly="#{clienteBean.readonly}" readonlyInput="true"
+								showOn="button" />
+						</h:panelGrid>
+					</h:panelGrid>
+					
+					<h:panelGrid width="100%" cellspacing="5"
+						columnClasses="coluna-20, coluna-50, coluna-15, coluna-15" columns="4">
+						<h:panelGrid width="100%">
+							<h:outputText value="RG" />
+							<p:inputMask id="rg"
+								value="#{clienteBean.objetoSelecionado.rg}" maxlength="10" styleClass="input-97"
+								readonly="#{clienteBean.readonly}" />
+						</h:panelGrid>
+						
+						<h:panelGrid width="100%" columns="2">
+							<h:panelGrid columns="1" width="100%">
+								<h:outputText value="Número CNH" />
+								<p:inputMask value="#{clienteBean.objetoSelecionado.cnh}" mask="99999999999" 
+									style="width: 98%;" readonly="#{clienteBean.readonly}"/>
+							</h:panelGrid>
+							
+							<h:panelGrid columns="1" width="100%" style="margin-left: 5px;">
+								<h:outputText value="Estado emissor" /> 
+								<p:selectOneMenu value="#{clienteBean.objetoSelecionado.estadoEmissor}" 
+									style="width: 98%;" disabled="#{clienteBean.readonly}">
+								</p:selectOneMenu>
+							</h:panelGrid>
+						</h:panelGrid>
+						
+						<h:panelGrid width="100%" columns="1">
+							<h:outputText value="Categoria" /> 
+							<p:selectOneMenu
+								style="width: 100%;" disabled="#{clienteBean.readonly}">
+								<f:selectItem itemLabel="D" itemValue="3" />
+								<f:selectItem itemLabel="B" itemValue="2" />
+								<f:selectItem itemLabel="A" itemValue="1" />
+							</p:selectOneMenu>
+						</h:panelGrid>
+						
+						<h:panelGrid width="100%" columns="1">
+							<h:outputText value="Validade" />
+							<p:calendar value="#{clienteBean.objetoSelecionado.validadeCnh}" navigator="true"
+								mindate="#{clienteBean.dataAtual}"
+								pattern="dd/MM/yyyy" size="15" effect="explode" style="white-space: nowrap;"
+								readonly="#{clienteBean.readonly}" readonlyInput="true" showOn="button"/>
+						</h:panelGrid>
+					</h:panelGrid>
+	
+					<h:panelGrid columns="3" width="100%" cellspacing="5"
+						columnClasses="coluna-70, coluna-30">
+						<h:panelGrid width="100%">
+							<h:outputText value="E-mail" />
+							<p:inputText id="email"
+								value="#{clienteBean.objetoSelecionado.email}"
+								maxlength="60" styleClass="input-98" onblur="rcValidaEmail();"
+								readonly="#{clienteBean.readonly}" />
+						</h:panelGrid>
+						<h:panelGrid width="100%">
+							<h:outputText value="Telefone" />
+							<p:inputMask
+								value="#{clienteBean.objetoSelecionado.telefone}"
+								mask="(99)9999-9999" styleClass="input-96"
+								readonly="#{clienteBean.readonly}" />
+						</h:panelGrid>
+					</h:panelGrid>
+					
+					<h:panelGrid width="100%" columns="3" cellspacing="5" 
+						columnClasses="coluna-20, coluna-65, coluna-15">
+						<h:panelGrid width="100%" columns="1">
+							<h:outputText value="CEP" />
+							<p:inputMask value="#{clienteBean.objetoSelecionado.cep}" mask="99999-999" 
+								styleClass="input-96" readonly="#{clienteBean.readonly}"
+								onblur="rcEndereco();"/>
+						</h:panelGrid>
+	
+						<h:panelGrid width="100%" columns="1">
+							<h:outputText value="Logradouro" />
+							<p:inputText value="#{clienteBean.objetoSelecionado.logradouro}" maxlength="80" 
+								styleClass="input-98" onblur="upperCase(this);" 
+								readonly="#{clienteBean.readonly}"/>
+						</h:panelGrid>
+	
+						<h:panelGrid width="97%" columns="1">
+							<h:outputText value="Número" />
+							<p:inputText value="#{clienteBean.objetoSelecionado.numero}" maxlength="5" 
+								onkeyup="somenteNumero(this, event);" styleClass="input-96" 
+								readonly="#{clienteBean.readonly}"/>
+						</h:panelGrid>
+					</h:panelGrid>
+		
+					<h:panelGrid width="100%" columns="3" cellspacing="5"
+						columnClasses="coluna-40, coluna-20, coluna-40">
+						<h:panelGrid width="100%" columns="1">
+							<h:outputText value="Bairro" />
+							<p:inputText value="#{clienteBean.objetoSelecionado.bairro}" maxlength="50" 
+								styleClass="input-97" onblur="upperCase(this);"
+								readonly="#{clienteBean.readonly}"/>
+						</h:panelGrid>
+						
+						<h:panelGrid width="100%" columns="1">
+							<h:outputText value="UF" /> 
+							<p:selectOneMenu value="#{clienteBean.objetoSelecionado.uf}" style="width: 98%;" 
+								disabled="#{clienteBean.readonly}" onchange="rcCidadesUf();">
+								<f:selectItem itemLabel="UF" itemValue=""/>
+							</p:selectOneMenu>
+						</h:panelGrid>
+	
+						<h:panelGrid id="cidade" width="100%" columns="1">
+							<h:outputText value="Cidade" />
+							<p:selectOneMenu value="#{clienteBean.objetoSelecionado.cidade}" style="width: 99%;" 
+								disabled="#{clienteBean.readonly}">
+								<f:selectItem itemLabel="Selecione" itemValue=""/>
+							</p:selectOneMenu>
+						</h:panelGrid>
+					</h:panelGrid>
+				</p:fieldset>
+				
+				<jsn:panelCrud showModal="PF('confirmacao').show();" update="formContent msgs"
+					objetoSelecionado="#{clienteBean.objetoSelecionado}" bean="#{clienteBean}" />
+					
+				<p:remoteCommand name="rcValidaCpf" action="#{clienteBean.validar}"
+					update="msgs"/>
+				
+				<p:remoteCommand name="rcEndereco" actionListener="#{clienteBean.validar}"
+					update=":formContent:fieldsetDetalhe msgs"/>
+				
+				<p:remoteCommand name="rcCidadesUf" actionListener="#{clienteBean.validar}"
+					update=":formContent:fieldsetDetalhe"/>
+				
+				<p:remoteCommand name="rcValidaEmail" actionListener="#{clienteBean.validar}"
+					update=":formContent:fieldsetDetalhe"/>
+			</fieldset>
+		</h:form>
+	</ui:define>
+</ui:composition>

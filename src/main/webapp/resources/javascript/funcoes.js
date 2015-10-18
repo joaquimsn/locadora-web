@@ -11,3 +11,14 @@ function desbloqueiaUI() {
 	    $this.attr("placeholder", "Filtro");
 	});
 }
+
+function upperCase(campo) {
+	var valor = document.getElementById(campo.id).value;
+	document.getElementById(campo.id).value = valor.toUpperCase();
+}
+
+function lowerCase(campo) {
+	var valor = document.getElementById(campo.id).value;
+	document.getElementById(campo.id).value = valor.toLowerCase();
+}
+

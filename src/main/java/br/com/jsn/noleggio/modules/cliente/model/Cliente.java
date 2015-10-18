@@ -14,6 +14,11 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.br.CPF;
 
 import br.com.jsn.noleggio.modules.agencia.model.Agencia;
 
@@ -40,9 +45,10 @@ public class Cliente implements Serializable {
 	private String cep;
 
 	private String cidade;
-
+	
 	private String cnh;
 
+	@CPF(message = "CPF informado é invalido")
 	private String cpf;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -52,11 +58,13 @@ public class Cliente implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "data_manutencao")
 	private Date dataManutencao;
-
+	
+	@NotNull(message = "Data de nascimento é obrigatória")
 	@Temporal(TemporalType.DATE)
 	@Column(name = "data_nascimento")
 	private Date dataNascimento;
-
+	
+	@Email(message = "")
 	private String email;
 
 	@Column(name = "estado_emissor")
@@ -68,7 +76,9 @@ public class Cliente implements Serializable {
 	private int idFuncionario;
 
 	private String logradouro;
-
+	
+	@Size(min = 10, max = 50, 
+			message = "Nome deve conter entre 10 e 50 caracteres")
 	private String nome;
 
 	private int numero;
@@ -86,6 +96,7 @@ public class Cliente implements Serializable {
 	// bi-directional many-to-one association to Agencia
 	@ManyToOne
 	@JoinColumn(name = "id_agencia")
+	@NotNull(message = "Vinculo com a agência não foi criado")
 	private Agencia agencia;
 
 	public Cliente() {
@@ -266,7 +277,15 @@ public class Cliente implements Serializable {
 	public void setAgencia(Agencia agencia) {
 		this.agencia = agencia;
 	}
-
+	
+	public String getStatusAtivoDisplay() {
+		if (isAtivo()) {
+			return "Ativo";
+		} else {
+			return "Inativo";
+		}
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -43,4 +43,20 @@ public abstract class AbstractBean implements Serializable {
 			rc.addCallbackParam("businessError", true);
 		}
 	}
+
+	public boolean isReadonly() {
+		return readonly;
+	}
+
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	public void setReadonly(boolean readonly) {
+		this.readonly = readonly;
+	}
+
+	public void setDisabled(boolean disabled) {
+		this.disabled = disabled;
+	}
 }

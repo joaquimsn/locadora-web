@@ -18,20 +18,20 @@ public abstract class GenericDAO<T> implements Serializable {
 		this.classe = classe;
 	}
 
-	protected void save(T entity) {
+	public void save(T entity) {
 		entityManager.persist(entity);
 	}
 
-	protected T update(T entity) {
+	public T update(T entity) {
 		return entityManager.merge(entity);
 	}
 
-	protected void delete(Object id, Class<T> classe) {
+	public void delete(Object id, Class<T> classe) {
 		T entityToBeRemoved = entityManager.getReference(classe, id);
 		entityManager.remove(entityToBeRemoved);
 	}
 
-	protected T findById(int id) {
+	public T findById(int id) {
 		return entityManager.find(classe, id);
 	}
 

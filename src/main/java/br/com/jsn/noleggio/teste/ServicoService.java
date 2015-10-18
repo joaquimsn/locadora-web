@@ -16,4 +16,7 @@ public class ServicoService implements Serializable {
 		evento.fire(servico);
 		System.out.println(servico.getCliente());
 	}
+	
+	public void validar() {
+	}
 }
