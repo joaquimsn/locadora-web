@@ -19,6 +19,11 @@
 		<view-id value="/pages/protected/user/inicio.xhtml" />
 	</url-mapping>
 	
+	<url-mapping id="gerenciamento-agencia">
+		<pattern value="/gerenciamento-agencia" />
+		<view-id value="/pages/protected/admin/agencia.xhtml" />
+	</url-mapping>
+	
 	<url-mapping id="gerenciamento-veiculo">
 		<pattern value="/gerenciamento-veiculo" />
 		<view-id value="/pages/protected/admin/veiculo.xhtml" />
@@ -27,5 +32,10 @@
 	<url-mapping id="gerenciamento-cliente">
 		<pattern value="/gerenciamento-cliente" />
 		<view-id value="/pages/protected/user/cliente.xhtml" />
+	</url-mapping>
+	
+	<url-mapping id="gerenciamento-funcionario">
+		<pattern value="/gerenciamento-funcionario" />
+		<view-id value="/pages/protected/admin/funcionario.xhtml" />
 	</url-mapping>
 </pretty-config>

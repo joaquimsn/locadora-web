@@ -1,6 +1,5 @@
-package br.com.jsn.noleggio.modules.usuario.controller;
+package br.com.jsn.noleggio.modules.agencia.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -12,10 +11,9 @@ import javax.inject.Named;
 import br.com.jsn.noleggio.main.controller.AbstractBean;
 import br.com.jsn.noleggio.main.controller.ICrudBean;
 import br.com.jsn.noleggio.main.security.UrlRoute;
-import br.com.jsn.noleggio.main.util.DateUtil;
 import br.com.jsn.noleggio.main.validation.ValidationModelBusiness;
-import br.com.jsn.noleggio.modules.cliente.model.Cliente;
-import br.com.jsn.noleggio.modules.cliente.service.ClienteService;
+import br.com.jsn.noleggio.modules.agencia.model.Agencia;
+import br.com.jsn.noleggio.modules.agencia.service.AgenciaService;
 import br.com.jsn.noleggio.modules.endereco.BuscarCidades;
 import br.com.jsn.noleggio.modules.endereco.EnderecoUf;
 import br.com.jsn.noleggio.modules.endereco.model.Endereco;
@@ -24,34 +22,31 @@ import br.com.jsn.noleggio.modules.endereco.service.EnderecoService;
 
 @Named
 @ViewScoped
-public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
-	private static final long serialVersionUID = 7727135261960352762L;
-
+public class AgenciaBean extends AbstractBean implements ICrudBean<Agencia> {
+	private static final long serialVersionUID = -2157980839003631019L;
+	
 	@Inject
 	@BuscarCidades
 	Event<Uf> eventEndereco;
 	@Inject
-	private ClienteService clienteService;
+	private AgenciaService agenciaService;
 	@Inject
 	private EnderecoService enderecoService;
 	@Inject
 	@EnderecoUf
 	private List<Uf> listaUf;
 	
-	private Cliente objetoSelecionado;
-	private List<Cliente> listaCliente;
-	private List<Cliente> listaClienteFiltrado;
+	private Agencia objetoSelecionado;
+	private List<Agencia> listaAgencia;
+	private List<Agencia> listaAgenciaFiltrado;
 	
 	private Uf uf;
 	private List<String> listaCidade;
 	private Endereco endereco;
 	
-	private Date dataAtual;
-	private Date dataNascimentoMax;
-	
 	@Override
 	public String abrirPagina() {
-		return UrlRoute.GERENCIAMENTO_CLIENTE;
+		return UrlRoute.GERENCIAMENTO_AGENCIA;
 	}
 		
 	@Override
@@ -59,16 +54,14 @@ public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
 	public void inicializarPagina() {
 		setReadonly(true);
 		setDisabled(true);
-		objetoSelecionado = new Cliente();
-		
-		dataAtual = new Date();
+		objetoSelecionado = new Agencia();
 		
 		carregarLista();
 	}
 	
 	private void carregarLista() {
-		listaCliente = clienteService.buscarTodos();
-		listaClienteFiltrado = null;
+		listaAgencia = agenciaService.buscarTodos();
+		listaAgenciaFiltrado = null;
 	}
 	
 	@Override
@@ -76,7 +69,7 @@ public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
 		validar();
 		
 		if (objetoSelecionado.isValidadoComSucesso()) {
-			clienteService.salvar(objetoSelecionado);
+			agenciaService.salvar(objetoSelecionado);
 			
 			ValidationModelBusiness.addMessageInfo("Cadastro realizado com sucesso");
 			inicializarPagina();
@@ -85,7 +78,7 @@ public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
 
 	@Override
 	public void alterar() {
-		clienteService.alterar(objetoSelecionado);
+		agenciaService.alterar(objetoSelecionado);
 		
 		if (true) {
 			ValidationModelBusiness.addMessageInfo("Alterado com sucesso");
@@ -94,7 +87,7 @@ public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
 
 	@Override
 	public void excluir() {
-		clienteService.excluir(objetoSelecionado);
+		agenciaService.excluir(objetoSelecionado);
 		
 		if (true) {
 			ValidationModelBusiness.addMessageInfo("Inativado com sucesso");
@@ -104,7 +97,7 @@ public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
 
 	@Override
 	public boolean validar() {
-		clienteService.validar(objetoSelecionado);
+		agenciaService.validar(objetoSelecionado);
 		
 		return false;
 	}
@@ -113,7 +106,6 @@ public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
 	public void habilitarEdicao() {
 		readonly = false;
 		disabled = false;
-		
 	}
 	
 	public void carregarCidades() {
@@ -137,22 +129,22 @@ public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
 	}
 
 	@Override
-	public List<Cliente> getListaTodos() {
-		return listaCliente;
+	public List<Agencia> getListaTodos() {
+		return listaAgencia;
 	}
 
 	@Override
-	public void setListaTodos(List<Cliente> lista) {
-		listaCliente = lista;
+	public void setListaTodos(List<Agencia> lista) {
+		listaAgencia = lista;
 	}
 
 	@Override
-	public Cliente getObjetoSelecionado() {
+	public Agencia getObjetoSelecionado() {
 		return objetoSelecionado;
 	}
 
 	@Override
-	public void setObjetoSelecionado(Cliente objeto) {
+	public void setObjetoSelecionado(Agencia objeto) {
 		if (objeto != null) {
 			objetoSelecionado = objeto;
 			setDisabled(false);
@@ -164,13 +156,13 @@ public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
 	}
 
 	@Override
-	public List<Cliente> getListaFiltrada() {
-		return listaClienteFiltrado;
+	public List<Agencia> getListaFiltrada() {
+		return listaAgenciaFiltrado;
 	}
 
 	@Override
-	public void setListaFiltrada(List<Cliente> lista) {
-		listaClienteFiltrado = lista;
+	public void setListaFiltrada(List<Agencia> lista) {
+		listaAgenciaFiltrado = lista;
 	}
 	
 	public Uf getUf() {
@@ -189,17 +181,5 @@ public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
 
 	public List<String> getListaCidade() {
 		return listaCidade;
-	}
-
-	public Date getDataAtual() {
-		return dataAtual;
-	}
-	
-	public Date getDataNascimentoMax() {
-		if (dataNascimentoMax == null) {
-			dataNascimentoMax = DateUtil.asDate(DateUtil.pastDateFromCurrent(18));
-		}
-		
-		return dataNascimentoMax;
 	}
 }

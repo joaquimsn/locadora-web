@@ -1,12 +1,15 @@
 package br.com.jsn.noleggio.modules.veiculo.model;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +21,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import br.com.jsn.noleggio.main.util.SystemUtil;
+import br.com.jsn.noleggio.main.validation.BusinessValidation;
 import br.com.jsn.noleggio.modules.agencia.model.Agencia;
+import br.com.jsn.noleggio.modules.veiculo.enums.AcessorioVeiculoEnum;
+import br.com.jsn.noleggio.modules.veiculo.enums.CategoriaVeiculoEnum;
 
 /**
  * The persistent class for the veiculo database table.
@@ -27,7 +34,7 @@ import br.com.jsn.noleggio.modules.agencia.model.Agencia;
 @Entity
 @Table(name = "veiculo")
 @NamedQuery(name = "Veiculo.findAll", query = "SELECT v FROM Veiculo v")
-public class Veiculo implements Serializable {
+public class Veiculo extends BusinessValidation implements Serializable {
 	private static final long serialVersionUID = -7333959167513470776L;
 
 	@Id
@@ -62,10 +69,10 @@ public class Veiculo implements Serializable {
 	private String imagem;
 
 	@Column(name = "km_preco_km_controlado")
-	private double kmPrecoKmControlado;
+	private double precoKmControlado;
 
 	@Column(name = "km_preco_km_livre")
-	private double kmPrecoKmLivre;
+	private double precoKmLivre;
 
 	@Column(name = "km_rodado")
 	private double kmRodado;
@@ -79,7 +86,9 @@ public class Veiculo implements Serializable {
 	private String uf;
 
 	// bi-directional many-to-one association to AcessorioVeiculo
-	@OneToMany(mappedBy = "veiculo", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "veiculo", 
+			cascade = CascadeType.ALL,
+			fetch = FetchType.EAGER)
 	private List<AcessorioVeiculo> listaAcessorioVeiculo;
 
 	// bi-directional many-to-one association to Agencia
@@ -179,19 +188,19 @@ public class Veiculo implements Serializable {
 	}
 
 	public double getKmPrecoKmControlado() {
-		return this.kmPrecoKmControlado;
+		return this.precoKmControlado;
 	}
 
-	public void setKmPrecoKmControlado(double kmPrecoKmControlado) {
-		this.kmPrecoKmControlado = kmPrecoKmControlado;
+	public void setPrecoKmControlado(double precoKmControlado) {
+		this.precoKmControlado = precoKmControlado;
 	}
 
-	public double getKmPrecoKmLivre() {
-		return this.kmPrecoKmLivre;
+	public double getPrecoKmLivre() {
+		return this.precoKmLivre;
 	}
 
-	public void setKmPrecoKmLivre(double kmPrecoKmLivre) {
-		this.kmPrecoKmLivre = kmPrecoKmLivre;
+	public void setPrecoKmLivre(double precoKmLivre) {
+		this.precoKmLivre = precoKmLivre;
 	}
 
 	public double getKmRodado() {
@@ -265,7 +274,41 @@ public class Veiculo implements Serializable {
 	public void setAgencia(Agencia agencia) {
 		this.agencia = agencia;
 	}
-
+	
+	public void addAcessorioVeiculo(AcessorioVeiculoEnum acessorioVeiculoEnum) {
+		if (listaAcessorioVeiculo == null) {
+			listaAcessorioVeiculo = new ArrayList<AcessorioVeiculo>();
+		}
+		
+		AcessorioVeiculo acessorio = new AcessorioVeiculo();
+		acessorio.setVeiculo(this);
+		acessorio.setCodigoAcessorio(acessorioVeiculoEnum.getValue());
+		
+		listaAcessorioVeiculo.add(acessorio);
+	}
+	
+	public void addAcessorioVeiculo(List<AcessorioVeiculoEnum> listaAcessorioVeiculoEnum) {
+		for (AcessorioVeiculoEnum acessorioVeiculoEnum : listaAcessorioVeiculoEnum) {
+			addAcessorioVeiculo(acessorioVeiculoEnum);
+		}
+	}
+	
+	public String getGrupoDisplay() {
+		return CategoriaVeiculoEnum.getDisplayByValue(grupo);
+	}
+	
+	public String getPrecoKmControladoDisplay() {
+		return NumberFormat.getCurrencyInstance(SystemUtil.LOCALE_BRASIL).format(precoKmControlado);
+	}
+	
+	public String getPrecoKmLivreDisplay() {
+		return NumberFormat.getCurrencyInstance(SystemUtil.LOCALE_BRASIL).format(precoKmLivre);
+	}
+	
+	public String getStatusDisplay() {
+		return StatusVeiculoEnum.getDisplayByValue(status);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

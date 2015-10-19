@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +18,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.br.CPF;
+
+import br.com.jsn.noleggio.main.validation.BusinessValidation;
 import br.com.jsn.noleggio.modules.agencia.model.Agencia;
 import br.com.jsn.noleggio.modules.usuario.model.Usuario;
 
@@ -28,7 +35,7 @@ import br.com.jsn.noleggio.modules.usuario.model.Usuario;
 @Entity
 @Table(name = "funcionario")
 @NamedQuery(name = "Funcionario.findAll", query = "SELECT f FROM Funcionario f")
-public class Funcionario implements Serializable {
+public class Funcionario extends BusinessValidation implements Serializable {
 	private static final long serialVersionUID = -5813209877908389505L;
 
 	@Id
@@ -40,11 +47,13 @@ public class Funcionario implements Serializable {
 	private boolean ativo;
 
 	private String bairro;
-
+	
+	@NotNull(message = "CEP é Obrigatório")
 	private String cep;
 
 	private String cidade;
-
+	
+	@CPF(message = "CPF informado é invalido")
 	private String cpf;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -54,11 +63,13 @@ public class Funcionario implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "data_manutencao")
 	private Date dataManutencao;
-
+	
+	@NotNull(message = "Data de nascimento é obrigatória")
 	@Temporal(TemporalType.DATE)
 	@Column(name = "data_nascimento")
 	private Date dataNascimento;
-
+	
+	@Email(message = "E-mail informado é invalido")
 	private String email;
 
 	private String genero;
@@ -83,14 +94,15 @@ public class Funcionario implements Serializable {
 	// bi-directional many-to-one association to Funcionario
 	@ManyToOne
 	@JoinColumn(name = "funcionario_supervisor")
-	private Funcionario funcionario;
+	private Funcionario funcionarioSupervisor;
 
 	// bi-directional many-to-one association to Funcionario
-	@OneToMany(mappedBy = "funcionario")
+	@OneToMany(mappedBy = "funcionarioSupervisor")
 	private List<Funcionario> listaFuncionario;
 
 	// bi-directional one-to-one association to Usuario
-	@OneToOne(mappedBy = "funcionario")
+	@OneToOne(mappedBy = "funcionario", cascade = CascadeType.ALL)
+	@Valid
 	private Usuario usuario;
 
 	public Funcionario() {
@@ -240,12 +252,12 @@ public class Funcionario implements Serializable {
 		this.agencia = agencia;
 	}
 
-	public Funcionario getFuncionario() {
-		return this.funcionario;
+	public Funcionario getFuncionarioSupervisor() {
+		return this.funcionarioSupervisor;
 	}
 
-	public void setFuncionario(Funcionario funcionario) {
-		this.funcionario = funcionario;
+	public void setFuncionarioSupervisor(Funcionario funcionario) {
+		this.funcionarioSupervisor = funcionario;
 	}
 
 	public List<Funcionario> getListaFuncionario() {
@@ -257,11 +269,24 @@ public class Funcionario implements Serializable {
 	}
 
 	public Usuario getUsuario() {
+		if (usuario == null) {
+			usuario = new Usuario();
+			usuario.setFuncionario(this);
+		}
+		
 		return this.usuario;
 	}
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
+	}
+	
+	public String getStatusAtivoDisplay() {
+		if (isAtivo()) {
+			return "Ativo";
+		} else {
+			return "Inativo";
+		}
 	}
 
 	@Override

@@ -14,7 +14,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.br.CNPJ;
+
+import br.com.jsn.noleggio.main.validation.BusinessValidation;
 import br.com.jsn.noleggio.modules.veiculo.model.Veiculo;
 
 
@@ -24,8 +30,8 @@ import br.com.jsn.noleggio.modules.veiculo.model.Veiculo;
 @Entity
 @Table(name="agencia")
 @NamedQuery(name="Agencia.findAll", query="SELECT a FROM Agencia a")
-public class Agencia implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class Agencia extends BusinessValidation implements Serializable {
+	private static final long serialVersionUID = 3048129896182422262L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -36,11 +42,13 @@ public class Agencia implements Serializable {
 	private boolean ativo;
 
 	private String bairro;
-
+	
+	@NotNull(message = "CEP é Obrigatório")
 	private String cep;
 
 	private String cidade;
-
+	
+	@CNPJ(message = "CNPJ informado é invalido")
 	private String cnpj;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -50,9 +58,16 @@ public class Agencia implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="data_manutencao")
 	private Date dataManutencao;
-
+	
+	@Size(min = 4, max = 64,
+			message = "Domínio deve conter entre 4 e 80 caracteres")
+	private String dominio;
+	
+	@Email(message = "E-mail informado é invalido")
 	private String email;
-
+	
+	@Size(min = 4, max = 80,
+			message = "Fantasia deve conter entre 4 e 80 caracteres")
 	private String fantasia;
 
 	@Column(name="insc_estadual")
@@ -61,7 +76,8 @@ public class Agencia implements Serializable {
 	private String logradouro;
 
 	private int numero;
-
+	@Size(min = 4, max = 120,
+			message = "Razão social deve conter entre 4 e 120 caracteres")
 	@Column(name="razao_social")
 	private String razaoSocial;
 
@@ -142,6 +158,14 @@ public class Agencia implements Serializable {
 		this.dataManutencao = dataManutencao;
 	}
 
+	public String getDominio() {
+		return dominio;
+	}
+
+	public void setDominio(String dominio) {
+		this.dominio = dominio;
+	}
+
 	public String getEmail() {
 		return this.email;
 	}
@@ -220,6 +244,14 @@ public class Agencia implements Serializable {
 
 	public void setListaVeiculo(List<Veiculo> listaVeiculo) {
 		this.listaVeiculo = listaVeiculo;
+	}
+	
+	public String getStatusAtivoDisplay() {
+		if (isAtivo()) {
+			return "Ativo";
+		} else {
+			return "Inativo";
+		}
 	}
 
 	@Override

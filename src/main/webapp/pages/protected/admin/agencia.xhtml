@@ -1,10 +1,187 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsn="http://xmlns.jcp.org/jsf/composite/components"
+    xmlns:jsf="http://xmlns.jcp.org/jsf"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" 
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-    xmlns:p="http://primefaces.org/ui">
-    
-    <h1>Manter Agência</h1>
-</html>
+    xmlns:p="http://primefaces.org/ui"
+    template="/pages/layout/layout.xhtml">
+
+	<ui:define name="restrict">
+		<jsn:titulo label="Agências" />
+		
+		<h:form id="formContent">	
+			<fieldset jsf:id="fieldsetGerenciamento" class="fieldset">
+				<p:dataTable id="tableAgencias" selection="#{agenciaBean.objetoSelecionado}" value="#{agenciaBean.listaTodos}" var="objeto"
+					paginator="true" paginatorPosition="bottom" rows="5" rowKey="#{objeto.idAgencia}" selectionMode="single"
+					filterEvent="enter" filteredValue="#{agenciaBean.listaFiltrada}" styleClass="datatable"
+					emptyMessage="Nenhum registro encontrado">
+					
+					<p:ajax event="rowSelect" update="formContent"/>
+					
+					<p:column filterMatchMode="contains" headerText="Razão social" styleClass="coluna-35"
+						filterBy="#{objeto.razaoSocial}" filterStyle="width: 80%">
+						#{objeto.razaoSocial}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="Responsável" styleClass="coluna-20"
+						filterBy="#{objeto.responsavel}" filterStyle="width: 80%">
+						#{objeto.responsavel}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="Domínio" styleClass="coluna-15"
+						filterBy="#{objeto.dominio}" filterStyle="width: 80%">
+						#{objeto.dominio}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="Cidade" styleClass="coluna-20"
+						filterBy="#{objeto.cidade}" filterStyle="width: 80%">
+						#{objeto.cidade}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="Ativo" styleClass="coluna-10"
+						filterBy="#{objeto.statusAtivoDisplay}" filterStyle="width: 80%">
+						#{objeto.statusAtivoDisplay}
+					</p:column>
+				</p:dataTable>
+				
+				<p:fieldset id="fieldsetDetalhe" rendered="#{!agenciaBean.disabled || !agenciaBean.readonly}">
+					<ui:decorate template="/pages/layout/subtitulo.xhtml">
+						<ui:define name="subtitulo">
+							<label>Informações da agência</label>
+						</ui:define>
+					</ui:decorate>
+					
+					<h:panelGrid columns="3" width="100%" cellspacing="5"
+						columnClasses="coluna-20, coluna-50, coluna-30">
+						<h:panelGrid width="100%">
+							<h:outputText value="CNPJ" />
+							<p:inputMask value="#{agenciaBean.objetoSelecionado.cnpj}"
+								mask="99.999.999/9999-99" styleClass="input-96"
+								readonly="#{agenciaBean.readonly}" onblur="rcValidaCpf();" />
+						</h:panelGrid>
+	
+						<h:panelGrid width="100%">
+							<h:outputText value="Razão social" />
+							<p:inputText value="#{agenciaBean.objetoSelecionado.razaoSocial}"
+								maxlength="60" styleClass="input-98"
+								readonly="#{agenciaBean.readonly}" onblur="upperCase(this);" />
+						</h:panelGrid>
+	
+						<h:panelGrid width="100%">
+							<h:outputText value="Fantasia" />
+							<p:inputText value="#{agenciaBean.objetoSelecionado.fantasia}"
+								maxlength="60" styleClass="input-98"
+								readonly="#{agenciaBean.readonly}" onblur="upperCase(this);" />
+						</h:panelGrid>
+					</h:panelGrid>
+					
+					<h:panelGrid width="100%" cellspacing="5" style="margin-top: 10px;"
+						columnClasses="coluna-20, coluna-50, coluna-30" columns="3">
+						<h:panelGrid width="100%">
+							<h:outputText value="Insc. estadual" />
+							<p:inputMask value="#{agenciaBean.objetoSelecionado.inscEstadual}" maxlength="10" styleClass="input-97"
+								readonly="#{agenciaBean.readonly}" />
+						</h:panelGrid>
+						
+						<h:panelGrid width="100%" columns="1">
+							<h:outputText value="Responsável" /> 
+							<p:inputText value="#{agenciaBean.objetoSelecionado.responsavel}"
+								maxlength="60" styleClass="input-98"
+								readonly="#{agenciaBean.readonly}" onblur="upperCase(this);" />
+						</h:panelGrid>
+						
+						<h:panelGrid width="100%" columns="1">
+							<h:outputText value="Domínio" /> 
+							<p:inputText value="#{agenciaBean.objetoSelecionado.dominio}"
+								maxlength="60" styleClass="input-98"
+								readonly="#{agenciaBean.readonly}" onblur="upperCase(this);" />
+						</h:panelGrid>
+					</h:panelGrid>
+	
+					<h:panelGrid columns="3" width="100%" cellspacing="5"
+						columnClasses="coluna-70, coluna-30">
+						<h:panelGrid width="100%">
+							<h:outputText value="E-mail" />
+							<p:inputText value="#{agenciaBean.objetoSelecionado.email}"
+								maxlength="60" styleClass="input-98" onblur="rcValidaEmail();"
+								readonly="#{agenciaBean.readonly}" />
+						</h:panelGrid>
+						<h:panelGrid width="100%">
+							<h:outputText value="Telefone" />
+							<p:inputMask
+								value="#{agenciaBean.objetoSelecionado.telefone}"
+								mask="(99)9999-9999" styleClass="input-96"
+								readonly="#{agenciaBean.readonly}" />
+						</h:panelGrid>
+					</h:panelGrid>
+					
+					<h:panelGrid width="100%" columns="3" cellspacing="5" 
+						columnClasses="coluna-20, coluna-65, coluna-15">
+						<h:panelGrid width="100%" columns="1">
+							<h:outputText value="CEP" />
+							<p:inputMask value="#{agenciaBean.objetoSelecionado.cep}" mask="99999-999" 
+								styleClass="input-96" readonly="#{agenciaBean.readonly}"
+								onblur="rcEndereco();"/>
+						</h:panelGrid>
+	
+						<h:panelGrid width="100%" columns="1">
+							<h:outputText value="Logradouro" />
+							<p:inputText value="#{agenciaBean.objetoSelecionado.logradouro}" maxlength="80" 
+								styleClass="input-98" onblur="upperCase(this);" 
+								readonly="#{agenciaBean.readonly}"/>
+						</h:panelGrid>
+	
+						<h:panelGrid width="97%" columns="1">
+							<h:outputText value="Número" />
+							<p:inputText value="#{agenciaBean.objetoSelecionado.numero}" maxlength="5" 
+								onkeyup="somenteNumero(this, event);" styleClass="input-96" 
+								readonly="#{agenciaBean.readonly}"/>
+						</h:panelGrid>
+					</h:panelGrid>
+		
+					<h:panelGrid width="100%" columns="3" cellspacing="5"
+						columnClasses="coluna-40, coluna-20, coluna-40">
+						<h:panelGrid width="100%" columns="1">
+							<h:outputText value="Bairro" />
+							<p:inputText value="#{agenciaBean.objetoSelecionado.bairro}" maxlength="50" 
+								styleClass="input-97" onblur="upperCase(this);"
+								readonly="#{agenciaBean.readonly}"/>
+						</h:panelGrid>
+						
+						<h:panelGrid width="100%" columns="1">
+							<h:outputText value="UF" /> 
+							<p:selectOneMenu value="#{agenciaBean.uf}" style="width: 98%;"
+								converter="genericConverter"
+								disabled="#{agenciaBean.readonly}" onchange="rcCidadesUf();">
+								<f:selectItem itemLabel="Selecione" itemValue=""/>
+								<f:selectItems value="#{agenciaBean.listaUf}" var="uf" itemLabel="#{uf.uf}" itemValue="#{uf}" />
+							</p:selectOneMenu>
+						</h:panelGrid>
+	
+						<h:panelGrid width="100%" columns="1">
+							<h:outputText value="Cidade" />
+							<p:selectOneMenu value="#{agenciaBean.objetoSelecionado.cidade}" style="width: 99%;" 
+								disabled="#{agenciaBean.readonly}">
+								<f:selectItem itemLabel="Selecione" itemValue=""/>
+								<f:selectItems value="#{agenciaBean.listaCidade}" />
+							</p:selectOneMenu>
+						</h:panelGrid>
+					</h:panelGrid>
+				</p:fieldset>
+				
+				<jsn:panelCrud update="formContent msgs"
+					objetoSelecionado="#{agenciaBean.objetoSelecionado}" bean="#{agenciaBean}" />
+					
+				<p:remoteCommand name="rcValidaCpf" action="#{agenciaBean.validar}"
+					update="msgs"/>
+				
+				<p:remoteCommand name="rcEndereco" actionListener="#{agenciaBean.buscarEndereco}"
+					update=":formContent:fieldsetDetalhe msgs"/>
+				
+				<p:remoteCommand name="rcCidadesUf" actionListener="#{agenciaBean.carregarCidades}"
+					update=":formContent:fieldsetDetalhe"/>
+				
+				<p:remoteCommand name="rcValidaEmail" actionListener="#{agenciaBean.validar}"
+					update=":formContent:fieldsetDetalhe"/>
+			</fieldset>
+		</h:form>
+	</ui:define>
+</ui:composition>

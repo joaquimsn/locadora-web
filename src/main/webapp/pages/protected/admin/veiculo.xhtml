@@ -1,10 +1,83 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsn="http://xmlns.jcp.org/jsf/composite/components"
+    xmlns:jsf="http://xmlns.jcp.org/jsf"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" 
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-    xmlns:p="http://primefaces.org/ui">
-    
-    <h1>Veículo</h1>
-</html>
+    xmlns:p="http://primefaces.org/ui"
+    template="/pages/layout/layout.xhtml">
+
+	<ui:define name="restrict">
+		<jsn:titulo label="Veículos" />
+		<div style="" />
+		<h:form id="formContent">	
+			<fieldset jsf:id="fieldsetGerenciamento" class="fieldset">
+				<p:dataTable id="tableVeiculos" selection="#{veiculoBean.objetoSelecionado}" value="#{veiculoBean.listaTodos}" var="objeto"
+					paginator="true" paginatorPosition="bottom" rows="5" rowKey="#{objeto.idVeiculo}" selectionMode="single"
+					filterEvent="enter" filteredValue="#{veiculoBean.listaFiltrada}" styleClass="datatable"
+					emptyMessage="Nenhum registro encontrado">
+					
+					<p:ajax event="rowSelect" update="formContent"/>
+					
+					<p:column filterMatchMode="contains" headerText="Modelo" styleClass="coluna-20"
+						filterBy="#{objeto.modelo}" filterStyle="width: 80%">
+						#{objeto.modelo}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="Fabricante" styleClass="coluna-15"
+						filterBy="#{objeto.fabricante}" filterStyle="width: 80%">
+						#{objeto.fabricante}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="Categoria" styleClass="coluna-20"
+						filterBy="#{objeto.grupoDisplay}" filterStyle="width: 80%">
+						#{objeto.grupoDisplay}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="Km controlado" styleClass="coluna-15"
+						filterBy="#{objeto.precoKmControlado}" filterStyle="width: 80%">
+						#{objeto.precoKmControladoDisplay}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="Km livre" styleClass="coluna-15"
+						filterBy="#{objeto.precoKmLivreDisplay}" filterStyle="width: 80%">
+						#{objeto.precoKmLivreDisplay}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="Status" styleClass="coluna-15"
+						filterBy="#{objeto.statusDisplay}" filterStyle="width: 80%">
+						#{objeto.statusDisplay}
+					</p:column>
+				</p:dataTable>
+				
+				<p:fieldset id="fieldsetDetalhe" rendered="#{!veiculoBean.disabled || !veiculoBean.readonly}">
+					<div class="crud-car-form">
+						<div class="crud-car-image">
+							<img src="resources/images/car-default.png" height="153px" />
+						</div>
+						<div class="crud-car-summary">
+							<h:panelGrid width="100%" columns="1">
+								<h:panelGrid columns="2" width="100%" cellspacing="5"
+									columnClasses="coluna-60, coluna-40">
+									<h:panelGrid width="100%">
+										<h:outputText value="Modelo" />
+										<p:inputText value="#{veiculoBean.objetoSelecionado.modelo}"
+											onblur="upperCase(this);" maxlength="60" styleClass="input-98"
+											readonly="#{veiculoBean.readonly}" />
+									</h:panelGrid>
+									<h:panelGrid width="100%">
+										<h:outputText value="Fabricante" />
+										<p:inputText
+											value="#{veiculoBean.objetoSelecionado.fabricante}"
+											onblur="upperCase(this);"  styleClass="input"
+											readonly="#{veiculoBean.readonly}" />
+									</h:panelGrid>
+								</h:panelGrid>
+							</h:panelGrid>
+						</div>
+					</div>
+				
+				</p:fieldset>
+				
+				<jsn:panelCrud update="formContent msgs" 
+					objetoSelecionado="#{veiculoBean.objetoSelecionado}" bean="#{veiculoBean}" />
+			</fieldset>
+		</h:form>
+	</ui:define>
+</ui:composition>

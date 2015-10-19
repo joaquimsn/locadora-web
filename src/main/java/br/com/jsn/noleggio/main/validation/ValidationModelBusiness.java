@@ -14,7 +14,6 @@ import javax.validation.Validator;
 import org.primefaces.context.RequestContext;
 
 import br.com.jsn.noleggio.main.qualifier.SavePreValidate;
-import br.com.jsn.noleggio.modules.cliente.model.Cliente;
 
 @RequestScoped
 public class ValidationModelBusiness {
@@ -22,13 +21,14 @@ public class ValidationModelBusiness {
 	@Inject
 	private Validator validator;
 	
-	public void validateModel(@Observes @SavePreValidate Cliente cliente) {
-		Set<ConstraintViolation<Cliente>> constraintViolations = validator.validate(cliente);
+	public void validateModel(@Observes @SavePreValidate BusinessValidation businessValidation) {
+		Set<ConstraintViolation<BusinessValidation>> constraintViolations = validator.validate(businessValidation);
 		constraintViolations.size();
 		
-		for (ConstraintViolation<Cliente> constraintViolation : constraintViolations) {
+		businessValidation.setValidadoComSucesso(true);
+		for (ConstraintViolation<BusinessValidation> constraintViolation : constraintViolations) {
 			addMessageError(constraintViolation.getMessage());
-			constraintViolation.getInvalidValue();
+			businessValidation.setValidadoComSucesso(false);
 		}
 		
 	}

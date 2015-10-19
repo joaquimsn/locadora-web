@@ -10,6 +10,7 @@ html, body {
 	font-size: 14px;
 	background: #fff;
 	color: #212121;
+	overflow: hidden;
 }
 
 html, body, span, p, form, img, a, ul, ol, li, table, tr, td, h1, h2, h3, div, header, figure, fieldset {
@@ -294,8 +295,12 @@ td.align-center {
 }
 
 .ui-widget-header {
-	background: none !important;
-	  border: 1px solid #CCCCCC !important;
+	background: #F5F5F5 !important;
+	border: 1px solid #CCCCCC !important;
+}
+
+.ui-dialog-titlebar {
+	background: #616161 !important;	
 }
 
 .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {

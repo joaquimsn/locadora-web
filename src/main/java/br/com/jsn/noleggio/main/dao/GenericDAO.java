@@ -10,7 +10,7 @@ import javax.persistence.criteria.CriteriaQuery;
 public abstract class GenericDAO<T> implements Serializable {
 	private static final long serialVersionUID = -1346304670895222289L;
 
-	private Class<T> classe;
+	protected Class<T> classe;
 	@Inject
 	protected EntityManager entityManager;
 

@@ -30,7 +30,7 @@
 					</p:column>
 					<p:column filterMatchMode="contains" headerText="Validade CNH" styleClass="coluna-20"
 						filterBy="#{objeto.validadeCnh}" filterStyle="width: 80%">
-						#{objeto.validadeCnh}
+						#{objeto.validadeCnhDisplay}
 					</p:column>
 					<p:column filterMatchMode="contains" headerText="Cidade" styleClass="coluna-20"
 						filterBy="#{objeto.cidade}" filterStyle="width: 80%">
@@ -53,16 +53,14 @@
 						columnClasses="coluna-20, coluna-50, coluna-15, coluna-15">
 						<h:panelGrid width="100%">
 							<h:outputText value="CPF" />
-							<p:inputMask id="cpfUsuario"
-								value="#{clienteBean.objetoSelecionado.cpf}"
+							<p:inputMask value="#{clienteBean.objetoSelecionado.cpf}"
 								mask="999.999.999-99" styleClass="input-96"
 								readonly="#{clienteBean.readonly}" onblur="rcValidaCpf();" />
 						</h:panelGrid>
 	
 						<h:panelGrid width="100%">
 							<h:outputText value="Nome completo" />
-							<p:inputText id="nomeUsuario"
-								value="#{clienteBean.objetoSelecionado.nome}"
+							<p:inputText value="#{clienteBean.objetoSelecionado.nome}"
 								maxlength="60" styleClass="input-98"
 								readonly="#{clienteBean.readonly}" onblur="upperCase(this);" />
 						</h:panelGrid>
@@ -95,8 +93,7 @@
 						columnClasses="coluna-20, coluna-50, coluna-15, coluna-15" columns="4">
 						<h:panelGrid width="100%">
 							<h:outputText value="RG" />
-							<p:inputMask id="rg"
-								value="#{clienteBean.objetoSelecionado.rg}" maxlength="10" styleClass="input-97"
+							<p:inputMask value="#{clienteBean.objetoSelecionado.rg}" maxlength="10" styleClass="input-97"
 								readonly="#{clienteBean.readonly}" />
 						</h:panelGrid>
 						
@@ -109,8 +106,10 @@
 							
 							<h:panelGrid columns="1" width="100%" style="margin-left: 5px;">
 								<h:outputText value="Estado emissor" /> 
-								<p:selectOneMenu value="#{clienteBean.objetoSelecionado.estadoEmissor}" 
+								<p:selectOneMenu value="#{clienteBean.objetoSelecionado.estadoEmissor}"
+									converter="genericConverter"
 									style="width: 98%;" disabled="#{clienteBean.readonly}">
+									<f:selectItems value="#{clienteBean.listaUf}" var="uf" itemLabel="#{uf.uf}" itemValue="#{uf}" />
 								</p:selectOneMenu>
 							</h:panelGrid>
 						</h:panelGrid>
@@ -138,8 +137,7 @@
 						columnClasses="coluna-70, coluna-30">
 						<h:panelGrid width="100%">
 							<h:outputText value="E-mail" />
-							<p:inputText id="email"
-								value="#{clienteBean.objetoSelecionado.email}"
+							<p:inputText value="#{clienteBean.objetoSelecionado.email}"
 								maxlength="60" styleClass="input-98" onblur="rcValidaEmail();"
 								readonly="#{clienteBean.readonly}" />
 						</h:panelGrid>
@@ -187,32 +185,35 @@
 						
 						<h:panelGrid width="100%" columns="1">
 							<h:outputText value="UF" /> 
-							<p:selectOneMenu value="#{clienteBean.objetoSelecionado.uf}" style="width: 98%;" 
+							<p:selectOneMenu value="#{clienteBean.uf}" style="width: 98%;"
+								converter="genericConverter"
 								disabled="#{clienteBean.readonly}" onchange="rcCidadesUf();">
-								<f:selectItem itemLabel="UF" itemValue=""/>
+								<f:selectItem itemLabel="Selecione" itemValue=""/>
+								<f:selectItems value="#{clienteBean.listaUf}" var="uf" itemLabel="#{uf.uf}" itemValue="#{uf}" />
 							</p:selectOneMenu>
 						</h:panelGrid>
 	
-						<h:panelGrid id="cidade" width="100%" columns="1">
+						<h:panelGrid width="100%" columns="1">
 							<h:outputText value="Cidade" />
 							<p:selectOneMenu value="#{clienteBean.objetoSelecionado.cidade}" style="width: 99%;" 
 								disabled="#{clienteBean.readonly}">
 								<f:selectItem itemLabel="Selecione" itemValue=""/>
+								<f:selectItems value="#{clienteBean.listaCidade}" />
 							</p:selectOneMenu>
 						</h:panelGrid>
 					</h:panelGrid>
 				</p:fieldset>
 				
-				<jsn:panelCrud showModal="PF('confirmacao').show();" update="formContent msgs"
-					objetoSelecionado="#{clienteBean.objetoSelecionado}" bean="#{clienteBean}" />
+				<jsn:panelCrud update="formContent msgs" bean="#{clienteBean}"
+					objetoSelecionado="#{clienteBean.objetoSelecionado}" />
 					
 				<p:remoteCommand name="rcValidaCpf" action="#{clienteBean.validar}"
 					update="msgs"/>
 				
-				<p:remoteCommand name="rcEndereco" actionListener="#{clienteBean.validar}"
+				<p:remoteCommand name="rcEndereco" actionListener="#{clienteBean.buscarEndereco}"
 					update=":formContent:fieldsetDetalhe msgs"/>
 				
-				<p:remoteCommand name="rcCidadesUf" actionListener="#{clienteBean.validar}"
+				<p:remoteCommand name="rcCidadesUf" actionListener="#{clienteBean.carregarCidades}"
 					update=":formContent:fieldsetDetalhe"/>
 				
 				<p:remoteCommand name="rcValidaEmail" actionListener="#{clienteBean.validar}"

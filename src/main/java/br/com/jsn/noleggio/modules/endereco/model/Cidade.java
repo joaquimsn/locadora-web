@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,17 +37,13 @@ public class Cidade implements Serializable {
 	private int codigoIbge;
 
 	//bi-directional many-to-one association to Bairro
-	@OneToMany(mappedBy="cidade")
+	@OneToMany(mappedBy="cidade", fetch = FetchType.LAZY)
 	private List<Bairro> bairros;
 
 	//bi-directional many-to-one association to Uf
 	@ManyToOne
 	@JoinColumn(name="uf")
 	private Uf ufBean;
-
-	//bi-directional many-to-one association to Endereco
-	@OneToMany(mappedBy="cidade")
-	private List<Endereco> enderecos;
 
 	public Cidade() {
 	}
@@ -83,20 +80,6 @@ public class Cidade implements Serializable {
 		this.bairros = bairros;
 	}
 
-	public Bairro addBairro(Bairro bairro) {
-		getBairros().add(bairro);
-		bairro.setCidade(this);
-
-		return bairro;
-	}
-
-	public Bairro removeBairro(Bairro bairro) {
-		getBairros().remove(bairro);
-		bairro.setCidade(null);
-
-		return bairro;
-	}
-
 	public Uf getUfBean() {
 		return this.ufBean;
 	}
@@ -104,27 +87,4 @@ public class Cidade implements Serializable {
 	public void setUfBean(Uf ufBean) {
 		this.ufBean = ufBean;
 	}
-
-	public List<Endereco> getEnderecos() {
-		return this.enderecos;
-	}
-
-	public void setEnderecos(List<Endereco> enderecos) {
-		this.enderecos = enderecos;
-	}
-
-	public Endereco addEndereco(Endereco endereco) {
-		getEnderecos().add(endereco);
-		endereco.setCidade(this);
-
-		return endereco;
-	}
-
-	public Endereco removeEndereco(Endereco endereco) {
-		getEnderecos().remove(endereco);
-		endereco.setCidade(null);
-
-		return endereco;
-	}
-
 }

@@ -11,3 +11,66 @@
 	width: 160px;
 	margin-right: 5px;
 }
+
+.car-grid-row {
+	display: flex;
+	box-sizing: border-box;
+	background: #fff;
+	padding: 10px;
+	margin: 5px;
+	height: 140px;
+	border: 1px solid #b6b6b6;
+}
+
+.car-grid-row-column-image {
+	width: 20%;
+}
+
+.car-grid-row-column-summary {
+	width: 30%;
+}
+
+.car-grid-row-column-detail {
+	width: 30%;
+}
+
+.car-grid-row-column-cost {
+	width: 20%;
+}
+
+.label-static {
+	color: #9e9e9e;
+	font-size: 12px;
+}
+
+.label-dynamic {
+	color: #212121;
+	font-size: 13px;
+}
+
+.label-status {
+	color: #F7B64A;
+	font-size: 15px;
+}
+
+.label-cost {
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.crud-car-form {
+  display: flex;
+  width: 100%;
+  padding: 5px 0;
+}
+
+.crud-car-image {
+  border: 1px solid #999;
+  border-radius: 5px;
+  margin-right: 5px;
+  width: 25%;
+}
+
+.crud-car-summary {
+  width: 75%;
+}

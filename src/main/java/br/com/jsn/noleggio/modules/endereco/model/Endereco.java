@@ -20,7 +20,7 @@ import javax.persistence.Table;
 @Table(name="endereco")
 @NamedQuery(name="Endereco.findAll", query="SELECT e FROM Endereco e")
 public class Endereco implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -5208538687499580299L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

@@ -23,10 +23,18 @@ public class ClienteService implements Serializable {
 	private Event<Cliente> eventCliente;
 	
 	public void salvar(Cliente cliente) {
+		cliente.setDataManutencao(new Date());
+		cliente.setAtivo(true);
 		clienteDAO.save(cliente);
 	}
 	
 	public void alterar(Cliente cliente) {
+		cliente.setDataManutencao(new Date());
+		clienteDAO.update(cliente);
+	}
+	
+	public void inativar(Cliente cliente) {
+		cliente.setAtivo(false);
 		cliente.setDataManutencao(new Date());
 		clienteDAO.update(cliente);
 	}

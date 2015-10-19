@@ -1,4 +1,4 @@
-package br.com.jsn.noleggio.modules.usuario.controller;
+package br.com.jsn.noleggio.modules.funcionario.controller;
 
 import java.util.Date;
 import java.util.List;
@@ -14,44 +14,48 @@ import br.com.jsn.noleggio.main.controller.ICrudBean;
 import br.com.jsn.noleggio.main.security.UrlRoute;
 import br.com.jsn.noleggio.main.util.DateUtil;
 import br.com.jsn.noleggio.main.validation.ValidationModelBusiness;
-import br.com.jsn.noleggio.modules.cliente.model.Cliente;
-import br.com.jsn.noleggio.modules.cliente.service.ClienteService;
 import br.com.jsn.noleggio.modules.endereco.BuscarCidades;
 import br.com.jsn.noleggio.modules.endereco.EnderecoUf;
 import br.com.jsn.noleggio.modules.endereco.model.Endereco;
 import br.com.jsn.noleggio.modules.endereco.model.Uf;
 import br.com.jsn.noleggio.modules.endereco.service.EnderecoService;
+import br.com.jsn.noleggio.modules.funcionario.model.Funcionario;
+import br.com.jsn.noleggio.modules.funcionario.service.FuncionarioService;
+import br.com.jsn.noleggio.modules.usuario.enums.NivelUsuarioEnum;
 
 @Named
 @ViewScoped
-public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
-	private static final long serialVersionUID = 7727135261960352762L;
-
+public class FuncionarioBean extends AbstractBean implements ICrudBean<Funcionario> {
+	private static final long serialVersionUID = 7740968948666965866L;
+	
 	@Inject
 	@BuscarCidades
 	Event<Uf> eventEndereco;
 	@Inject
-	private ClienteService clienteService;
+	private FuncionarioService funcionarioService;
 	@Inject
 	private EnderecoService enderecoService;
 	@Inject
 	@EnderecoUf
 	private List<Uf> listaUf;
 	
-	private Cliente objetoSelecionado;
-	private List<Cliente> listaCliente;
-	private List<Cliente> listaClienteFiltrado;
+	private Funcionario objetoSelecionado;
+	private List<Funcionario> listaFuncionario;
+	private List<Funcionario> listaFuncionarioFiltrado;
+	private List<Funcionario> listaFuncionarioSupervisor;
 	
 	private Uf uf;
 	private List<String> listaCidade;
 	private Endereco endereco;
+	
+	private List<NivelUsuarioEnum> listaNivelUsuarioEnum;
 	
 	private Date dataAtual;
 	private Date dataNascimentoMax;
 	
 	@Override
 	public String abrirPagina() {
-		return UrlRoute.GERENCIAMENTO_CLIENTE;
+		return UrlRoute.GERENCIAMENTO_FUNCIONARIO;
 	}
 		
 	@Override
@@ -59,7 +63,7 @@ public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
 	public void inicializarPagina() {
 		setReadonly(true);
 		setDisabled(true);
-		objetoSelecionado = new Cliente();
+		objetoSelecionado = new Funcionario();
 		
 		dataAtual = new Date();
 		
@@ -67,8 +71,10 @@ public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
 	}
 	
 	private void carregarLista() {
-		listaCliente = clienteService.buscarTodos();
-		listaClienteFiltrado = null;
+		listaFuncionario = funcionarioService.buscarTodos();
+		listaFuncionarioSupervisor = funcionarioService.buscarTodosSupervisor();
+		listaFuncionarioFiltrado = null;
+		listaNivelUsuarioEnum = NivelUsuarioEnum.getEnumList();
 	}
 	
 	@Override
@@ -76,7 +82,7 @@ public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
 		validar();
 		
 		if (objetoSelecionado.isValidadoComSucesso()) {
-			clienteService.salvar(objetoSelecionado);
+			funcionarioService.salvar(objetoSelecionado);
 			
 			ValidationModelBusiness.addMessageInfo("Cadastro realizado com sucesso");
 			inicializarPagina();
@@ -85,7 +91,7 @@ public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
 
 	@Override
 	public void alterar() {
-		clienteService.alterar(objetoSelecionado);
+		funcionarioService.alterar(objetoSelecionado);
 		
 		if (true) {
 			ValidationModelBusiness.addMessageInfo("Alterado com sucesso");
@@ -94,7 +100,7 @@ public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
 
 	@Override
 	public void excluir() {
-		clienteService.excluir(objetoSelecionado);
+		funcionarioService.excluir(objetoSelecionado);
 		
 		if (true) {
 			ValidationModelBusiness.addMessageInfo("Inativado com sucesso");
@@ -104,7 +110,7 @@ public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
 
 	@Override
 	public boolean validar() {
-		clienteService.validar(objetoSelecionado);
+		funcionarioService.validar(objetoSelecionado);
 		
 		return false;
 	}
@@ -137,22 +143,22 @@ public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
 	}
 
 	@Override
-	public List<Cliente> getListaTodos() {
-		return listaCliente;
+	public List<Funcionario> getListaTodos() {
+		return listaFuncionario;
 	}
 
 	@Override
-	public void setListaTodos(List<Cliente> lista) {
-		listaCliente = lista;
+	public void setListaTodos(List<Funcionario> lista) {
+		listaFuncionario = lista;
 	}
 
 	@Override
-	public Cliente getObjetoSelecionado() {
+	public Funcionario getObjetoSelecionado() {
 		return objetoSelecionado;
 	}
 
 	@Override
-	public void setObjetoSelecionado(Cliente objeto) {
+	public void setObjetoSelecionado(Funcionario objeto) {
 		if (objeto != null) {
 			objetoSelecionado = objeto;
 			setDisabled(false);
@@ -164,13 +170,17 @@ public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
 	}
 
 	@Override
-	public List<Cliente> getListaFiltrada() {
-		return listaClienteFiltrado;
+	public List<Funcionario> getListaFiltrada() {
+		return listaFuncionarioFiltrado;
+	}
+	
+	public List<Funcionario> getListaFuncionarioSupervisor() {
+		return listaFuncionarioSupervisor;
 	}
 
 	@Override
-	public void setListaFiltrada(List<Cliente> lista) {
-		listaClienteFiltrado = lista;
+	public void setListaFiltrada(List<Funcionario> lista) {
+		listaFuncionarioFiltrado = lista;
 	}
 	
 	public Uf getUf() {
@@ -201,5 +211,9 @@ public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
 		}
 		
 		return dataNascimentoMax;
+	}
+	
+	public List<NivelUsuarioEnum> getListaNivelUsuarioEnum() {
+		return listaNivelUsuarioEnum;
 	}
 }

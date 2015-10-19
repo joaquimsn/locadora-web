@@ -1,6 +1,8 @@
 package br.com.jsn.noleggio.modules.cliente.model;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -20,6 +22,8 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.br.CPF;
 
+import br.com.jsn.noleggio.main.qualifier.SavePreValidate;
+import br.com.jsn.noleggio.main.validation.BusinessValidation;
 import br.com.jsn.noleggio.modules.agencia.model.Agencia;
 
 /**
@@ -29,7 +33,8 @@ import br.com.jsn.noleggio.modules.agencia.model.Agencia;
 @Entity
 @Table(name = "cliente")
 @NamedQuery(name = "Cliente.findAll", query = "SELECT c FROM Cliente c")
-public class Cliente implements Serializable {
+@SavePreValidate
+public class Cliente extends BusinessValidation implements Serializable {
 	private static final long serialVersionUID = -1274461535079534721L;
 
 	@Id
@@ -60,11 +65,11 @@ public class Cliente implements Serializable {
 	private Date dataManutencao;
 	
 	@NotNull(message = "Data de nascimento é obrigatória")
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "data_nascimento")
 	private Date dataNascimento;
 	
-	@Email(message = "")
+	@Email(message = "E-mail informado é invalido")
 	private String email;
 
 	@Column(name = "estado_emissor")
@@ -89,14 +94,14 @@ public class Cliente implements Serializable {
 
 	private String uf;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "validade_cnh")
 	private Date validadeCnh;
 
 	// bi-directional many-to-one association to Agencia
 	@ManyToOne
 	@JoinColumn(name = "id_agencia")
-	@NotNull(message = "Vinculo com a agência não foi criado")
+	//@NotNull(message = "Vinculo com a agência não foi criado")
 	private Agencia agencia;
 
 	public Cliente() {
@@ -131,7 +136,7 @@ public class Cliente implements Serializable {
 	}
 
 	public void setCep(String cep) {
-		this.cep = cep;
+		this.cep = cep.replaceAll("[^0-9]", "");
 	}
 
 	public String getCidade() {
@@ -284,6 +289,16 @@ public class Cliente implements Serializable {
 		} else {
 			return "Inativo";
 		}
+	}
+	
+	public String getDataNascimentoDisplay() {
+		LocalDate localDate = dataNascimento.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		return localDate.toString();
+	}
+
+	public String getValidadeCnhDisplay() {
+		LocalDate localDate = validadeCnh.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		return localDate.toString();
 	}
 	
 	@Override

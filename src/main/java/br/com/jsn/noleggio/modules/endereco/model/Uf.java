@@ -9,8 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 /**
@@ -21,7 +21,7 @@ import javax.persistence.Table;
 @Table(name="uf")
 @NamedQuery(name="Uf.findAll", query="SELECT u FROM Uf u")
 public class Uf implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 5411104875287668164L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -32,9 +32,8 @@ public class Uf implements Serializable {
 
 	private String estado;
 
-	//bi-directional many-to-one association to Cidade
-	@OneToMany(mappedBy="ufBean")
-	private List<Cidade> cidades;
+	@Transient
+	private List<String> listaCidadeString;
 
 	public Uf() {
 	}
@@ -63,26 +62,11 @@ public class Uf implements Serializable {
 		this.estado = estado;
 	}
 
-	public List<Cidade> getCidades() {
-		return this.cidades;
+	public List<String> getListaCidadeString() {
+		return listaCidadeString;
 	}
 
-	public void setCidades(List<Cidade> cidades) {
-		this.cidades = cidades;
+	public void setListaCidadeString(List<String> listaCidadeString) {
+		this.listaCidadeString = listaCidadeString;
 	}
-
-	public Cidade addCidade(Cidade cidade) {
-		getCidades().add(cidade);
-		cidade.setUfBean(this);
-
-		return cidade;
-	}
-
-	public Cidade removeCidade(Cidade cidade) {
-		getCidades().remove(cidade);
-		cidade.setUfBean(null);
-
-		return cidade;
-	}
-
 }

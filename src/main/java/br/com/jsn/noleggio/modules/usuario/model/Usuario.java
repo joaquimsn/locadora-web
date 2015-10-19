@@ -14,8 +14,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import br.com.jsn.noleggio.modules.funcionario.model.Funcionario;
+import br.com.jsn.noleggio.modules.usuario.enums.NivelUsuarioEnum;
 
 /**
  * The persistent class for the usuario database table.
@@ -49,9 +52,13 @@ public class Usuario implements Serializable {
 	private int idFuncionario;
 
 	private int nivel;
-
+	
+	@NotNull()
+	@Size(min = 6, max = 18, message = "Senha deve conter entre 10 e 50 caracteres")
 	private String senha;
 	
+	@NotNull()
+	@Size(min = 4, max = 64, message = "Nome deve conter entre 4 e 64 caracteres")
 	@Column(name = "nome_usuario")
 	private String nomeUsuario;
 
@@ -142,7 +149,15 @@ public class Usuario implements Serializable {
 	public void setFuncionario(Funcionario funcionario) {
 		this.funcionario = funcionario;
 	}
-
+	
+	public String getNivelUsuarioDisplay() {
+		return NivelUsuarioEnum.getDisplayByValue(nivel);
+	}
+	
+	public NivelUsuarioEnum getNivelUsuarioEnum() {
+		return NivelUsuarioEnum.getEnumByValue(nivel);
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

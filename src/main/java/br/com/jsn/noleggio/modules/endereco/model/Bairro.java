@@ -75,19 +75,4 @@ public class Bairro implements Serializable {
 	public void setEnderecos(List<Endereco> enderecos) {
 		this.enderecos = enderecos;
 	}
-
-	public Endereco addEndereco(Endereco endereco) {
-		getEnderecos().add(endereco);
-		endereco.setBairro(this);
-
-		return endereco;
-	}
-
-	public Endereco removeEndereco(Endereco endereco) {
-		getEnderecos().remove(endereco);
-		endereco.setBairro(null);
-
-		return endereco;
-	}
-
 }
