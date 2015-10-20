@@ -25,7 +25,7 @@ import br.com.jsn.noleggio.main.util.SystemUtil;
 import br.com.jsn.noleggio.main.validation.BusinessValidation;
 import br.com.jsn.noleggio.modules.agencia.model.Agencia;
 import br.com.jsn.noleggio.modules.veiculo.enums.AcessorioVeiculoEnum;
-import br.com.jsn.noleggio.modules.veiculo.enums.CategoriaVeiculoEnum;
+import br.com.jsn.noleggio.modules.veiculo.enums.GrupoVeiculoEnum;
 
 /**
  * The persistent class for the veiculo database table.
@@ -180,6 +180,10 @@ public class Veiculo extends BusinessValidation implements Serializable {
 	}
 
 	public String getImagem() {
+		if (imagem.isEmpty()) {
+			return "resources/images/car_default.png";
+		}
+		
 		return this.imagem;
 	}
 
@@ -294,7 +298,7 @@ public class Veiculo extends BusinessValidation implements Serializable {
 	}
 	
 	public String getGrupoDisplay() {
-		return CategoriaVeiculoEnum.getDisplayByValue(grupo);
+		return GrupoVeiculoEnum.getDisplayByValue(grupo);
 	}
 	
 	public String getPrecoKmControladoDisplay() {

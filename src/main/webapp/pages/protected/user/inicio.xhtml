@@ -1,16 +1,39 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:jsn="http://xmlns.jcp.org/jsf/composite/pages/components"
+	xmlns:jsn="http://xmlns.jcp.org/jsf/composite/components"
     xmlns:jsf="http://xmlns.jcp.org/jsf"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
 	xmlns:f="http://xmlns.jcp.org/jsf/core" 
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
     xmlns:p="http://primefaces.org/ui"
     template="/pages/layout/layout.xhtml">
-	
+
 	<ui:define name="restrict">
-		<div jsf:id="formContent">
-
-		</div>
+		<jsn:titulo label="Home" />
+		
+		<h:form id="formContent">
+			<fieldset jsf:id="fieldsetGerenciamento" class="fieldset">
+				<div class="filtro-veiculo">
+					<div class="container-label-ipunt coluna-80">
+						<div class="label-input-filter">Consulta de Veiculo</div>
+						<input type="text" jsf:listener="#{homeBean.filtrarVeiculo()}" class="input-filter-car" 
+							placeholder="Modelo, categoria, placa e cidade"/>
+					</div>
+					
+					<div class="coluna-20">
+						<input type="submit" jsf:id="btnPesquisar" class="buttom-filter-car" 
+							jsf:actionListener="#{homeBean.filtrarVeiculo()}" value="Pesquisar" >
+							
+							<f:ajax execute="btnPesquisar" render="fieldsetGerenciamento"/>
+						</input>		
+					</div>
+				</div>
+				
+				<div class="divider"/>
+				
+				<jsn:carDataGrid update="fromContent" objetoSelecionado="#{homeBean.objetoSelecionado}" bean="#{homeBean}" />
+			
+			</fieldset>
+		</h:form>
 	</ui:define>
-
 </ui:composition>

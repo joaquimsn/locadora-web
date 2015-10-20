@@ -5,6 +5,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import br.com.jsn.noleggio.main.security.UrlRoute;
 import br.com.jsn.noleggio.modules.usuario.service.UsuarioService;
 import br.com.jsn.noleggio.teste.ServicoService;
 
@@ -29,16 +30,8 @@ public class LoginBean extends AbstractBean {
 
 	public String efetuarLogin() {
 		servicoService.realizarServico();
-		Thread trThread = new Thread();
-		mensagemErro = login + senha;
-		try {
-			trThread.sleep(10000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
-		return "";
+		return UrlRoute.INICIO;
 	}
 	
 	/*

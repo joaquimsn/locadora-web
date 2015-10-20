@@ -53,8 +53,8 @@
 						</div>
 						<div class="crud-car-summary">
 							<h:panelGrid width="100%" columns="1">
-								<h:panelGrid columns="2" width="100%" cellspacing="5"
-									columnClasses="coluna-60, coluna-40">
+								<h:panelGrid columns="3" width="100%" cellspacing="5"
+									columnClasses="coluna-40, coluna-25, coluna-35">
 									<h:panelGrid width="100%">
 										<h:outputText value="Modelo" />
 										<p:inputText value="#{veiculoBean.objetoSelecionado.modelo}"
@@ -65,18 +65,108 @@
 										<h:outputText value="Fabricante" />
 										<p:inputText
 											value="#{veiculoBean.objetoSelecionado.fabricante}"
-											onblur="upperCase(this);"  styleClass="input"
+											onblur="upperCase(this);"  styleClass="input-98"
 											readonly="#{veiculoBean.readonly}" />
 									</h:panelGrid>
+									
+									<h:panelGrid width="100%">
+										<h:outputText value="Grupo" />
+										<p:selectOneMenu value="#{veiculoBean.objetoSelecionado.grupo}"
+											converter="genericConverter"
+											style="width: 100%;" disabled="#{veiculoBean.readonly}">
+											<f:selectItem itemLabel="Selecione" itemValue="0" />
+											<f:selectItems value="#{veiculoBean.listaGrupoEnum}" var="grupo"
+												itemLabel="#{grupo.display}" itemValue="#{grupo.value}"/>
+										</p:selectOneMenu>
+									</h:panelGrid>
 								</h:panelGrid>
+								
+								<h:panelGrid width="100%">
+									<h:outputText value="Acessórios" />
+									<p:selectManyCheckbox value="#{veiculoBean.listaAcessorioEnumSelecionado}"
+										converter="genericConverter" columns="2" 
+										style="width: 100%;" disabled="#{veiculoBean.readonly}">
+										<f:selectItems value="#{veiculoBean.listaAcessorioEnum}" var="acessorio"
+											itemLabel="#{acessorio.display}" itemValue="#{acessorio}"/>
+									</p:selectManyCheckbox>
+								</h:panelGrid>								
 							</h:panelGrid>
 						</div>
 					</div>
-				
+					
+					<h:panelGrid width="100%" columns="4" cellspacing="5"
+						columnClasses="coluna-15, coluna-35, coluna-20, coluna-30">
+						<h:panelGrid width="100%" columns="1">
+							<h:outputText value="Placa" />
+							<p:inputMask mask="aaa 9999" value="#{veiculoBean.objetoSelecionado.placa}" 
+								styleClass="input-97" onblur="upperCase(this);"
+								readonly="#{veiculoBean.readonly}"/>
+						</h:panelGrid>
+						
+						<h:panelGrid width="100%" columns="1">
+							<h:outputText value="Chassi" />
+							<p:inputText value="#{veiculoBean.objetoSelecionado.chassi}" maxlength="100" 
+								styleClass="input-97" onblur="upperCase(this);"
+								readonly="#{veiculoBean.readonly}"/>
+						</h:panelGrid>
+						
+						<h:panelGrid width="100%" columns="1">
+							<h:outputText value="UF" /> 
+							<p:selectOneMenu value="#{veiculoBean.uf}" style="width: 98%;"
+								converter="genericConverter"
+								disabled="#{veiculoBean.readonly}" onchange="rcCidadesUf();">
+								<f:selectItem itemLabel="Selecione" itemValue=""/>
+								<f:selectItems value="#{veiculoBean.listaUf}" var="uf" itemLabel="#{uf.uf}" itemValue="#{uf}" />
+							</p:selectOneMenu>
+						</h:panelGrid>
+	
+						<h:panelGrid width="100%" columns="1">
+							<h:outputText value="Cidade" />
+							<p:selectOneMenu value="#{veiculoBean.objetoSelecionado.cidade}" style="width: 99%;" 
+								disabled="#{veiculoBean.readonly}">
+								<f:selectItem itemLabel="Selecione" itemValue=""/>
+								<f:selectItems value="#{veiculoBean.listaCidade}" />
+							</p:selectOneMenu>
+						</h:panelGrid>
+					</h:panelGrid>
+					<h:panelGrid width="100%" columns="3" cellspacing="5"
+						columnClasses="coluna-15, coluna-35, coluna-20">
+						<h:panelGrid width="100%" columns="1">
+							<h:outputText value="Km rodado" />
+							<p:inputText value="#{veiculoBean.objetoSelecionado.kmRodado}" maxlength="100" 
+								styleClass="input-97" onblur="somenteNumero(this);"
+								readonly="#{veiculoBean.readonly}"/>
+						</h:panelGrid>
+						
+						<h:panelGrid width="100%" style="margin-top: 3px; padding-right: 10px; box-sizing: border-box;">
+							<h:outputText value="Preço Km Livre" />
+							<h:panelGrid columns="2" cellpadding="0" cellspacing="0" width="100%">
+								<h:outputText value="R$" style="margin-right: 5px" />
+								<p:inputText style="width: 100%; font-weight: bold" 
+									value="#{veiculoBean.objetoSelecionado.precoKmLivre}"
+									converter="moedaConverter" readonly="true"  
+									onkeyup="return mascaraMoeda(this, event);"/>
+							</h:panelGrid>
+						</h:panelGrid>
+						
+						<h:panelGrid width="100%" style="margin-top: 3px; padding-right: 10px; box-sizing: border-box;">
+							<h:outputText value="Preço Km Controlado" />
+							<h:panelGrid columns="2" cellpadding="0" cellspacing="0" width="100%">
+								<h:outputText value="R$" style="margin-right: 5px" />
+								<p:inputText style="width: 100%; font-weight: bold" 
+									value="#{veiculoBean.objetoSelecionado.precoKmLivre}"
+									converter="moedaConverter" readonly="true"  
+									onkeyup="return mascaraMoeda(this, event);"/>
+							</h:panelGrid>
+						</h:panelGrid>
+					</h:panelGrid>
 				</p:fieldset>
 				
 				<jsn:panelCrud update="formContent msgs" 
 					objetoSelecionado="#{veiculoBean.objetoSelecionado}" bean="#{veiculoBean}" />
+					
+				<p:remoteCommand name="rcCidadesUf" actionListener="#{veiculoBean.carregarCidades}"
+					update=":formContent:fieldsetDetalhe"/>
 			</fieldset>
 		</h:form>
 	</ui:define>

@@ -7,7 +7,8 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:f="http://xmlns.jcp.org/jsf/core"
 	xmlns:cc="http://xmlns.jcp.org/jsf/composite"
-	xmlns:jove="http://xmlns.jcp.org/jsf/composite/componentes">
+	xmlns:jove="http://xmlns.jcp.org/jsf/composite/componentes"
+      xmlns:jsn="http://xmlns.jcp.org/jsf/composite/components">
 
 	<cc:interface>
 		<cc:attribute name="bean" required="true" shortDescription="Bean controlador do CRUD."/>
@@ -16,25 +17,12 @@
 	</cc:interface>
 	
 	<cc:implementation>
-		<p:dataScroller id="dataGridVeiculo" value="#{veiculoBean.listaTodos}" var="veiculo" paginator="true" 
+		<p:dataScroller id="dataGridVeiculo" value="#{cc.attrs.bean.listaTodos}" var="veiculo" paginator="true" 
 			paginatorPosition="top" columns="1" rows="3" pageLinks="10" paginatorAlwaysVisible="true" chunkSize="3" style="width: 100% !important;"
 			paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 			emptyMessage="Nenhum registro encontrado">
 			
-			<div class="car-grid-row">
-				<div class="car-grid-row-column-image">
-					#{veiculo.modelo}
-				</div>
-				<div class="car-grid-row-column-summary">
-					#{veiculo.ano}
-				</div>
-				<div class="car-grid-row-column-detail">
-					#{veiculo.cidade}
-				</div>
-				<div class="car-grid-row-column-cost">
-					#{veiculo.kmPrecoKmControlado}
-				</div>
-			</div>
+			<jsn:carRowGrid update="fromContent" objetoSelecionado="#{veiculo}" />			
 		</p:dataScroller>
 	</cc:implementation>
 </html>

@@ -24,5 +24,10 @@ public abstract class UrlRoute {
 	/**
 	 * Página inical para gerenciar clientes
 	 */
-	public static final String GERENCIAMENTO_AGENCIA = "prtty:gerenciamento-cliente";
+	public static final String GERENCIAMENTO_AGENCIA = "prtty:gerenciamento-agencia";
+
+	/**
+	 * Página inical para gerenciar veiculos
+	 */
+	public static final String GERENCIAMENTO_VEICULO = "prtty:gerenciamento-veiculo";
 }

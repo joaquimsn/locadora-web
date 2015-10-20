@@ -3,7 +3,7 @@ package br.com.jsn.noleggio.modules.veiculo.enums;
 import java.util.ArrayList;
 import java.util.List;
 
-public enum CategoriaVeiculoEnum {
+public enum GrupoVeiculoEnum {
 	A("A – Econômico", 1),
 	C("C – Econômico com Ar", 2),
 	E("F – Intermediário", 3),
@@ -21,14 +21,14 @@ public enum CategoriaVeiculoEnum {
 	private String display;
 	private int value;
 	
-	private CategoriaVeiculoEnum(String display, int value) {
+	private GrupoVeiculoEnum(String display, int value) {
 		this.display = display;
 		this.value = value;
 	}
 	
-	public static List<CategoriaVeiculoEnum> getEnumList() {
-		List<CategoriaVeiculoEnum> lista = new ArrayList<CategoriaVeiculoEnum>();
-		for(CategoriaVeiculoEnum objeto : values()) {
+	public static List<GrupoVeiculoEnum> getEnumList() {
+		List<GrupoVeiculoEnum> lista = new ArrayList<GrupoVeiculoEnum>();
+		for(GrupoVeiculoEnum objeto : values()) {
 			lista.add(objeto);
 		}
 		return lista;
@@ -36,7 +36,7 @@ public enum CategoriaVeiculoEnum {
 
 	public static List<Integer> getValueList() {
 		List<Integer> lista = new ArrayList<Integer>();
-		for(CategoriaVeiculoEnum objeto : values()) {
+		for(GrupoVeiculoEnum objeto : values()) {
 			lista.add(objeto.value);
 		}
 		return lista;
@@ -44,14 +44,14 @@ public enum CategoriaVeiculoEnum {
 	
 	public static List<String> getDisplayList() {
 		List<String> lista = new ArrayList<String>();
-		for(CategoriaVeiculoEnum objeto : values()) {
+		for(GrupoVeiculoEnum objeto : values()) {
 			lista.add(objeto.display);
 		}
 		return lista;
 	}
 	
 	public static int getValueByDisplay(String display) {
-		for(CategoriaVeiculoEnum objeto : values()) {
+		for(GrupoVeiculoEnum objeto : values()) {
 			if(objeto.display.equals(display)) {
 				return objeto.value;
 			}
@@ -60,7 +60,7 @@ public enum CategoriaVeiculoEnum {
 	}
 	
 	public static String getDisplayByValue(Integer value) {
-		for(CategoriaVeiculoEnum objeto : values()) {
+		for(GrupoVeiculoEnum objeto : values()) {
 			if(objeto.value == value.intValue()) {
 				return objeto.display;
 			}
@@ -68,8 +68,8 @@ public enum CategoriaVeiculoEnum {
 		return null;
 	}
 	
-	public static CategoriaVeiculoEnum getEnumByValue(Integer value) {
-		for(CategoriaVeiculoEnum objeto : values()) {
+	public static GrupoVeiculoEnum getEnumByValue(Integer value) {
+		for(GrupoVeiculoEnum objeto : values()) {
 			if(objeto.value == value.intValue()) {
 				return objeto;
 			}

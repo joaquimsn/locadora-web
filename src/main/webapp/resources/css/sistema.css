@@ -22,6 +22,15 @@
 	border: 1px solid #b6b6b6;
 }
 
+.car-grid-row ul {
+	align-self: center;
+}
+
+.car-grid-row ul li {
+	margin: 2.5px 0;
+}
+
+
 .car-grid-row-column-image {
 	width: 20%;
 }
@@ -40,21 +49,21 @@
 
 .label-static {
 	color: #9e9e9e;
-	font-size: 12px;
+	font-size: 13px;
 }
 
 .label-dynamic {
 	color: #212121;
-	font-size: 13px;
+	font-size: 14px;
 }
 
 .label-status {
 	color: #F7B64A;
-	font-size: 15px;
+	font-size: 16px;
 }
 
 .label-cost {
-	font-size: 12px;
+	font-size: 14px;
 	font-weight: bold;
 }
 
@@ -73,4 +82,47 @@
 
 .crud-car-summary {
   width: 75%;
+}
+
+.filtro-veiculo {
+	display: flex;
+	margin: 20px;
+}
+
+.container-label-ipunt {
+	display: flex;
+}
+
+.label-input-filter {
+	width: 20%;
+	font-size: 16px;
+	margin-right: 10px;
+	align-self: center;
+}
+
+.input-filter-car {
+	width: 80%;
+	height: 40px;
+  	padding: 5px;
+  	box-sizing: border-box;
+	margin-right: 10px;
+	font-size: 18px;
+}
+
+.buttom-filter-car {
+	border: none;
+	background: #FF9800; 
+	height: 40px;
+	width: 120px;
+	font-size: 20px;
+	color: #fff;
+	width: 100%;
+	transition-duration: 1s;
+}
+
+.buttom-filter-car:hover {
+	border: 1px solid #FF9800;
+	background: #fff;
+	color: #FF9800;
+	box-shadow: 0px 0px 5px #FF9800; 
 }

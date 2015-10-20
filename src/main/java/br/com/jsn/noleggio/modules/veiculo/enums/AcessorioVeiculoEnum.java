@@ -5,7 +5,7 @@ import java.util.List;
 
 public enum AcessorioVeiculoEnum {
 	GPS("GPS", 1),
-	CADEIRA_BEBE("", 2),
+	CADEIRA_BEBE("Cadeira de Bebê", 2),
 	MP3_PLAYER("MP3 Plaer", 3),
 	DVD("DVD", 4),
 	AIR_BAG("Air Bag", 5),

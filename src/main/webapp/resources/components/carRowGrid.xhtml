@@ -10,7 +10,6 @@
 	xmlns:jove="http://xmlns.jcp.org/jsf/composite/componentes">
 
 	<cc:interface>
-		<cc:attribute name="bean" required="true" shortDescription="Bean controlador do CRUD."/>
 		<cc:attribute name="objetoSelecionado" required="true" shortDescription="Objeto selecionado da DataTable."/>
 		<cc:attribute name="update" required="true" shortDescription="Componentes para serem atualizados por Ajax."/>
 	</cc:interface>
@@ -18,16 +17,35 @@
 	<cc:implementation>
 		<div class="car-grid-row">
 			<div class="car-grid-row-column-image">
-				#{veiculo.modelo}
+				<img  src="resources/images/car_default.png" height="110px"/>
 			</div>
 			<div class="car-grid-row-column-summary">
-				#{veiculo.ano}
+				<ul>
+					<li class="label-static">Modelo</li>
+					<li class="label-dynamic">#{cc.attrs.objetoSelecionado.modelo}</li>
+					<li class="label-static">Fabricante</li>
+					<li class="label-dynamic">#{cc.attrs.objetoSelecionado.fabricante}</li>
+					<li class="label-static">Ano</li>
+					<li class="label-dynamic">#{cc.attrs.objetoSelecionado.ano}</li>
+				</ul>
 			</div>
 			<div class="car-grid-row-column-detail">
-				#{veiculo.cidade}
+				<ul>
+					<li class="label-static">Categoria</li>
+					<li class="label-dynamic">#{cc.attrs.objetoSelecionado.grupoDisplay}</li>
+					<li class="label-static">Cidade</li>
+					<li class="label-dynamic">#{cc.attrs.objetoSelecionado.cidade}</li>
+				</ul>
 			</div>
 			<div class="car-grid-row-column-cost">
-				#{veiculo.kmPrecoKmControlado}
+				<ul>
+					<li class="label-static">Status</li>
+					<li class="label-status">#{cc.attrs.objetoSelecionado.statusDisplay}</li>
+					<li class="label-static">Diária Km Livre</li>
+					<li class="label-cost">#{cc.attrs.objetoSelecionado.precoKmLivreDisplay}</li>
+					<li class="label-static">Diária Km Controlado</li>
+					<li class="label-cost">#{cc.attrs.objetoSelecionado.precoKmLivreDisplay}</li>
+				</ul>
 			</div>
 		</div>
 	</cc:implementation>

@@ -162,21 +162,25 @@ html, body, span, p, form, img, a, ul, ol, li, table, tr, td, h1, h2, h3, div, h
 	vertical-align: middle;
 	font-size: 16px;
 	cursor: pointer;
+	text-decoration: none;
+	color: #9E9E9E;
 }
+
 #container-funcionalidade {
 	width: 80%;
 	position: inherit;
 	margin-top: 60px;
 	padding: 5px;
-	height: calcl(100% - 60px);
-	float: right;
 	box-sizing: border-box;
+	float: right;
 }
 
 .funcionalidade {
-	height: calc(100% - 95px);
-	overflow-y: auto;
+	height: calc(100% - 60px);
+	overflow-y: scroll;
 	padding: 10px;
+	box-sizing: border-box;
+	width: inherit;
 	position: absolute;
 }
 
@@ -196,6 +200,8 @@ html, body, span, p, form, img, a, ul, ol, li, table, tr, td, h1, h2, h3, div, h
 
 .divider {
 	border-bottom: 1px solid #B6B6B6;
+	margin: 10px 0 20px;
+	box-shadow: 0 1px 3px #B6B6B6;
 }
 
 .lable-next-input {

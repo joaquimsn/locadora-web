@@ -16,7 +16,7 @@ import br.com.jsn.noleggio.modules.endereco.BuscarCidades;
 import br.com.jsn.noleggio.modules.endereco.EnderecoUf;
 import br.com.jsn.noleggio.modules.endereco.model.Uf;
 import br.com.jsn.noleggio.modules.veiculo.enums.AcessorioVeiculoEnum;
-import br.com.jsn.noleggio.modules.veiculo.enums.CategoriaVeiculoEnum;
+import br.com.jsn.noleggio.modules.veiculo.enums.GrupoVeiculoEnum;
 import br.com.jsn.noleggio.modules.veiculo.model.Veiculo;
 import br.com.jsn.noleggio.modules.veiculo.service.VeiculoService;
 
@@ -42,12 +42,12 @@ public class VeiculoBean extends AbstractBean implements ICrudBean<Veiculo> {
 	private List<String> listaCidade;
 	
 	private List<AcessorioVeiculoEnum> listaAcessorioEnum;
-	private List<CategoriaVeiculoEnum> listaCategoriaEnum;
+	private List<GrupoVeiculoEnum> listaGrupoEnum;
 	private List<AcessorioVeiculoEnum> listaAcessorioEnumSelecionado;
 	
 	@Override
 	public String abrirPagina() {
-		return UrlRoute.GERENCIAMENTO_CLIENTE;
+		return UrlRoute.GERENCIAMENTO_VEICULO;
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class VeiculoBean extends AbstractBean implements ICrudBean<Veiculo> {
 	private void carregarLista() {
 		listaVeiculo = veiculoService.buscarTodos();
 		listaAcessorioEnum = AcessorioVeiculoEnum.getEnumList();
-		listaCategoriaEnum = CategoriaVeiculoEnum.getEnumList();
+		listaGrupoEnum = GrupoVeiculoEnum.getEnumList();
 		
 		listaVeiculoFiltrado = null;
 		listaAcessorioEnumSelecionado = null;
@@ -185,8 +185,8 @@ public class VeiculoBean extends AbstractBean implements ICrudBean<Veiculo> {
 		return listaAcessorioEnum;
 	}
 
-	public List<CategoriaVeiculoEnum> getListaCategoriaEnum() {
-		return listaCategoriaEnum;
+	public List<GrupoVeiculoEnum> getListaGrupoEnum() {
+		return listaGrupoEnum;
 	}
 
 	public List<AcessorioVeiculoEnum> getListaAcessorioEnumSelecionado() {
