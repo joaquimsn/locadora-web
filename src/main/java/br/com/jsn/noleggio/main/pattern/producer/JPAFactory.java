@@ -7,7 +7,6 @@ import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.transaction.Transactional;
 
 public class JPAFactory {
 	
@@ -18,7 +17,6 @@ public class JPAFactory {
 	}
 	
 	@Produces
-	@Transactional
 	@SessionScoped
 	public EntityManager entityManager(EntityManagerFactory factory) {
 		return factory.createEntityManager();

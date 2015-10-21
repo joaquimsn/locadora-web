@@ -68,10 +68,10 @@ public class Veiculo extends BusinessValidation implements Serializable {
 
 	private String imagem;
 
-	@Column(name = "km_preco_km_controlado")
+	@Column(name = "preco_km_controlado")
 	private double precoKmControlado;
 
-	@Column(name = "km_preco_km_livre")
+	@Column(name = "preco_km_livre")
 	private double precoKmLivre;
 
 	@Column(name = "km_rodado")
