@@ -21,7 +21,7 @@
 							<span class="primary-accent-text text-name-category">SERVIÇOS</span>
 						</div>
 						<ul class="category-list-items">
-							<li><div class="element-list-items-category">Locação</div></li>
+							<li><a jsf:action="#{locacaoBean.abrirPagina()}"><div class="element-list-items-category">Locação</div></a></li>
 							<li><div class="element-list-items-category">Devolução</div></li>
 						</ul>
 					</li>
@@ -30,10 +30,10 @@
 							<span class="primary-accent-text text-name-category">GERENCIAMENTO</span>
 						</div>
 						<ul class="category-list-items">
-							<li><div class="element-list-items-category" jsf:action="#{agenciaBean.abrirPagina()}">Agência</div></li>
-							<li><div class="element-list-items-category">Cliente</div></li>
-							<li><div class="element-list-items-category">Funcionário</div></li>
-							<li><div class="element-list-items-category">Veículo</div></li>
+							<li><a jsf:action="#{agenciaBean.abrirPagina()}"><div class="element-list-items-category">Agência</div></a></li>
+							<li><a jsf:action="#{clienteBean.abrirPagina()}"><div class="element-list-items-category">Cliente</div></a></li>
+							<li><a jsf:action="#{funcionarioBean.abrirPagina()}"><div class="element-list-items-category">Funcionário</div></a></li>
+							<li><a jsf:action="#{veiculoBean.abrirPagina()}"><div class="element-list-items-category">Veículo</div></a></li>
 						</ul>
 					</li>
 					<li>

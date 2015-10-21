@@ -15,24 +15,24 @@ public abstract class UrlRoute {
 	/**
 	 * Página para gerenciar funcionarios
 	 */
-	public static final String GERENCIAMENTO_FUNCIONARIO = "prtty:gerenciamento-funcionario";
+	public static final String GERENCIAMENTO_FUNCIONARIO = "pretty:gerenciamento-funcionario";
 	/**
 	 * Página para gerenciar clientes
 	 */
-	public static final String GERENCIAMENTO_CLIENTE = "prtty:gerenciamento-cliente";
+	public static final String GERENCIAMENTO_CLIENTE = "pretty:gerenciamento-cliente";
 	
 	/**
 	 * Página para gerenciar clientes
 	 */
-	public static final String GERENCIAMENTO_AGENCIA = "prtty:gerenciamento-agencia";
+	public static final String GERENCIAMENTO_AGENCIA = "pretty:gerenciamento-agencia";
 
 	/**
 	 * Página para gerenciar veiculos
 	 */
-	public static final String GERENCIAMENTO_VEICULO = "prtty:gerenciamento-veiculo";
+	public static final String GERENCIAMENTO_VEICULO = "pretty:gerenciamento-veiculo";
 	
 	/**
 	 * Página para servico de locação
 	 */
-	public static final String SERVICO_LOCACAO = "prtty:servico-locacao";
+	public static final String SERVICO_LOCACAO = "pretty:servico-locacao";
 }

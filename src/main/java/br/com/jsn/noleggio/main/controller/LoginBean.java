@@ -30,6 +30,8 @@ public class LoginBean extends AbstractBean {
 			if (usuarioService.efetuarLogin(login, senha)) {
 				return UrlRoute.INICIO;
 			}
+			
+			setMensagemErro("Usuário ou senha invalidos");
 		}
 		
 		return "";

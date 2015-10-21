@@ -12,6 +12,10 @@
 	margin-right: 5px;
 }
 
+.button {
+	margin-left: 5px;
+}
+
 .car-grid-row {
 	display: flex;
 	box-sizing: border-box;

@@ -29,12 +29,15 @@ public class UsuarioDAO extends GenericDAO<Usuario> {
 		query.setParameter("dominio", dominio);
 		query.setParameter("senha", senha);
 		
-		Usuario usuario = query.getSingleResult();
+		Usuario usuario;
 		
 		// Se não encontrar o usuário na base, retorna o usuário default implementando o pattern NullObject
-		if (usuario == null) {
-			usuario =  new UsuarioNullObject();
-		}
+		try {
+			usuario = query.getSingleResult();
+		} catch (Exception e) {
+			e.printStackTrace();
+			usuario = new UsuarioNullObject();
+		} 
 		
 		return usuario;
 	}

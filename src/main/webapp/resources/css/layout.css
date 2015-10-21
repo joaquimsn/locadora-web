@@ -19,6 +19,22 @@ html, body, span, p, form, img, a, ul, ol, li, table, tr, td, h1, h2, h3, div, h
   list-style-type: none;
 }
 
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+a:active {
+    text-decoration: none;
+}
+
 .accent-color-primary {
 	color: #ff9800;
 }

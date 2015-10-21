@@ -16,10 +16,9 @@
 				<img src="resources/images/logo_naleggio_white.png" height="48px" class="logo-sistema"/>
 			</section>
 			<section class="top-bar-center">
-				<form jsf:id="formHeader">
+				<form jsf:id="formHeader" method="post">
 					<a jsf:action="#{homeBean.abrirPagina()}" >
 						<img src="resources/images/icons/32x32/icon_home.png" alt="Início" title="Tela Inicial" class="menu-home"/>
-						<f:ajax execute="@this" render="@all"/>
 					</a>
 				</form>
 			</section>
@@ -34,9 +33,7 @@
 		</header>
 		
 		<!-- MENU ESQUERDA -->
-		<form jsf:id="fromLeft">
-			<jsn:menuEsquerda />
-		</form>
+		<jsn:menuEsquerda />
 		
 		<!-- CONTEUDO  -->
 		<section id="container-funcionalidade">
