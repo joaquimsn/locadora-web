@@ -13,21 +13,26 @@ public abstract class UrlRoute {
 	public static final String INICIO = "pretty:inicio";
 
 	/**
-	 * Página inical para gerenciar funcionarios
+	 * Página para gerenciar funcionarios
 	 */
 	public static final String GERENCIAMENTO_FUNCIONARIO = "prtty:gerenciamento-funcionario";
 	/**
-	 * Página inical para gerenciar clientes
+	 * Página para gerenciar clientes
 	 */
 	public static final String GERENCIAMENTO_CLIENTE = "prtty:gerenciamento-cliente";
 	
 	/**
-	 * Página inical para gerenciar clientes
+	 * Página para gerenciar clientes
 	 */
 	public static final String GERENCIAMENTO_AGENCIA = "prtty:gerenciamento-agencia";
 
 	/**
-	 * Página inical para gerenciar veiculos
+	 * Página para gerenciar veiculos
 	 */
 	public static final String GERENCIAMENTO_VEICULO = "prtty:gerenciamento-veiculo";
+	
+	/**
+	 * Página para servico de locação
+	 */
+	public static final String SERVICO_LOCACAO = "prtty:servico-locacao";
 }

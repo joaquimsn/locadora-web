@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import br.com.jsn.noleggio.main.validation.BusinessValidation;
 import br.com.jsn.noleggio.modules.veiculo.model.Veiculo;
 
 /**
@@ -26,7 +27,7 @@ import br.com.jsn.noleggio.modules.veiculo.model.Veiculo;
 @Entity
 @Table(name = "locacao")
 @NamedQuery(name = "Locacao.findAll", query = "SELECT l FROM Locacao l")
-public class Locacao implements Serializable {
+public class Locacao extends BusinessValidation implements Serializable {
 	private static final long serialVersionUID = -1879760119817965354L;
 
 	@Id
