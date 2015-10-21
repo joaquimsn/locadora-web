@@ -22,7 +22,7 @@ public class UsuarioDAO extends GenericDAO<Usuario> {
 	 * @return Objeto Usuario ou UsuarioNull
 	 */
 	public Usuario buscarPorCredencial(String nomeUsuario, String dominio, String senha) {
-		String jpql = "SELECT u FROM Usuario u WHERE u.usuario = :nomeUsuario AND u.dominio = :dominio AND u.senha = :senha";
+		String jpql = "SELECT u FROM Usuario u WHERE u.nomeUsuario = :nomeUsuario AND u.dominio = :dominio AND u.senha = :senha";
 		
 		TypedQuery<Usuario> query = entityManager.createQuery(jpql, Usuario.class);
 		query.setParameter("nomeUsuario", nomeUsuario);

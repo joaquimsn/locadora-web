@@ -7,35 +7,54 @@
 	<url-mapping id="index">
 		<pattern value="/" />
 		<view-id value="/pages/public/login.xhtml" />
+		<action>#{authorizationBean.redirecionar}</action>
 	</url-mapping>
 	
 	<url-mapping id="login">
 		<pattern value="/login" />
 		<view-id value="/pages/public/login.xhtml" />
+		<action>#{authorizationBean.redirecionar}</action>
 	</url-mapping>
 	
 	<url-mapping id="inicio">
 		<pattern value="/inicio" />
 		<view-id value="/pages/protected/user/inicio.xhtml" />
+		<action>#{authorizationBean.autorizar}</action>
 	</url-mapping>
 	
 	<url-mapping id="gerenciamento-agencia">
 		<pattern value="/gerenciamento-agencia" />
 		<view-id value="/pages/protected/admin/agencia.xhtml" />
+		<action>#{authorizationBean.autorizar}</action>
 	</url-mapping>
 	
 	<url-mapping id="gerenciamento-veiculo">
 		<pattern value="/gerenciamento-veiculo" />
 		<view-id value="/pages/protected/admin/veiculo.xhtml" />
+		<action>#{authorizationBean.autorizar}</action>
 	</url-mapping>
 	
 	<url-mapping id="gerenciamento-cliente">
 		<pattern value="/gerenciamento-cliente" />
 		<view-id value="/pages/protected/user/cliente.xhtml" />
+		<action>#{authorizationBean.autorizar}</action>
 	</url-mapping>
 	
 	<url-mapping id="gerenciamento-funcionario">
 		<pattern value="/gerenciamento-funcionario" />
 		<view-id value="/pages/protected/admin/funcionario.xhtml" />
+		<action>#{authorizationBean.autorizar}</action>
+	</url-mapping>
+	
+	<url-mapping id="servico-locacao">
+		<pattern value="/servico-locacao" />
+		<view-id value="/pages/protected/user/locacao.xhtml" />
+		<action>#{authorizationBean.autorizar}</action>
+	</url-mapping>
+	
+	<url-mapping id="servico-devolucao">
+		<pattern value="/servico-locacao" />
+		<view-id value="/pages/protected/user/devolucao.xhtml" />
+		<action>#{authorizationBean.autorizar}</action>
 	</url-mapping>
 </pretty-config>

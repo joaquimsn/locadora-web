@@ -19,6 +19,7 @@ import javax.validation.constraints.Size;
 
 import br.com.jsn.noleggio.modules.funcionario.model.Funcionario;
 import br.com.jsn.noleggio.modules.usuario.enums.NivelUsuarioEnum;
+import br.com.jsn.noleggio.modules.usuario.enums.StatusAutenticacaoUsuarioEnum;
 
 /**
  * The persistent class for the usuario database table.
@@ -156,6 +157,10 @@ public class Usuario implements Serializable {
 	
 	public NivelUsuarioEnum getNivelUsuarioEnum() {
 		return NivelUsuarioEnum.getEnumByValue(nivel);
+	}
+	
+	public StatusAutenticacaoUsuarioEnum getStatusAtenticacao() {
+		return StatusAutenticacaoUsuarioEnum.AUTENTICADOR;
 	}
 	
 	@Override

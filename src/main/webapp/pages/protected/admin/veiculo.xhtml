@@ -49,7 +49,7 @@
 				<p:fieldset id="fieldsetDetalhe" rendered="#{!veiculoBean.disabled || !veiculoBean.readonly}">
 					<div class="crud-car-form">
 						<div class="crud-car-image">
-							<img src="resources/images/car-default.png" height="153px" />
+							<img src="#{veiculoBean.objetoSelecionado.imagem}" height="153px" />
 						</div>
 						<div class="crud-car-summary">
 							<h:panelGrid width="100%" columns="1">
@@ -130,7 +130,7 @@
 						</h:panelGrid>
 					</h:panelGrid>
 					<h:panelGrid width="100%" columns="3" cellspacing="5"
-						columnClasses="coluna-15, coluna-35, coluna-20">
+						columnClasses="coluna-20, coluna-20, coluna-20, coluna-40">
 						<h:panelGrid width="100%" columns="1">
 							<h:outputText value="Km rodado" />
 							<p:inputText value="#{veiculoBean.objetoSelecionado.kmRodado}" maxlength="100" 
@@ -160,6 +160,8 @@
 							</h:panelGrid>
 						</h:panelGrid>
 					</h:panelGrid>
+					
+					<!-- Empty -->
 				</p:fieldset>
 				
 				<jsn:panelCrud update="formContent msgs" 

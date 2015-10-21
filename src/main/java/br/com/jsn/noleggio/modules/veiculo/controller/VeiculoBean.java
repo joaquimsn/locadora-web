@@ -116,9 +116,6 @@ public class VeiculoBean extends AbstractBean implements ICrudBean<Veiculo> {
 	}
 
 	public void carregarCidades() {
-		uf = new Uf();
-		uf.setUf(objetoSelecionado.getUf());
-		
 		eventEndereco.fire(uf);
 		listaCidade = uf.getListaCidadeString();
 

@@ -1,5 +1,6 @@
 package br.com.jsn.noleggio.modules.usuario.pattern;
 
+import br.com.jsn.noleggio.modules.usuario.enums.StatusAutenticacaoUsuarioEnum;
 import br.com.jsn.noleggio.modules.usuario.model.Usuario;
 
 /**
@@ -18,5 +19,10 @@ public class UsuarioNullObject extends Usuario {
 	@Override
 	public boolean isAtivo() {
 		return false;
+	}
+	
+	@Override
+	public StatusAutenticacaoUsuarioEnum getStatusAtenticacao() {
+		return StatusAutenticacaoUsuarioEnum.NAO_AUTENTICADO;
 	}
 }

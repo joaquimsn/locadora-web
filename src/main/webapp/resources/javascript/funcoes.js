@@ -27,4 +27,4 @@ function somenteNumero(campo, event) {
 	var value = campo.value;
 	value = value.replace(/\D/g, ""); // Permite digitar apenas numeros
 	campo.value = value;
-
+}

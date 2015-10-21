@@ -180,7 +180,7 @@ public class Veiculo extends BusinessValidation implements Serializable {
 	}
 
 	public String getImagem() {
-		if (imagem.isEmpty()) {
+		if (imagem != null) {
 			return "resources/images/car_default.png";
 		}
 		

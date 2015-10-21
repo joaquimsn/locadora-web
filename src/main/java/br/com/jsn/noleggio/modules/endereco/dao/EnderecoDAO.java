@@ -35,10 +35,10 @@ public class EnderecoDAO extends GenericDAO<Endereco> {
 	}
 	
 	public List<String> buscarCidadePorUf(Uf uf) {
-		String jpql = "SELECT c.cidade FROM Cidade c WHERE c.ufBean = :uf";
+		String jpql = "SELECT c.cidade FROM Cidade c WHERE c.ufBean.uf = :uf";
 		
 		TypedQuery<String> typedQuery = entityManager.createQuery(jpql, String.class);
-		typedQuery.setParameter("uf", uf);
+		typedQuery.setParameter("uf", uf.getUf());
 		
 		return typedQuery.getResultList();
 	}

@@ -7,7 +7,6 @@ import javax.inject.Named;
 
 import br.com.jsn.noleggio.main.security.UrlRoute;
 import br.com.jsn.noleggio.modules.usuario.service.UsuarioService;
-import br.com.jsn.noleggio.teste.ServicoService;
 
 @Named
 @ViewScoped
@@ -17,21 +16,38 @@ public class LoginBean extends AbstractBean {
 	@Inject
 	private UsuarioService usuarioService;
 	
-	@Inject
-	private ServicoService servicoService;
-
 	private String login;
 	private String senha;
 	private String mensagemErro;
 
 	@PostConstruct
 	public void inicializarPagina() {
+		
 	}
 
 	public String efetuarLogin() {
-		servicoService.realizarServico();
+		if (validar()) {
+			if (usuarioService.efetuarLogin(login, senha)) {
+				return UrlRoute.INICIO;
+			}
+		}
 		
-		return UrlRoute.INICIO;
+		return "";
+	}
+	
+	private boolean validar() {
+		if (senha == null || senha.isEmpty()) {
+			setMensagemErro("Informe a senha");
+			return false;
+		}
+		if (login == null || login.isEmpty()) {
+			setSenha("Informe o usuário");
+			return false;
+		}
+		
+		setMensagemErro("");
+
+		return true;
 	}
 	
 	/*

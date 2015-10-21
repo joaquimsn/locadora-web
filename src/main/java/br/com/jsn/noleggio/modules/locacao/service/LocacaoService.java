@@ -1,5 +1,6 @@
 package br.com.jsn.noleggio.modules.locacao.service;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.enterprise.event.Event;
@@ -10,7 +11,9 @@ import br.com.jsn.noleggio.main.qualifier.UpdatePreValidate;
 import br.com.jsn.noleggio.modules.locacao.dao.LocacaoDAO;
 import br.com.jsn.noleggio.modules.locacao.model.Locacao;
 
-public class LocacaoService {
+public class LocacaoService implements Serializable {
+	private static final long serialVersionUID = -2259849718779513514L;
+	
 	@Inject
 	private LocacaoDAO locacaoDAO;
 	@SavePreValidate

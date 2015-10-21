@@ -21,7 +21,8 @@ import br.com.jsn.noleggio.modules.veiculo.service.VeiculoService;
 @Named
 @ViewScoped
 public class LocacaoBean extends AbstractBean {
-
+	private static final long serialVersionUID = 689944798092935059L;
+	
 	@Inject
 	private VeiculoService veiculoService;
 	@Inject
