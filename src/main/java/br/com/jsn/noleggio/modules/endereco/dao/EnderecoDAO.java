@@ -26,7 +26,6 @@ public class EnderecoDAO extends GenericDAO<Endereco> {
 		try {
 			endereco = typedQuery.getSingleResult();
 		} catch (Exception e) {
-			e.printStackTrace();
 			endereco = new EnderecoNullObject();
 		} 
 		

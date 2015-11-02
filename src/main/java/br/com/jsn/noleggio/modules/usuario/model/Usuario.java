@@ -49,8 +49,9 @@ public class Usuario implements Serializable {
 
 	private String dominio;
 
-	@Column(name = "id_funcionario")
-	private int idFuncionario;
+	@OneToOne
+	@JoinColumn(name = "id_funcionario")
+	private Funcionario funcionario;
 
 	private int nivel;
 	
@@ -62,11 +63,6 @@ public class Usuario implements Serializable {
 	@Size(min = 4, max = 64, message = "Nome deve conter entre 4 e 64 caracteres")
 	@Column(name = "nome_usuario")
 	private String nomeUsuario;
-
-	// bi-directional one-to-one association to Funcionario
-	@OneToOne
-	@JoinColumn(name = "id_usuario")
-	private Funcionario funcionario;
 
 	public Usuario() {
 	}
@@ -111,20 +107,20 @@ public class Usuario implements Serializable {
 		this.dominio = dominio;
 	}
 
-	public int getIdFuncionario() {
-		return this.idFuncionario;
+	public Funcionario getFuncionario() {
+		return funcionario;
 	}
 
-	public void setIdFuncionario(int idFuncionario) {
-		this.idFuncionario = idFuncionario;
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
 	}
 
-	public int getNivel() {
-		return this.nivel;
+	public NivelUsuarioEnum getNivel() {
+		return NivelUsuarioEnum.getEnumByValue(nivel);
 	}
 
-	public void setNivel(int nivel) {
-		this.nivel = nivel;
+	public void setNivel(NivelUsuarioEnum nivel) {
+		this.nivel = nivel.getValue();
 	}
 
 	public String getSenha() {
@@ -143,14 +139,6 @@ public class Usuario implements Serializable {
 		this.nomeUsuario = nomeUsuario;
 	}
 
-	public Funcionario getFuncionario() {
-		return this.funcionario;
-	}
-
-	public void setFuncionario(Funcionario funcionario) {
-		this.funcionario = funcionario;
-	}
-	
 	public String getNivelUsuarioDisplay() {
 		return NivelUsuarioEnum.getDisplayByValue(nivel);
 	}
@@ -162,12 +150,13 @@ public class Usuario implements Serializable {
 	public StatusAutenticacaoUsuarioEnum getStatusAtenticacao() {
 		return StatusAutenticacaoUsuarioEnum.AUTENTICADOR;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + idFuncionario;
+		result = prime * result
+				+ ((funcionario == null) ? 0 : funcionario.hashCode());
 		result = prime * result + idUsuario;
 		return result;
 	}
@@ -184,7 +173,11 @@ public class Usuario implements Serializable {
 			return false;
 		}
 		Usuario other = (Usuario) obj;
-		if (idFuncionario != other.idFuncionario) {
+		if (funcionario == null) {
+			if (other.funcionario != null) {
+				return false;
+			}
+		} else if (!funcionario.equals(other.funcionario)) {
 			return false;
 		}
 		if (idUsuario != other.idUsuario) {
@@ -192,4 +185,5 @@ public class Usuario implements Serializable {
 		}
 		return true;
 	}
+	
 }

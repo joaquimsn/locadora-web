@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import br.com.jsn.noleggio.main.qualifier.SavePreValidate;
 import br.com.jsn.noleggio.main.qualifier.UpdatePreValidate;
 import br.com.jsn.noleggio.modules.veiculo.dao.VeiculoDAO;
+import br.com.jsn.noleggio.modules.veiculo.model.StatusVeiculoEnum;
 import br.com.jsn.noleggio.modules.veiculo.model.Veiculo;
 
 public class VeiculoService implements Serializable {
@@ -23,8 +24,10 @@ public class VeiculoService implements Serializable {
 	private Event<Veiculo> eventVeiculo;
 
 	public void salvar(Veiculo veiculo) {
+		veiculo.setDataCadastro(new Date());
 		veiculo.setDataManutencao(new Date());
 		veiculo.setAtivo(true);
+		veiculo.setStatus(StatusVeiculoEnum.DISPONIVEL);
 		veiculoDAO.save(veiculo);
 	}
 

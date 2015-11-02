@@ -21,6 +21,7 @@ public class FuncionarioService implements Serializable {
 	private FuncionarioDAO funcionarioDAO;
 
 	public void salvar(Funcionario funcionario) {
+		funcionario.setDataCadastro(new Date());
 		funcionario.setDataManutencao(new Date());
 		funcionario.setAtivo(true);
 		funcionarioDAO.save(funcionario);

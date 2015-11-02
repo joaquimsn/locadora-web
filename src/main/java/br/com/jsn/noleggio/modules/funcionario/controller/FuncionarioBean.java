@@ -30,7 +30,7 @@ public class FuncionarioBean extends AbstractBean implements ICrudBean<Funcionar
 	
 	@Inject
 	@BuscarCidades
-	Event<Uf> eventEndereco;
+	private Event<Uf> eventEndereco;
 	@Inject
 	private FuncionarioService funcionarioService;
 	@Inject
@@ -61,6 +61,7 @@ public class FuncionarioBean extends AbstractBean implements ICrudBean<Funcionar
 	@Override
 	@PostConstruct
 	public void inicializarPagina() {
+		super.inicializarPagina();
 		setReadonly(true);
 		setDisabled(true);
 		objetoSelecionado = new Funcionario();
@@ -82,8 +83,10 @@ public class FuncionarioBean extends AbstractBean implements ICrudBean<Funcionar
 		validar();
 		
 		if (objetoSelecionado.isValidadoComSucesso()) {
+			objetoSelecionado.setAgencia(getSession().getAgencia());
+			objetoSelecionado.getUsuario().setDominio(getSession().getAgencia().getDominio());
 			funcionarioService.salvar(objetoSelecionado);
-			
+
 			ValidationModelBusiness.addMessageInfo("Cadastro realizado com sucesso");
 			inicializarPagina();
 		}
@@ -91,6 +94,7 @@ public class FuncionarioBean extends AbstractBean implements ICrudBean<Funcionar
 
 	@Override
 	public void alterar() {
+		objetoSelecionado.getUsuario().setDominio("noleggio");
 		funcionarioService.alterar(objetoSelecionado);
 		
 		if (true) {

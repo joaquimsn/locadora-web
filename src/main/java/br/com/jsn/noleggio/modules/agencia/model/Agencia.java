@@ -123,7 +123,7 @@ public class Agencia extends BusinessValidation implements Serializable {
 	}
 
 	public void setCep(String cep) {
-		this.cep = cep;
+		this.cep = cep.replaceAll("[^0-9]", "");
 	}
 
 	public String getCidade() {

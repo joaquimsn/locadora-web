@@ -21,6 +21,7 @@ public class AgenciaService implements Serializable {
 	private AgenciaDAO agenciaDAO;
 
 	public void salvar(Agencia agencia) {
+		agencia.setDataCadastro(new Date());
 		agencia.setDataManutencao(new Date());
 		agencia.setAtivo(true);
 		agenciaDAO.save(agencia);

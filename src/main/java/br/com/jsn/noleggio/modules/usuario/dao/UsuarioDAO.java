@@ -35,7 +35,6 @@ public class UsuarioDAO extends GenericDAO<Usuario> {
 		try {
 			usuario = query.getSingleResult();
 		} catch (Exception e) {
-			e.printStackTrace();
 			usuario = new UsuarioNullObject();
 		} 
 		

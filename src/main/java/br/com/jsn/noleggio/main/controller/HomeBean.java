@@ -1,6 +1,8 @@
 package br.com.jsn.noleggio.main.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -40,10 +42,12 @@ public class HomeBean extends AbstractBean {
 	
 	public void carregarLista() {
 		listaVeiculo = VeiculoService.buscarTodos();
+		listaVeiculoFiltrado = listaVeiculo;
 	}
 	
 	public void filtrarVeiculo() {
-		
+		Stream<Veiculo> stream = listaVeiculo.stream().filter(veiculo -> veiculo.contains(parametroFiltro));
+		listaVeiculoFiltrado = stream.collect(Collectors.toList());
 	}
 
 	public Veiculo getObjetoSelecionado() {
@@ -63,6 +67,6 @@ public class HomeBean extends AbstractBean {
 	}
 	
 	public List<Veiculo> getListaTodos() {
-		return listaVeiculo;
+		return listaVeiculoFiltrado;
 	}
 }

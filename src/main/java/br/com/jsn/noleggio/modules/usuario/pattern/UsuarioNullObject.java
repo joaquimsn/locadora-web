@@ -12,11 +12,6 @@ public class UsuarioNullObject extends Usuario {
 	private static final long serialVersionUID = 1002364820177214238L;
 
 	@Override
-	public int getNivel() {
-		return super.getNivel();
-	}
-	
-	@Override
 	public boolean isAtivo() {
 		return false;
 	}

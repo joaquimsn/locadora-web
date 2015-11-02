@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.transaction.Transactional;
 
 public abstract class GenericDAO<T> implements Serializable {
 	private static final long serialVersionUID = -1346304670895222289L;
@@ -17,11 +18,13 @@ public abstract class GenericDAO<T> implements Serializable {
 	protected GenericDAO(Class<T> classe) {
 		this.classe = classe;
 	}
-
+	
+	@Transactional
 	public void save(T entity) {
 		entityManager.persist(entity);
 	}
-
+	
+	@Transactional
 	public T update(T entity) {
 		return entityManager.merge(entity);
 	}

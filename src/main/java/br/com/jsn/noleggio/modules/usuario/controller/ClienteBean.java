@@ -29,7 +29,7 @@ public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
 
 	@Inject
 	@BuscarCidades
-	Event<Uf> eventEndereco;
+	private Event<Uf> eventEndereco;
 	@Inject
 	private ClienteService clienteService;
 	@Inject
@@ -57,6 +57,7 @@ public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
 	@Override
 	@PostConstruct
 	public void inicializarPagina() {
+		super.inicializarPagina();
 		setReadonly(true);
 		setDisabled(true);
 		objetoSelecionado = new Cliente();
@@ -76,6 +77,8 @@ public class ClienteBean extends AbstractBean implements ICrudBean<Cliente> {
 		validar();
 		
 		if (objetoSelecionado.isValidadoComSucesso()) {
+			objetoSelecionado.setAgencia(getSession().getAgencia());
+			objetoSelecionado.setIdFuncionario(getSession().getFuncionario().getIdFuncionario());
 			clienteService.salvar(objetoSelecionado);
 			
 			ValidationModelBusiness.addMessageInfo("Cadastro realizado com sucesso");

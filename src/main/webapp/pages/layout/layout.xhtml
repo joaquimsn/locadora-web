@@ -18,16 +18,27 @@
 			<section class="top-bar-center">
 				<form jsf:id="formHeader" method="post">
 					<a jsf:action="#{homeBean.abrirPagina()}" >
-						<img src="resources/images/icons/32x32/icon_home.png" alt="Início" title="Tela Inicial" class="menu-home"/>
+						<img src="resources/images/icons/32x32/icon_home.png" alt="Início" title="Tela Inicial" class="menu-home" 
+							jsf:rendered="#{!authorizationBean.menuAtualSelecionado('inicio')}"/>
+						
+						<img src="resources/images/icons/32x32/icon_home_selected.png" alt="Início" title="Tela Inicial" class="menu-home" 
+							jsf:rendered="#{authorizationBean.menuAtualSelecionado('inicio')}"/>
 					</a>
 				</form>
 			</section>
 			<section class="top-bar-right">
 				<div class="identificacao-conta">
 					<ul>
-						<li><span class="light-primary-text">Concessionário e locadora Preço Bom LTDA</span></li>
-						<li><span class="light-second-text">João.augusto</span><span class="accent-color-thrid">@precobom</span></li>
+						<li><span class="light-primary-text">#{authorizationBean.session.agencia.fantasia}</span></li>
+						<li><span class="light-second-text">#{authorizationBean.session.usuario.nomeUsuario}</span><span class="accent-color-thrid">@#{authorizationBean.session.usuario.dominio}</span></li>
 					</ul>
+				</div>
+				<div class="logout">
+					<form jsf:id="formLogout" method="post">
+						<a jsf:action="#{loginBean.logout()}" >
+							<img src="resources/images/icons/32x32/icon_logout.png" alt="Efetuar Logout" title="Efetuar Logout" class="menu-home"/>
+						</a>
+					</form>
 				</div>
 			</section>
 		</header>

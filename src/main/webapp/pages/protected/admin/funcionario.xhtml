@@ -94,11 +94,22 @@
 					</h:panelGrid>
 					
 					<h:panelGrid width="100%" cellspacing="5" style="margin-top: 10px;"
-						columns="2" columnClasses="coluna-30, coluna-70">
+						columns="3" columnClasses="coluna-20, coluna-30, coluna-50">
 						<h:panelGrid width="100%">
 							<h:outputText value="RG" />
 							<p:inputMask value="#{funcionarioBean.objetoSelecionado.rg}" maxlength="10" styleClass="input-97"
 								readonly="#{funcionarioBean.readonly}" />
+						</h:panelGrid>
+						
+						<h:panelGrid width="100%" columns="1">
+							<h:outputText value="Agência" /> 
+							<p:selectOneMenu value="#{funcionarioBean.objetoSelecionado.agencia}"
+								converter="genericConverter"
+								style="width: 99%;" disabled="#{funcionarioBean.readonly}">
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+								<f:selectItems value="#{funcionarioBean.listaAgencia}" 
+									var="agencia" itemLabel="#{agencia.fantasia}" itemValue="#{agencia}" />
+							</p:selectOneMenu>
 						</h:panelGrid>
 						
 						<h:panelGrid width="100%" columns="1">
@@ -194,14 +205,14 @@
 							<h:outputText value="Usuário" />
 							<p:inputText value="#{funcionarioBean.objetoSelecionado.usuario.nomeUsuario}" 
 								maxlength="64" 
-								styleClass="input-97" onblur="upperCase(this);"
+								styleClass="input-97"
 								readonly="#{funcionarioBean.readonly}"/>
 						</h:panelGrid>
 						
 						<h:panelGrid width="100%" columns="1">
 							<h:outputText value="Senha" />
 							<p:password value="#{funcionarioBean.objetoSelecionado.usuario.senha}" maxlength="18" 
-								styleClass="input-97" onblur="upperCase(this);"
+								styleClass="input-97"
 								readonly="#{funcionarioBean.readonly}"/>
 						</h:panelGrid>
 						
@@ -212,7 +223,7 @@
 								disabled="#{funcionarioBean.readonly}">
 								<f:selectItem itemLabel="Selecione" itemValue=""/>
 								<f:selectItems value="#{funcionarioBean.listaNivelUsuarioEnum}" 
-									var="nivel" itemLabel="#{nivel.display}" itemValue="#{nivel.value}"/>
+									var="nivel" itemLabel="#{nivel.display}" itemValue="#{nivel}"/>
 							</p:selectOneMenu>
 						</h:panelGrid>					
 					</h:panelGrid>

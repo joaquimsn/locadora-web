@@ -27,7 +27,7 @@ public class VeiculoBean extends AbstractBean implements ICrudBean<Veiculo> {
 	
 	@Inject
 	@BuscarCidades
-	Event<Uf> eventEndereco;
+	private Event<Uf> eventEndereco;
 	@Inject
 	private VeiculoService veiculoService;
 	@Inject
@@ -53,6 +53,7 @@ public class VeiculoBean extends AbstractBean implements ICrudBean<Veiculo> {
 	@Override
 	@PostConstruct
 	public void inicializarPagina() {
+		super.inicializarPagina();
 		setReadonly(true);
 		setDisabled(true);
 		objetoSelecionado = new Veiculo();
@@ -74,6 +75,8 @@ public class VeiculoBean extends AbstractBean implements ICrudBean<Veiculo> {
 		validar();
 
 		if (objetoSelecionado.isValidadoComSucesso()) {
+			objetoSelecionado.setAgencia(getSession().getAgencia());
+			objetoSelecionado.addAcessorioVeiculo(listaAcessorioEnumSelecionado);
 			veiculoService.salvar(objetoSelecionado);
 
 			ValidationModelBusiness
@@ -84,6 +87,7 @@ public class VeiculoBean extends AbstractBean implements ICrudBean<Veiculo> {
 
 	@Override
 	public void alterar() {
+		objetoSelecionado.addAcessorioVeiculo(listaAcessorioEnumSelecionado);
 		veiculoService.alterar(objetoSelecionado);
 
 		if (true) {
@@ -144,6 +148,10 @@ public class VeiculoBean extends AbstractBean implements ICrudBean<Veiculo> {
 			objetoSelecionado = objeto;
 			setDisabled(false);
 			
+			listaAcessorioEnumSelecionado = objeto.getListaAcessorioVeiculoEnum();
+			
+			uf = new Uf();
+			uf.setUf(objeto.getUf());
 			carregarCidades();
 		} else {
 			setDisabled(true);

@@ -27,7 +27,7 @@ public class AgenciaBean extends AbstractBean implements ICrudBean<Agencia> {
 	
 	@Inject
 	@BuscarCidades
-	Event<Uf> eventEndereco;
+	private Event<Uf> eventEndereco;
 	@Inject
 	private AgenciaService agenciaService;
 	@Inject
@@ -52,6 +52,7 @@ public class AgenciaBean extends AbstractBean implements ICrudBean<Agencia> {
 	@Override
 	@PostConstruct
 	public void inicializarPagina() {
+		super.inicializarPagina();
 		setReadonly(true);
 		setDisabled(true);
 		objetoSelecionado = new Agencia();

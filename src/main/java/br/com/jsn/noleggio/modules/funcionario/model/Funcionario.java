@@ -18,7 +18,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Email;
@@ -102,7 +101,6 @@ public class Funcionario extends BusinessValidation implements Serializable {
 
 	// bi-directional one-to-one association to Usuario
 	@OneToOne(mappedBy = "funcionario", cascade = CascadeType.ALL)
-	@Valid
 	private Usuario usuario;
 
 	public Funcionario() {
@@ -137,7 +135,7 @@ public class Funcionario extends BusinessValidation implements Serializable {
 	}
 
 	public void setCep(String cep) {
-		this.cep = cep;
+		this.cep = cep.replaceAll("[^0-9]", "");
 	}
 
 	public String getCidade() {
@@ -288,7 +286,7 @@ public class Funcionario extends BusinessValidation implements Serializable {
 			return "Inativo";
 		}
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

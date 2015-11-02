@@ -76,7 +76,7 @@
 											style="width: 100%;" disabled="#{veiculoBean.readonly}">
 											<f:selectItem itemLabel="Selecione" itemValue="0" />
 											<f:selectItems value="#{veiculoBean.listaGrupoEnum}" var="grupo"
-												itemLabel="#{grupo.display}" itemValue="#{grupo.value}"/>
+												itemLabel="#{grupo.display}" itemValue="#{grupo}"/>
 										</p:selectOneMenu>
 									</h:panelGrid>
 								</h:panelGrid>
@@ -105,7 +105,7 @@
 						
 						<h:panelGrid width="100%" columns="1">
 							<h:outputText value="Chassi" />
-							<p:inputText value="#{veiculoBean.objetoSelecionado.chassi}" maxlength="100" 
+							<p:inputText value="#{veiculoBean.objetoSelecionado.chassi}" maxlength="17" 
 								styleClass="input-97" onblur="upperCase(this);"
 								readonly="#{veiculoBean.readonly}"/>
 						</h:panelGrid>
@@ -144,7 +144,7 @@
 								<h:outputText value="R$" style="margin-right: 5px" />
 								<p:inputText style="width: 100%; font-weight: bold" 
 									value="#{veiculoBean.objetoSelecionado.precoKmLivre}"
-									converter="moedaConverter" readonly="true"  
+									converter="moedaConverter" readonly="#{veiculoBean.readonly}"  
 									onkeyup="return mascaraMoeda(this, event);"/>
 							</h:panelGrid>
 						</h:panelGrid>
@@ -154,8 +154,8 @@
 							<h:panelGrid columns="2" cellpadding="0" cellspacing="0" width="100%">
 								<h:outputText value="R$" style="margin-right: 5px" />
 								<p:inputText style="width: 100%; font-weight: bold" 
-									value="#{veiculoBean.objetoSelecionado.precoKmLivre}"
-									converter="moedaConverter" readonly="true"  
+									value="#{veiculoBean.objetoSelecionado.precoKmControlado}"
+									converter="moedaConverter" readonly="#{veiculoBean.readonly}"  
 									onkeyup="return mascaraMoeda(this, event);"/>
 							</h:panelGrid>
 						</h:panelGrid>

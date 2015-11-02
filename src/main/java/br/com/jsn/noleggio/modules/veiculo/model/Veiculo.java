@@ -163,12 +163,12 @@ public class Veiculo extends BusinessValidation implements Serializable {
 		this.fabricante = fabricante;
 	}
 
-	public int getGrupo() {
-		return this.grupo;
+	public GrupoVeiculoEnum getGrupo() {
+		return GrupoVeiculoEnum.getEnumByValue(grupo);
 	}
 
-	public void setGrupo(int grupo) {
-		this.grupo = grupo;
+	public void setGrupo(GrupoVeiculoEnum grupo) {
+		this.grupo = grupo.getValue();
 	}
 
 	public int getIdFuncionario() {
@@ -180,7 +180,7 @@ public class Veiculo extends BusinessValidation implements Serializable {
 	}
 
 	public String getImagem() {
-		if (imagem != null) {
+		if (imagem == null) {
 			return "resources/images/car_default.png";
 		}
 		
@@ -191,7 +191,7 @@ public class Veiculo extends BusinessValidation implements Serializable {
 		this.imagem = imagem;
 	}
 
-	public double getKmPrecoKmControlado() {
+	public double getPrecoKmControlado() {
 		return this.precoKmControlado;
 	}
 
@@ -231,12 +231,12 @@ public class Veiculo extends BusinessValidation implements Serializable {
 		this.placa = placa;
 	}
 
-	public int getStatus() {
-		return this.status;
+	public StatusVeiculoEnum getStatus() {
+		return StatusVeiculoEnum.getEnumByValue(status);
 	}
 
-	public void setStatus(int status) {
-		this.status = status;
+	public void setStatus(StatusVeiculoEnum statusVeiculoEnum) {
+		this.status = statusVeiculoEnum.getValue();
 	}
 
 	public String getUf() {
@@ -249,6 +249,16 @@ public class Veiculo extends BusinessValidation implements Serializable {
 
 	public List<AcessorioVeiculo> getListaAcessorioVeiculos() {
 		return this.listaAcessorioVeiculo;
+	}
+	
+	public List<AcessorioVeiculoEnum> getListaAcessorioVeiculoEnum() {
+		List<AcessorioVeiculoEnum> lista = new ArrayList<AcessorioVeiculoEnum>();
+		
+		for (int i = 0; i < listaAcessorioVeiculo.size(); i++) {
+			lista.add(AcessorioVeiculoEnum.getEnumByValue(listaAcessorioVeiculo.get(i).getCodigoAcessorio()));
+		}
+		
+		return lista;
 	}
 
 	public void setListaAcessorioVeiculos(List<AcessorioVeiculo> listaAcessorioVeiculos) {
@@ -285,8 +295,8 @@ public class Veiculo extends BusinessValidation implements Serializable {
 		}
 		
 		AcessorioVeiculo acessorio = new AcessorioVeiculo();
-		acessorio.setVeiculo(this);
 		acessorio.setCodigoAcessorio(acessorioVeiculoEnum.getValue());
+		acessorio.setVeiculo(this);
 		
 		listaAcessorioVeiculo.add(acessorio);
 	}
@@ -311,6 +321,23 @@ public class Veiculo extends BusinessValidation implements Serializable {
 	
 	public String getStatusDisplay() {
 		return StatusVeiculoEnum.getDisplayByValue(status);
+	}
+	
+	public boolean contains(String parametro) {
+		parametro = parametro.toUpperCase();
+		if (placa.equals(parametro)) {
+			return true;
+		}
+		
+		if (modelo.contains(parametro)) {
+			return true;
+		}
+		
+		if (cidade.contains(parametro)) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 	@Override
