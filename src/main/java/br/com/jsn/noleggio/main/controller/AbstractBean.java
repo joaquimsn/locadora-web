@@ -4,11 +4,16 @@ import java.io.Serializable;
 
 import javax.annotation.PostConstruct;
 
+import br.com.jsn.noleggio.main.Session;
+import br.com.jsn.noleggio.main.System;
+
 public abstract class AbstractBean implements Serializable {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 4050341785206419827L;
 	
 	protected boolean readonly;
 	protected boolean disabled;
+	
+	private Session session;
 	
 	public String abrirPagina() {
 		return "";
@@ -16,6 +21,7 @@ public abstract class AbstractBean implements Serializable {
 	
 	@PostConstruct
 	public void inicializarPagina() {
+		session = System.getSession();
 	}
 	
 	public boolean isReadonly() {
@@ -32,5 +38,9 @@ public abstract class AbstractBean implements Serializable {
 
 	public void setDisabled(boolean disabled) {
 		this.disabled = disabled;
+	}
+	
+	protected Session getSession() {
+		return session;
 	}
 }

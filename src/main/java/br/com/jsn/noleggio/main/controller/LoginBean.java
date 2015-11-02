@@ -1,6 +1,7 @@
 package br.com.jsn.noleggio.main.controller;
 
 import javax.annotation.PostConstruct;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -50,6 +51,12 @@ public class LoginBean extends AbstractBean {
 		setMensagemErro("");
 
 		return true;
+	}
+	
+	public String logout() {
+		FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+		
+		return UrlRoute.LOGIN;
 	}
 	
 	/*

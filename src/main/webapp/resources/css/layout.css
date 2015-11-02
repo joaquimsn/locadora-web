@@ -96,6 +96,7 @@ a:active {
 }
 
 .top-bar-right {
+	display: flex;
 	width: 50%;	
 }
 
@@ -112,7 +113,7 @@ a:active {
 }
 
 .identificacao-conta {
-	height: 100%;
+	width: 100%;
 	margin: 0 auto;
 	vertical-align: center;
 }
@@ -163,12 +164,27 @@ a:active {
 	color: #9E9E9E;
 }
 
-.category-list-items li:hover {
+.category-list-items li a {
+	margin: 0;
+	color: #9E9E9E;
+}
+
+.category-list-items li:hover, .category-list-items li a:hover {
 	margin: 0;
 	background: #FF9800;
 	color: #fff !important;
 	opacity: 0.9;
+}
+
+.menu-item-selected {
+	margin: 0;
+	background: #FF9800;
+	opacity: 0.9;
 	font-weight: bold;
+}
+
+.menu-item-selected a {
+	color: #fff !important;
 }
 
 .element-list-items-category {
@@ -179,7 +195,6 @@ a:active {
 	font-size: 16px;
 	cursor: pointer;
 	text-decoration: none;
-	color: #9E9E9E;
 }
 
 #container-funcionalidade {

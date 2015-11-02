@@ -35,4 +35,14 @@ public abstract class UrlRoute {
 	 * Página para servico de locação
 	 */
 	public static final String SERVICO_LOCACAO = "pretty:servico-locacao";
+	
+	/**
+	 * Página para servico de devolução
+	 */
+	public static final String SERVICO_DEVOLUCAO = "pretty:servico-devolucao";
+	
+	/**
+	 * Página para Relatório de locações
+	 */
+	public static final String RELATORIO_LOCACOES = "pretty:relatorio-locacoes";
 }

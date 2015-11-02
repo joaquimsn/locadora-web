@@ -25,7 +25,7 @@ public class AuthorizationBean implements Serializable {
 	
 	private Session session;
 	/** Páginas permitidas somente ao usuário Administrador */
-	public static final List<String> LISTA_PAGINAS_SOMENTE_ADMINISTRADOR = new ArrayList<String>(Arrays.asList("gerenciamento-agencia, gerenciamento-funcionario, gerenciamento-veiculo, relatorios"));
+	public static final List<String> LISTA_PAGINAS_SOMENTE_ADMINISTRADOR = new ArrayList<String>(Arrays.asList("gerenciamento-agencia", "gerenciamento-funcionario", "gerenciamento-veiculo", "relatorio-locacoes"));
 	
 	@PostConstruct
 	public void inicializar() {
@@ -33,7 +33,7 @@ public class AuthorizationBean implements Serializable {
 	}
 	
 	public String autorizar() {
-		if (!hasAutorizacao(PrettyContext.getCurrentInstance().getRequestURL().toURL().replaceFirst("/", ""))) {
+		if (!hasAutorizacao(getCurrentUrl())) {
 			return UrlRoute.LOGIN;
 		}
 		return null;
@@ -85,5 +85,21 @@ public class AuthorizationBean implements Serializable {
 		} else {
 			return "";
 		}
+	}
+	
+	public Session getSession() {
+		return session;
+	}
+	
+	public boolean menuAtualSelecionado(String url) {
+		if (getCurrentUrl().equals(url)) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private String getCurrentUrl() {
+		return PrettyContext.getCurrentInstance().getRequestURL().toURL().replaceFirst("/", "");
 	}
 }

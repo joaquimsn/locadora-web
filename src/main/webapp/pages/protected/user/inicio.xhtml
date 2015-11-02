@@ -16,7 +16,7 @@
 				<div class="filtro-veiculo">
 					<div class="container-label-ipunt coluna-80">
 						<div class="label-input-filter">Consulta de Veiculo</div>
-						<input type="text" jsf:listener="#{homeBean.filtrarVeiculo()}" class="input-filter-car" 
+						<input jsf:id="inputFiltroVeiculo" type="text" jsf:value="#{homeBean.parametroFiltro}" class="input-filter-car" 
 							placeholder="Modelo, categoria, placa e cidade"/>
 					</div>
 					
@@ -24,7 +24,7 @@
 						<input type="submit" jsf:id="btnPesquisar" class="buttom-filter-car" 
 							jsf:actionListener="#{homeBean.filtrarVeiculo()}" value="Pesquisar" >
 							
-							<f:ajax execute="btnPesquisar" render="fieldsetGerenciamento"/>
+							<f:ajax execute="inputFiltroVeiculo" render="fieldsetGerenciamento"/>
 						</input>		
 					</div>
 				</div>

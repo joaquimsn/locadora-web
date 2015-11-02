@@ -21,8 +21,12 @@
 							<span class="primary-accent-text text-name-category">SERVIÇOS</span>
 						</div>
 						<ul class="category-list-items">
-							<li><a jsf:action="#{locacaoBean.abrirPagina()}"><div class="element-list-items-category">Locação</div></a></li>
-							<li><div class="element-list-items-category">Devolução</div></li>
+							<li class="#{authorizationBean.menuAtualSelecionado('servico-locacao') ? 'menu-item-selected' : ''}">
+								<a jsf:action="#{locacaoBean.abrirPagina()}"><div class="element-list-items-category">Locação</div></a>
+							</li>
+							<li  class="#{authorizationBean.menuAtualSelecionado('servico-devolucao') ? 'menu-item-selected' : ''}">
+								<div class="element-list-items-category">Devolução</div>
+							</li>
 						</ul>
 					</li>
 					<li>
@@ -30,18 +34,32 @@
 							<span class="primary-accent-text text-name-category">GERENCIAMENTO</span>
 						</div>
 						<ul class="category-list-items">
-							<li><a jsf:action="#{agenciaBean.abrirPagina()}"><div class="element-list-items-category">Agência</div></a></li>
-							<li><a jsf:action="#{clienteBean.abrirPagina()}"><div class="element-list-items-category">Cliente</div></a></li>
-							<li><a jsf:action="#{funcionarioBean.abrirPagina()}"><div class="element-list-items-category">Funcionário</div></a></li>
-							<li><a jsf:action="#{veiculoBean.abrirPagina()}"><div class="element-list-items-category">Veículo</div></a></li>
+							<li jsf:rendered="#{authorizationBean.renderizarItemMenu('gerenciamento-agencia')}"
+								 class="#{authorizationBean.menuAtualSelecionado('gerenciamento-agencia') ? 'menu-item-selected' : ''}">
+								<a jsf:action="#{agenciaBean.abrirPagina()}"><div class="element-list-items-category">Agência</div></a>
+							</li>
+							<li jsf:rendered="#{authorizationBean.renderizarItemMenu('gerenciamento-cliente')}"
+								class="#{authorizationBean.menuAtualSelecionado('gerenciamento-cliente') ? 'menu-item-selected' : ''}">
+								<a jsf:action="#{clienteBean.abrirPagina()}"><div class="element-list-items-category">Cliente</div></a>
+							</li>
+							<li jsf:rendered="#{authorizationBean.renderizarItemMenu('gerenciamento-funcionario')}"
+								class="#{authorizationBean.menuAtualSelecionado('gerenciamento-funcionario') ? 'menu-item-selected' : ''}">
+								<a jsf:action="#{funcionarioBean.abrirPagina()}"><div class="element-list-items-category">Funcionário</div></a>
+							</li>
+							<li jsf:rendered="#{authorizationBean.renderizarItemMenu('gerenciamento-veiculo')}"
+								class="#{authorizationBean.menuAtualSelecionado('gerenciamento-veiculo') ? 'menu-item-selected' : ''}">
+								<a jsf:action="#{veiculoBean.abrirPagina()}"><div class="element-list-items-category">Veículo</div></a>
+							</li>
 						</ul>
 					</li>
-					<li>
+					<li jsf:rendered="#{authorizationBean.renderizarItemMenu('relatorio-locacoes')}">
 						<div class="category-nav"><img src="resources/images/icons/24x24/icon_relatorios.png" height="24px" class="category-icon"/>
 							<span class="primary-accent-text text-name-category">RELATÓRIOS</span>
 						</div>
 						<ul class="category-list-items">
-							<li><div class="element-list-items-category">Locações</div></li>
+							<li class="#{authorizationBean.menuAtualSelecionado('relatorio-locacoes') ? 'menu-item-selected' : ''}">
+								<div class="element-list-items-category">Locações</div>
+							</li>
 						</ul>
 					</li>
 				</ul>
