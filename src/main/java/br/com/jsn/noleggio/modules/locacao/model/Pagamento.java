@@ -15,8 +15,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.validator.constraints.br.CPF;
-
 /**
  * The persistent class for the pagamento database table.
  * 
@@ -32,10 +30,9 @@ public class Pagamento implements Serializable {
 	@Column(name = "id_pagamento")
 	private int idPagamento;
 	
-	@CPF
 	private String cpf;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "data_pagamento")
 	private Date dataPagamento;
 

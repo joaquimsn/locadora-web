@@ -88,7 +88,7 @@
   width: 75%;
 }
 
-.filtro-veiculo {
+.filtro {
 	display: flex;
 	margin: 20px;
 }
@@ -104,7 +104,7 @@
 	align-self: center;
 }
 
-.input-filter-car {
+.input-filter {
 	width: 80%;
 	height: 40px;
   	padding: 5px;
@@ -113,7 +113,7 @@
 	font-size: 18px;
 }
 
-.buttom-filter-car {
+.buttom-filter {
 	border: none;
 	background: #FF9800; 
 	height: 40px;
@@ -124,7 +124,7 @@
 	transition-duration: 1s;
 }
 
-.buttom-filter-car:hover {
+.buttom-filter:hover {
 	border: 1px solid #FF9800;
 	background: #fff;
 	color: #FF9800;

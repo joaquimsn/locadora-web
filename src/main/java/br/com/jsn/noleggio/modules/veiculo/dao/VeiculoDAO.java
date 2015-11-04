@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.TypedQuery;
 
 import br.com.jsn.noleggio.main.dao.GenericDAO;
+import br.com.jsn.noleggio.modules.veiculo.model.StatusVeiculoEnum;
 import br.com.jsn.noleggio.modules.veiculo.model.Veiculo;
 
 public class VeiculoDAO extends GenericDAO<Veiculo> {
@@ -18,6 +19,15 @@ public class VeiculoDAO extends GenericDAO<Veiculo> {
 		String jpql = "SELECT v FROM Veiculo v WHERE v.cidade = :cidade";
 		
 		TypedQuery<Veiculo> typedQuery = entityManager.createQuery(jpql, classe);
+		
+		return typedQuery.getResultList();
+	}
+	
+	public List<Veiculo> findAllByStatus(StatusVeiculoEnum statusVeiculoEnum) {
+		String jpql = "SELECT v FROM Veiculo v WHERE v.status = :status";
+		
+		TypedQuery<Veiculo> typedQuery = entityManager.createQuery(jpql, classe);
+		typedQuery.setParameter("status", statusVeiculoEnum.getValue());
 		
 		return typedQuery.getResultList();
 	}

@@ -26,6 +26,7 @@ import br.com.jsn.noleggio.main.validation.BusinessValidation;
 import br.com.jsn.noleggio.modules.agencia.model.Agencia;
 import br.com.jsn.noleggio.modules.veiculo.enums.AcessorioVeiculoEnum;
 import br.com.jsn.noleggio.modules.veiculo.enums.GrupoVeiculoEnum;
+import br.com.jsn.noleggio.modules.veiculo.enums.TipoTarifaEnum;
 
 /**
  * The persistent class for the veiculo database table.
@@ -321,6 +322,19 @@ public class Veiculo extends BusinessValidation implements Serializable {
 	
 	public String getStatusDisplay() {
 		return StatusVeiculoEnum.getDisplayByValue(status);
+	}
+	
+	public double getPrecoDiariaPorTarifa(TipoTarifaEnum tipoTarifaEnum) {
+		switch (tipoTarifaEnum) {
+			case CONTROLADA:
+				return precoKmControlado;
+	
+			case LIVRE:
+				return precoKmLivre;
+	
+			default:
+				return 0.0;
+		}
 	}
 	
 	public boolean contains(String parametro) {

@@ -53,7 +53,7 @@
 	</url-mapping>
 	
 	<url-mapping id="servico-devolucao">
-		<pattern value="/servico-locacao" />
+		<pattern value="/servico-devolucao" />
 		<view-id value="/pages/protected/user/devolucao.xhtml" />
 		<action>#{authorizationBean.autorizar}</action>
 	</url-mapping>

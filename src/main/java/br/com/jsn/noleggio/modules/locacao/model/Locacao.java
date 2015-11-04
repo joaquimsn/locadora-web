@@ -1,9 +1,12 @@
 package br.com.jsn.noleggio.modules.locacao.model;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,8 +20,15 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import br.com.jsn.noleggio.main.util.DateUtil;
+import br.com.jsn.noleggio.main.util.SystemUtil;
 import br.com.jsn.noleggio.main.validation.BusinessValidation;
+import br.com.jsn.noleggio.modules.agencia.model.Agencia;
+import br.com.jsn.noleggio.modules.cliente.model.Cliente;
+import br.com.jsn.noleggio.modules.locacao.enums.StatusLocacaoEnum;
+import br.com.jsn.noleggio.modules.veiculo.enums.TipoTarifaEnum;
 import br.com.jsn.noleggio.modules.veiculo.model.Veiculo;
+import br.com.jsn.noleggio.modules.veiculo.pattern.VeiculoNullObject;
 
 /**
  * The persistent class for the locacao database table.
@@ -36,7 +46,7 @@ public class Locacao extends BusinessValidation implements Serializable {
 	private int idLocacao;
 
 	@Column(name = "agencia_devolucao")
-	private int agenciaDevolucao;
+	private Agencia agenciaDevolucao;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "data_hora_devolucao")
@@ -51,10 +61,10 @@ public class Locacao extends BusinessValidation implements Serializable {
 	private Date dataHoraPrevistaDevolucao;
 
 	@Column(name = "id_agencia")
-	private int idAgencia;
+	private Agencia agencia;
 
 	@Column(name = "id_cliente")
-	private int idCliente;
+	private Cliente cliente;
 
 	@Column(name = "id_funcionario")
 	private int idFuncionario;
@@ -84,7 +94,7 @@ public class Locacao extends BusinessValidation implements Serializable {
 	private Veiculo veiculo;
 
 	// bi-directional many-to-one association to Pagamento
-	@OneToMany(mappedBy = "locacao")
+	@OneToMany(mappedBy = "locacao", cascade = CascadeType.ALL)
 	private List<Pagamento> listaPagamento;
 
 	public Locacao() {
@@ -98,11 +108,11 @@ public class Locacao extends BusinessValidation implements Serializable {
 		this.idLocacao = idLocacao;
 	}
 
-	public int getAgenciaDevolucao() {
-		return this.agenciaDevolucao;
+	public Agencia getAgenciaDevolucao() {
+		return agenciaDevolucao;
 	}
 
-	public void setAgenciaDevolucao(int agenciaDevolucao) {
+	public void setAgenciaDevolucao(Agencia agenciaDevolucao) {
 		this.agenciaDevolucao = agenciaDevolucao;
 	}
 
@@ -130,20 +140,20 @@ public class Locacao extends BusinessValidation implements Serializable {
 		this.dataHoraPrevistaDevolucao = dataHoraPrevistaDevolucao;
 	}
 
-	public int getIdAgencia() {
-		return this.idAgencia;
+	public Agencia getAgencia() {
+		return agencia;
 	}
 
-	public void setIdAgencia(int idAgencia) {
-		this.idAgencia = idAgencia;
+	public void setAgencia(Agencia agencia) {
+		this.agencia = agencia;
 	}
 
-	public int getIdCliente() {
-		return this.idCliente;
+	public Cliente getCliente() {
+		return cliente;
 	}
 
-	public void setIdCliente(int idCliente) {
-		this.idCliente = idCliente;
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 
 	public int getIdFuncionario() {
@@ -178,28 +188,35 @@ public class Locacao extends BusinessValidation implements Serializable {
 		this.kmLocacao = kmLocacao;
 	}
 
-	public int getStatus() {
-		return this.status;
+	public StatusLocacaoEnum getStatus() {
+		if (StatusLocacaoEnum.ENCERRADA.equals(StatusLocacaoEnum.getEnumByValue(status))) {
+			return StatusLocacaoEnum.ENCERRADA;
+		}
+		
+		if (StatusLocacaoEnum.ABERTA.equals(StatusLocacaoEnum.getEnumByValue(status))) {
+			if (getDataHoraPrevistaDevolucao().before(new Date())) {
+				return StatusLocacaoEnum.ATRASADA;
+			}
+		}
+		
+		return StatusLocacaoEnum.ABERTA;
 	}
 
-	public void setStatus(int status) {
-		this.status = status;
+	public void setStatus(StatusLocacaoEnum statusLocacaoEnum) {
+		this.status = statusLocacaoEnum.getValue();
 	}
 
-	public int getTipoTarifa() {
-		return this.tipoTarifa;
+	public TipoTarifaEnum getTipoTarifa() {
+		return TipoTarifaEnum.getEnumByValue(tipoTarifa);
 	}
 
-	public void setTipoTarifa(int tipoTarifa) {
-		this.tipoTarifa = tipoTarifa;
+	public void setTipoTarifa(TipoTarifaEnum tipoTarifaEnum) {
+		this.tipoTarifa = tipoTarifaEnum.getValue();
 	}
 
 	public double getValor() {
+		calcularPrecoLocacao();
 		return this.valor;
-	}
-
-	public void setValor(double valor) {
-		this.valor = valor;
 	}
 
 	public double getValorAcrescimo() {
@@ -211,7 +228,11 @@ public class Locacao extends BusinessValidation implements Serializable {
 	}
 
 	public Veiculo getVeiculo() {
-		return this.veiculo;
+		if (veiculo == null) {
+			return new VeiculoNullObject();
+		}
+		
+		return veiculo;
 	}
 
 	public void setVeiculo(Veiculo veiculo) {
@@ -225,14 +246,36 @@ public class Locacao extends BusinessValidation implements Serializable {
 	public void setListaPagamento(List<Pagamento> listaPagamento) {
 		this.listaPagamento = listaPagamento;
 	}
+	
+	public void addPagamento(Pagamento pagamento) {
+		if (listaPagamento == null) {
+			listaPagamento = new ArrayList<Pagamento>();
+		}
+		
+		pagamento.setLocacao(this);
+		listaPagamento.add(pagamento);
+	}
+	
+	private void calcularPrecoLocacao() {
+		int quantidadeDia = DateUtil.intervalInDays(dataHoraLocacao, dataHoraPrevistaDevolucao);
+		if (quantidadeDia == 0) {
+			quantidadeDia = 1;
+		}
+		valor = quantidadeDia * getVeiculo().getPrecoDiariaPorTarifa(getTipoTarifa());
+	}
+	
+	public String getValorLocacaoCalculadoDisplay() {
+		return NumberFormat.getCurrencyInstance(SystemUtil.LOCALE_BRASIL).format(getValor());
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + idAgencia;
-		result = prime * result + idCliente;
+		result = prime * result + ((agencia == null) ? 0 : agencia.hashCode());
+		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
 		result = prime * result + idLocacao;
+		result = prime * result + ((veiculo == null) ? 0 : veiculo.hashCode());
 		return result;
 	}
 
@@ -248,13 +291,28 @@ public class Locacao extends BusinessValidation implements Serializable {
 			return false;
 		}
 		Locacao other = (Locacao) obj;
-		if (idAgencia != other.idAgencia) {
+		if (agencia == null) {
+			if (other.agencia != null) {
+				return false;
+			}
+		} else if (!agencia.equals(other.agencia)) {
 			return false;
 		}
-		if (idCliente != other.idCliente) {
+		if (cliente == null) {
+			if (other.cliente != null) {
+				return false;
+			}
+		} else if (!cliente.equals(other.cliente)) {
 			return false;
 		}
 		if (idLocacao != other.idLocacao) {
+			return false;
+		}
+		if (veiculo == null) {
+			if (other.veiculo != null) {
+				return false;
+			}
+		} else if (!veiculo.equals(other.veiculo)) {
 			return false;
 		}
 		return true;

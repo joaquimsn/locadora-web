@@ -1,0 +1,68 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsn="http://xmlns.jcp.org/jsf/composite/components"
+    xmlns:jsf="http://xmlns.jcp.org/jsf"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" 
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:p="http://primefaces.org/ui"
+    template="/pages/layout/layout.xhtml">
+
+	<ui:define name="restrict">
+		<jsn:titulo label="Clientes" />
+		
+		<h:form id="formContent">	
+			<fieldset jsf:id="fieldsetDevolucao" class="fieldset">
+				<div class="filtro">
+					<div class="container-label-ipunt coluna-80">
+						<div class="label-input-filter">Consultar Locação</div>
+						<input jsf:id="inputFiltroVeiculo" type="text" jsf:value="#{devolucaoBean.parametroFiltro}" class="input-filter" 
+							placeholder="CPF"/>
+					</div>
+					
+					<div class="coluna-20">
+						<input type="submit" class="buttom-filter" 
+							jsf:actionListener="#{devolucaoBean.filtrarLocacao()}" value="Pesquisar" >
+							
+							<f:ajax execute="inputFiltroVeiculo" render="fieldsetGerenciamento"/>
+						</input>		
+					</div>
+				</div>
+				
+				<div class="divider"/>
+				
+				<p:dataTable id="tableLocacao" selection="#{devolucaoBean.objetoSelecionado}" value="#{devolucaoBean.listaLocacao}" var="objeto"
+					paginator="true" paginatorPosition="bottom" rows="5" rowKey="#{objeto.idLocacao}" selectionMode="single"
+					filterEvent="enter" filteredValue="#{devolucaoBean.listaLocacaoFiltrada}" styleClass="datatable"
+					emptyMessage="Nenhum registro encontrado">
+					
+					<p:ajax event="rowSelect" update="formContent"/>
+					
+					<p:column filterMatchMode="contains" headerText="Cliente" styleClass="coluna-20">
+						#{objeto.cliente.nome}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="CPF" styleClass="coluna-15">
+						#{objeto.cliente.cpf}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="Agência" styleClass="coluna-20">
+						#{objeto.agenciaDevolucao.fantasia}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="Veículo" styleClass="coluna-25">
+						#{objeto.veiculo.modelo}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="Preço" styleClass="coluna-15">
+						#{objeto.valor}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="D. Devolução" styleClass="coluna-20">
+						#{objeto.dataHoraPrevistaDevolucao}
+					</p:column>
+				</p:dataTable>
+				
+				<p:fieldset id="fieldsetDetalhe" rendered="#{!devolucaoBean.disabled || !devolucaoBean.readonly}">
+					
+				</p:fieldset>
+				
+			</fieldset>
+		</h:form>
+	</ui:define>
+</ui:composition>

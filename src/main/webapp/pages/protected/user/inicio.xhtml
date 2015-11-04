@@ -13,15 +13,15 @@
 		
 		<h:form id="formContent">
 			<fieldset jsf:id="fieldsetGerenciamento" class="fieldset">
-				<div class="filtro-veiculo">
+				<div class="filtro">
 					<div class="container-label-ipunt coluna-80">
 						<div class="label-input-filter">Consulta de Veiculo</div>
-						<input jsf:id="inputFiltroVeiculo" type="text" jsf:value="#{homeBean.parametroFiltro}" class="input-filter-car" 
+						<input jsf:id="inputFiltroVeiculo" type="text" jsf:value="#{homeBean.parametroFiltro}" class="input-filter" 
 							placeholder="Modelo, categoria, placa e cidade"/>
 					</div>
 					
 					<div class="coluna-20">
-						<input type="submit" jsf:id="btnPesquisar" class="buttom-filter-car" 
+						<input type="submit" class="buttom-filter" 
 							jsf:actionListener="#{homeBean.filtrarVeiculo()}" value="Pesquisar" >
 							
 							<f:ajax execute="inputFiltroVeiculo" render="fieldsetGerenciamento"/>

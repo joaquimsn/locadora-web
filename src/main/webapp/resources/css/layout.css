@@ -1,4 +1,4 @@
-* {
+a* {
 	margin: 0;
 	padding: 0;
 }
@@ -121,7 +121,7 @@ a:active {
 .identificacao-conta ul {
 	text-align: right;
 	vertical-align: center;
-	padding: 10px 20px;	
+	padding: 0px 15px;	
 }
 
 #nav-left {

@@ -1,6 +1,8 @@
 package br.com.jsn.noleggio.main.util;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
@@ -19,6 +21,19 @@ public class DateUtil {
 		LocalDate localDate = LocalDate.now();
 		localDate = LocalDate.of(localDate.getYear() - NumberUtil.converterToPositive(year), localDate.getMonthValue(), localDate.getDayOfMonth());
 		return localDate;
+	}
+	
+	public static int intervalInDays(Date less, Date greater) {
+		if (less == null || greater == null) {
+			return 0;
+		}
+		
+		LocalDateTime lessLocalDate = LocalDateTime.ofInstant(less.toInstant(), ZoneId.systemDefault());
+		LocalDateTime greaterLocalDate = LocalDateTime.ofInstant(greater.toInstant(), ZoneId.systemDefault());
+		
+		Duration duration = Duration.between(lessLocalDate, greaterLocalDate);
+		
+		return Long.valueOf(duration.toDays()).intValue();
 	}
 }
 	

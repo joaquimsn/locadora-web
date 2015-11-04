@@ -12,8 +12,11 @@ import javax.inject.Named;
 import br.com.jsn.noleggio.main.controller.AbstractBean;
 import br.com.jsn.noleggio.main.controller.ICrudBean;
 import br.com.jsn.noleggio.main.security.UrlRoute;
+import br.com.jsn.noleggio.main.util.BeanInjector;
 import br.com.jsn.noleggio.main.util.DateUtil;
 import br.com.jsn.noleggio.main.validation.ValidationModelBusiness;
+import br.com.jsn.noleggio.modules.agencia.model.Agencia;
+import br.com.jsn.noleggio.modules.agencia.service.AgenciaService;
 import br.com.jsn.noleggio.modules.endereco.BuscarCidades;
 import br.com.jsn.noleggio.modules.endereco.EnderecoUf;
 import br.com.jsn.noleggio.modules.endereco.model.Endereco;
@@ -49,6 +52,7 @@ public class FuncionarioBean extends AbstractBean implements ICrudBean<Funcionar
 	private Endereco endereco;
 	
 	private List<NivelUsuarioEnum> listaNivelUsuarioEnum;
+	private List<Agencia> listaAgencia;
 	
 	private Date dataAtual;
 	private Date dataNascimentoMax;
@@ -76,6 +80,9 @@ public class FuncionarioBean extends AbstractBean implements ICrudBean<Funcionar
 		listaFuncionarioSupervisor = funcionarioService.buscarTodosSupervisor();
 		listaFuncionarioFiltrado = null;
 		listaNivelUsuarioEnum = NivelUsuarioEnum.getEnumList();
+		
+		AgenciaService agenciaService = BeanInjector.getBean(AgenciaService.class);
+		listaAgencia = agenciaService.buscarTodos();
 	}
 	
 	@Override
@@ -94,7 +101,7 @@ public class FuncionarioBean extends AbstractBean implements ICrudBean<Funcionar
 
 	@Override
 	public void alterar() {
-		objetoSelecionado.getUsuario().setDominio("noleggio");
+		objetoSelecionado.getUsuario().setDominio(objetoSelecionado.getAgencia().getDominio());
 		funcionarioService.alterar(objetoSelecionado);
 		
 		if (true) {
@@ -219,5 +226,9 @@ public class FuncionarioBean extends AbstractBean implements ICrudBean<Funcionar
 	
 	public List<NivelUsuarioEnum> getListaNivelUsuarioEnum() {
 		return listaNivelUsuarioEnum;
+	}
+
+	public List<Agencia> getListaAgencia() {
+		return listaAgencia;
 	}
 }

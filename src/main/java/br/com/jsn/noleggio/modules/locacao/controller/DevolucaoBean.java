@@ -11,27 +11,20 @@ import javax.inject.Named;
 import br.com.jsn.noleggio.main.controller.AbstractBean;
 import br.com.jsn.noleggio.main.security.UrlRoute;
 import br.com.jsn.noleggio.main.validation.ValidationModelBusiness;
-import br.com.jsn.noleggio.modules.agencia.model.Agencia;
 import br.com.jsn.noleggio.modules.agencia.service.AgenciaService;
-import br.com.jsn.noleggio.modules.cliente.model.Cliente;
-import br.com.jsn.noleggio.modules.cliente.service.ClienteService;
 import br.com.jsn.noleggio.modules.locacao.model.Locacao;
 import br.com.jsn.noleggio.modules.locacao.model.Pagamento;
+import br.com.jsn.noleggio.modules.locacao.pattern.MultaVO;
 import br.com.jsn.noleggio.modules.locacao.service.LocacaoService;
 import br.com.jsn.noleggio.modules.veiculo.enums.TipoTarifaEnum;
 import br.com.jsn.noleggio.modules.veiculo.model.StatusVeiculoEnum;
-import br.com.jsn.noleggio.modules.veiculo.model.Veiculo;
 import br.com.jsn.noleggio.modules.veiculo.service.VeiculoService;
 
 @Named
 @ViewScoped
-public class LocacaoBean extends AbstractBean {
-	private static final long serialVersionUID = 689944798092935059L;
-	
+public class DevolucaoBean extends AbstractBean {
 	@Inject
 	private VeiculoService veiculoService;
-	@Inject
-	private ClienteService clienteService;
 	@Inject
 	private AgenciaService agenciaService;
 	@Inject
@@ -39,18 +32,18 @@ public class LocacaoBean extends AbstractBean {
 	
 	private Locacao objetoSelecionado;
 	private Pagamento pagamentoSelecionado;
-	private Cliente clienteSelecionado;
 	
-	private List<Veiculo> listaVeiculo;
-	private List<Cliente> listaCliente;
-	private List<Agencia> listaAgencia;
+	private List<Locacao> listaLocacao;
+	private List<Locacao> listaLocacaoFiltrada;
+	private List<MultaVO> listaMultaVO;
 	
 	private Date dataAtual;
 	private boolean pagamentoAprovado;
+	private String parametroFiltro;
 	
 	@Override
 	public String abrirPagina() {
-		return UrlRoute.SERVICO_LOCACAO;
+		return UrlRoute.SERVICO_DEVOLUCAO;
 	}
 
 	@Override
@@ -65,21 +58,23 @@ public class LocacaoBean extends AbstractBean {
 
 		carregarLista();
 	}
-
+	
 	private void carregarLista() {
-		listaVeiculo = veiculoService.buscarTodosDisponivelParaLocacao();
-		listaCliente = clienteService.buscarTodos();
-		listaAgencia = agenciaService.buscarTodos();
+		listaLocacao = locacaoService.buscarTodos();
 	}
-
+	
+	public void filtrarLocacao() {
+		listaLocacao = locacaoService.buscarLocacaoAbertasPorCpf(parametroFiltro);
+	}
+	
 	public void cadastrar() {
 		validar();
 
 		if (objetoSelecionado.isValidadoComSucesso()) {
 			preencherCamposLocacao();
-			locacaoService.salvar(objetoSelecionado);
+			locacaoService.alterar(objetoSelecionado);
 			
-			objetoSelecionado.getVeiculo().setStatus(StatusVeiculoEnum.LOCADO);
+			objetoSelecionado.getVeiculo().setStatus(StatusVeiculoEnum.DISPONIVEL);
 			veiculoService.alterar(objetoSelecionado.getVeiculo());
 
 			ValidationModelBusiness
@@ -90,7 +85,6 @@ public class LocacaoBean extends AbstractBean {
 
 	private void preencherCamposLocacao() {
 		objetoSelecionado.setAgencia(getSession().getAgencia());
-		objetoSelecionado.setCliente(clienteSelecionado);
 		objetoSelecionado.setIdFuncionario(getSession().getFuncionario().getIdFuncionario());
 	}
 
@@ -155,50 +149,39 @@ public class LocacaoBean extends AbstractBean {
 		return objetoSelecionado;
 	}
 
-	public Cliente getClienteSelecionado() {
-		return clienteSelecionado;
-	}
-	
 	public Pagamento getPagamentoSelecionado() {
 		return pagamentoSelecionado;
 	}
 
-	public void setPagamentoSelecionado(Pagamento pagamentoSelecionado) {
-		this.pagamentoSelecionado = pagamentoSelecionado;
+	public List<Locacao> getListaLocacao() {
+		return listaLocacao;
+	}
+	
+	public List<Locacao> getListaLocacaoFiltrada() {
+		return listaLocacaoFiltrada;
 	}
 
-	public List<Veiculo> getListaVeiculo() {
-		return listaVeiculo;
-	}
-
-	public List<Cliente> getListaCliente() {
-		return listaCliente;
+	public void setListaLocacaoFiltrada(List<Locacao> listaLocacaoFiltrada) {
+		this.listaLocacaoFiltrada = listaLocacaoFiltrada;
 	}
 
 	public void setObjetoSelecionado(Locacao objetoSelecionado) {
 		this.objetoSelecionado = objetoSelecionado;
 	}
 
-	public void setClienteSelecionado(Cliente clienteSelecionado) {
-		this.clienteSelecionado = clienteSelecionado;
-	}
-	
-	public List<Agencia> getListaAgencia() {
-		return listaAgencia;
-	}
-	
-	public List<TipoTarifaEnum> getListaTipoTarifaEnum() {
-		return TipoTarifaEnum.getEnumList();
-	}
-	
-	public Date getDataAtual() {
-		if (dataAtual == null) {
-			dataAtual = new Date();
-		}
-		return dataAtual;
+	public void setPagamentoSelecionado(Pagamento pagamentoSelecionado) {
+		this.pagamentoSelecionado = pagamentoSelecionado;
 	}
 
-	public boolean isPagamentoAprovado() {
-		return pagamentoAprovado;
+	public void setListaLocacao(List<Locacao> listaLocacao) {
+		this.listaLocacao = listaLocacao;
+	}
+
+	public String getParametroFiltro() {
+		return parametroFiltro;
+	}
+
+	public void setParametroFiltro(String parametroFiltro) {
+		this.parametroFiltro = parametroFiltro;
 	}
 }
