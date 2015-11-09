@@ -1,5 +1,6 @@
 package br.com.jsn.noleggio.modules.locacao.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -10,8 +11,9 @@ import javax.inject.Named;
 
 import br.com.jsn.noleggio.main.controller.AbstractBean;
 import br.com.jsn.noleggio.main.security.UrlRoute;
+import br.com.jsn.noleggio.main.util.DateUtil;
 import br.com.jsn.noleggio.main.validation.ValidationModelBusiness;
-import br.com.jsn.noleggio.modules.agencia.service.AgenciaService;
+import br.com.jsn.noleggio.modules.locacao.enums.StatusLocacaoEnum;
 import br.com.jsn.noleggio.modules.locacao.model.Locacao;
 import br.com.jsn.noleggio.modules.locacao.model.Pagamento;
 import br.com.jsn.noleggio.modules.locacao.pattern.MultaVO;
@@ -23,10 +25,10 @@ import br.com.jsn.noleggio.modules.veiculo.service.VeiculoService;
 @Named
 @ViewScoped
 public class DevolucaoBean extends AbstractBean {
+	private static final long serialVersionUID = 1321633801207113091L;
+
 	@Inject
 	private VeiculoService veiculoService;
-	@Inject
-	private AgenciaService agenciaService;
 	@Inject
 	private LocacaoService locacaoService;
 	
@@ -39,7 +41,11 @@ public class DevolucaoBean extends AbstractBean {
 	
 	private Date dataAtual;
 	private boolean pagamentoAprovado;
+	private boolean devolucaoComPendencia;
 	private String parametroFiltro;
+	
+	private double valorAdicional;
+	private int kmAtual;
 	
 	@Override
 	public String abrirPagina() {
@@ -50,49 +56,49 @@ public class DevolucaoBean extends AbstractBean {
 	@PostConstruct
 	public void inicializarPagina() {
 		super.inicializarPagina();
+		dataAtual = new Date();
+		kmAtual= 0;
 		setReadonly(true);
 		setDisabled(true);
+		valorAdicional = 0;
 		objetoSelecionado = new Locacao();
 		objetoSelecionado.setTipoTarifa(TipoTarifaEnum.CONTROLADA);
 		pagamentoSelecionado = new Pagamento();
+		listaMultaVO = new ArrayList<MultaVO>();
 
 		carregarLista();
 	}
 	
 	private void carregarLista() {
-		listaLocacao = locacaoService.buscarTodos();
+		listaLocacao = locacaoService.buscarLocacoesPendentes();
 	}
 	
 	public void filtrarLocacao() {
 		listaLocacao = locacaoService.buscarLocacaoAbertasPorCpf(parametroFiltro);
+
+		if (parametroFiltro.isEmpty()) {
+			listaLocacao = locacaoService.buscarLocacoesPendentes();
+		}
 	}
 	
-	public void cadastrar() {
-		validar();
+	private void preencherCamposLocacao() {
+		objetoSelecionado.setStatus(StatusLocacaoEnum.ENCERRADA);
+		objetoSelecionado.setDataHoraDevolucao(new Date());
+		objetoSelecionado.setValorAcrescimo(getValorAdicional() + getValorMulta()); 
+	}
 
-		if (objetoSelecionado.isValidadoComSucesso()) {
+	public void alterar() {
+		if (pagamentoAprovado) {
 			preencherCamposLocacao();
 			locacaoService.alterar(objetoSelecionado);
 			
 			objetoSelecionado.getVeiculo().setStatus(StatusVeiculoEnum.DISPONIVEL);
+			objetoSelecionado.getVeiculo().setKmRodado(kmAtual);
 			veiculoService.alterar(objetoSelecionado.getVeiculo());
 
 			ValidationModelBusiness
-					.addMessageInfo("Cadastro realizado com sucesso");
+					.addMessageInfo("Devolução realizada com sucesso");
 			inicializarPagina();
-		}
-	}
-
-	private void preencherCamposLocacao() {
-		objetoSelecionado.setAgencia(getSession().getAgencia());
-		objetoSelecionado.setIdFuncionario(getSession().getFuncionario().getIdFuncionario());
-	}
-
-	public void alterar() {
-		locacaoService.alterar(objetoSelecionado);
-
-		if (true) {
-			ValidationModelBusiness.addMessageInfo("Alterado com sucesso");
 		}
 	}
 
@@ -109,6 +115,7 @@ public class DevolucaoBean extends AbstractBean {
 			pagamentoSelecionado.setDataPagamento(new Date());
 			objetoSelecionado.addPagamento(pagamentoSelecionado);
 			pagamentoAprovado = true;
+			devolucaoComPendencia = false;
 			
 			ValidationModelBusiness.addMessageInfo("Pagamento realizado com sucesso");
 		} else {
@@ -121,6 +128,36 @@ public class DevolucaoBean extends AbstractBean {
 		readonly = false;
 		disabled = false;
 
+	}
+	
+	private void verificarPendencia() {
+		listaMultaVO = new ArrayList<MultaVO>();
+		MultaVO multaVO = new MultaVO();
+		multaVO.setDescricao("Não possui pendências");
+		
+		if (objetoSelecionado.getAgenciaDevolucao() != getSession().getAgencia()) {
+			// Multa por devolução em local diferente
+			multaVO = new MultaVO();
+			multaVO.setDescricao("Agência de devolução diferente do registrado");
+			multaVO.setPreco(75);
+			
+			listaMultaVO.add(multaVO);
+		}
+		
+		int dias = DateUtil.intervalInDays(objetoSelecionado.getDataHoraPrevistaDevolucao(), dataAtual); 
+		if (dias > 0) {
+			multaVO = new MultaVO();
+			multaVO.setDescricao("Multa por atraso de " + dias + " dia(s) na devolução");
+			multaVO.setPreco(objetoSelecionado.getVeiculo().getPrecoKmLivre() * dias);
+			
+			listaMultaVO.add(multaVO);
+		}
+		
+		if (listaMultaVO.isEmpty()) {
+			listaMultaVO.add(multaVO);
+		} else {
+			devolucaoComPendencia = true;
+		}
 	}
 	
 	/**
@@ -167,6 +204,7 @@ public class DevolucaoBean extends AbstractBean {
 
 	public void setObjetoSelecionado(Locacao objetoSelecionado) {
 		this.objetoSelecionado = objetoSelecionado;
+		verificarPendencia();
 	}
 
 	public void setPagamentoSelecionado(Pagamento pagamentoSelecionado) {
@@ -176,6 +214,10 @@ public class DevolucaoBean extends AbstractBean {
 	public void setListaLocacao(List<Locacao> listaLocacao) {
 		this.listaLocacao = listaLocacao;
 	}
+	
+	public List<MultaVO> getListaMultaVO() {
+		return listaMultaVO;
+	}
 
 	public String getParametroFiltro() {
 		return parametroFiltro;
@@ -183,5 +225,43 @@ public class DevolucaoBean extends AbstractBean {
 
 	public void setParametroFiltro(String parametroFiltro) {
 		this.parametroFiltro = parametroFiltro;
+	}
+
+	public boolean isDevolucaoComPendencia() {
+		return devolucaoComPendencia;
+	}
+	
+	public boolean isPagamentoAprovado() {
+		return pagamentoAprovado;
+	}
+
+	public double getValorAdicional() {
+		return valorAdicional;
+	}
+
+	public void setValorAdicional(double valorAdicional) {
+		this.valorAdicional = valorAdicional;
+	}
+	
+	public double getValorMulta() {
+		double valorMulta = 0;
+		
+		for (MultaVO multaVO : listaMultaVO) {
+			valorMulta += multaVO.getPreco();
+		}
+		
+		return valorMulta;
+	}
+	
+	public double getValorTotal() {
+		return getValorAdicional() + getValorMulta();
+	}
+
+	public int getKmAtual() {
+		return kmAtual;
+	}
+
+	public void setKmAtual(int kmAtual) {
+		this.kmAtual = kmAtual;
 	}
 }

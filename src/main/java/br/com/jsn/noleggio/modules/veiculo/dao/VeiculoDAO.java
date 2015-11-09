@@ -2,12 +2,14 @@ package br.com.jsn.noleggio.modules.veiculo.dao;
 
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
 import br.com.jsn.noleggio.main.dao.GenericDAO;
 import br.com.jsn.noleggio.modules.veiculo.model.StatusVeiculoEnum;
 import br.com.jsn.noleggio.modules.veiculo.model.Veiculo;
 
+@Stateless
 public class VeiculoDAO extends GenericDAO<Veiculo> {
 	private static final long serialVersionUID = 8228557546077794996L;
 

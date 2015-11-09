@@ -57,4 +57,10 @@
 		<view-id value="/pages/protected/user/devolucao.xhtml" />
 		<action>#{authorizationBean.autorizar}</action>
 	</url-mapping>
+	
+	<url-mapping id="relatorio-locacoes">
+		<pattern value="/relatorio-locacoes" />
+		<view-id value="/pages/protected/admin/relatorio.xhtml" />
+		<action>#{authorizationBean.autorizar}</action>
+	</url-mapping>
 </pretty-config>

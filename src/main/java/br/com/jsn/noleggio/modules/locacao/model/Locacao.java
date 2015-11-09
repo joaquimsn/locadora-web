@@ -2,6 +2,7 @@ package br.com.jsn.noleggio.modules.locacao.model;
 
 import java.io.Serializable;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,10 +22,12 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import br.com.jsn.noleggio.main.util.BeanInjector;
 import br.com.jsn.noleggio.main.util.DateUtil;
 import br.com.jsn.noleggio.main.util.SystemUtil;
 import br.com.jsn.noleggio.main.validation.BusinessValidation;
 import br.com.jsn.noleggio.modules.agencia.model.Agencia;
+import br.com.jsn.noleggio.modules.agencia.service.AgenciaService;
 import br.com.jsn.noleggio.modules.cliente.model.Cliente;
 import br.com.jsn.noleggio.modules.locacao.enums.StatusLocacaoEnum;
 import br.com.jsn.noleggio.modules.veiculo.enums.TipoTarifaEnum;
@@ -45,8 +49,8 @@ public class Locacao extends BusinessValidation implements Serializable {
 	@Column(name = "id_locacao")
 	private int idLocacao;
 
-	@Column(name = "agencia_devolucao")
-	private Agencia agenciaDevolucao;
+	@Column(name = "id_agencia_devolucao")
+	private int idAgenciaDevolucao;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "data_hora_devolucao")
@@ -61,11 +65,8 @@ public class Locacao extends BusinessValidation implements Serializable {
 	private Date dataHoraPrevistaDevolucao;
 
 	@Column(name = "id_agencia")
-	private Agencia agencia;
-
-	@Column(name = "id_cliente")
-	private Cliente cliente;
-
+	private int idAgencia;
+	
 	@Column(name = "id_funcionario")
 	private int idFuncionario;
 
@@ -87,14 +88,19 @@ public class Locacao extends BusinessValidation implements Serializable {
 
 	@Column(name = "valor_acrescimo")
 	private double valorAcrescimo;
-
+	
+	// bi-directional many-to-one association to Veiculo
+	@ManyToOne
+	@JoinColumn(name = "id_cliente")
+	private Cliente cliente;
+	
 	// bi-directional many-to-one association to Veiculo
 	@ManyToOne
 	@JoinColumn(name = "id_veiculo")
 	private Veiculo veiculo;
 
 	// bi-directional many-to-one association to Pagamento
-	@OneToMany(mappedBy = "locacao", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "locacao", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Pagamento> listaPagamento;
 
 	public Locacao() {
@@ -108,12 +114,12 @@ public class Locacao extends BusinessValidation implements Serializable {
 		this.idLocacao = idLocacao;
 	}
 
-	public Agencia getAgenciaDevolucao() {
-		return agenciaDevolucao;
+	public int getIdAgenciaDevolucao() {
+		return idAgenciaDevolucao;
 	}
 
-	public void setAgenciaDevolucao(Agencia agenciaDevolucao) {
-		this.agenciaDevolucao = agenciaDevolucao;
+	public void setIdAgenciaDevolucao(int idAgenciaDevolucao) {
+		this.idAgenciaDevolucao= idAgenciaDevolucao;
 	}
 
 	public Date getDataHoraDevolucao() {
@@ -140,12 +146,12 @@ public class Locacao extends BusinessValidation implements Serializable {
 		this.dataHoraPrevistaDevolucao = dataHoraPrevistaDevolucao;
 	}
 
-	public Agencia getAgencia() {
-		return agencia;
+	public int getIdAgencia() {
+		return idAgencia;
 	}
 
-	public void setAgencia(Agencia agencia) {
-		this.agencia = agencia;
+	public void setIdAgencia(int idAgencia) {
+		this.idAgencia = idAgencia;
 	}
 
 	public Cliente getCliente() {
@@ -215,7 +221,6 @@ public class Locacao extends BusinessValidation implements Serializable {
 	}
 
 	public double getValor() {
-		calcularPrecoLocacao();
 		return this.valor;
 	}
 
@@ -265,15 +270,50 @@ public class Locacao extends BusinessValidation implements Serializable {
 	}
 	
 	public String getValorLocacaoCalculadoDisplay() {
+		calcularPrecoLocacao();
 		return NumberFormat.getCurrencyInstance(SystemUtil.LOCALE_BRASIL).format(getValor());
+	}
+
+	public String getValorDisplay() {
+		return NumberFormat.getCurrencyInstance(SystemUtil.LOCALE_BRASIL).format(getValor());
+	}
+	
+	public String getDataLocacaoDisplay() {
+		if (dataHoraLocacao == null) {
+			return "";
+		}
+		
+		return new SimpleDateFormat("dd/MM/yyyy hh:mm").format(dataHoraLocacao);
+	}
+
+	public String getDataDevolucapDisplay() {
+		if (dataHoraPrevistaDevolucao == null) {
+			return "";
+		}
+		
+		return new SimpleDateFormat("dd/MM/yyyy hh:mm").format(dataHoraPrevistaDevolucao);
+	}
+	
+	public String getDataPrevisaoDevolucaoDisplay() {
+		if (dataHoraPrevistaDevolucao == null) {
+			return "";
+		}
+		
+		return new SimpleDateFormat("dd/MM/yyyy hh:mm").format(dataHoraPrevistaDevolucao);
+	}
+	
+	public Agencia getAgenciaDevolucao() {
+		AgenciaService agenciaService = BeanInjector.getBean(AgenciaService.class);
+		
+		return agenciaService.buscarPorId(idAgenciaDevolucao);
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((agencia == null) ? 0 : agencia.hashCode());
 		result = prime * result + ((cliente == null) ? 0 : cliente.hashCode());
+		result = prime * result + idAgencia;
 		result = prime * result + idLocacao;
 		result = prime * result + ((veiculo == null) ? 0 : veiculo.hashCode());
 		return result;
@@ -291,18 +331,14 @@ public class Locacao extends BusinessValidation implements Serializable {
 			return false;
 		}
 		Locacao other = (Locacao) obj;
-		if (agencia == null) {
-			if (other.agencia != null) {
-				return false;
-			}
-		} else if (!agencia.equals(other.agencia)) {
-			return false;
-		}
 		if (cliente == null) {
 			if (other.cliente != null) {
 				return false;
 			}
 		} else if (!cliente.equals(other.cliente)) {
+			return false;
+		}
+		if (idAgencia != other.idAgencia) {
 			return false;
 		}
 		if (idLocacao != other.idLocacao) {

@@ -12,136 +12,169 @@
 		<jsn:titulo label="Locação" />
 		
 		<h:form id="formContent">
-			<fieldset jsf:id="fieldsetGerenciamento" class="fieldset">
-				<h:panelGrid columns="2" width="100%" cellspacing="5"
-					columnClasses="coluna-50, coluna-50">
-					
-					<h:panelGrid width="100%" columns="1">
-						<h:outputText value="Cliente" />
-						<p:selectOneMenu value="#{locacaoBean.clienteSelecionado}" var="objeto" style="width: 99%;"
-							converter="genericConverter" filter="true" filterMatchMode="contains">
-							<f:selectItem itemLabel="Selecione" itemValue=""/>
-							<f:selectItems value="#{locacaoBean.listaCliente}" var="cliente"
-									itemLabel=" #{cliente.cpf} | #{cliente.nome}" itemValue="#{cliente}" />
-									
-								<p:ajax event="change" update="@this panelPrecoLocacao" />
-								
-								<p:column filterMatchMode="contains" filterBy="#{cliente.pessoa.cpf}">
-									<h:outputText value="#{objeto.cpf}" />
-								</p:column>
-								
-								<p:column filterMatchMode="contains" filterBy="#{cliente.nome}">
-									<h:outputText value="#{objeto.nome}" />
-								</p:column>
-						</p:selectOneMenu>
-					</h:panelGrid>
-
-					<h:panelGrid width="100%">
-						<h:outputText value="Veiculo" />
-						<p:selectOneMenu value="#{locacaoBean.objetoSelecionado.veiculo}" var="objeto" style="width: 99%;"
-							converter="genericConverter" filter="true" filterMatchMode="contains">
-							<f:selectItem itemLabel="Selecione" itemValue=""/>
-							<f:selectItems value="#{locacaoBean.listaVeiculo}" var="veiculo"
-									itemLabel=" #{veiculo.placa} | #{veiculo.modelo}" itemValue="#{veiculo}" />
-									
-								<p:ajax event="change" update="@this panelPrecoLocacao" />
-								
-								<p:column filterMatchMode="contains" filterBy="#{veiculo.placa}">
-									<h:outputText value="#{objeto.placa}" />
-								</p:column>
-								
-								<p:column filterMatchMode="contains" filterBy="#{veiculo.modelo}">
-									<h:outputText value="#{objeto.modelo}" />
-								</p:column>
-						</p:selectOneMenu>
-					</h:panelGrid>
-				</h:panelGrid>
-				
-				<h:panelGrid columns="4" width="100%" cellspacing="5"
-					columnClasses="coluna-15, coluna-15, coluna-20, coluna-50">
-					
-					<h:panelGrid width="100%">
-						<h:outputText value="Data de retirada" />
-						<p:calendar
-							value="#{locacaoBean.objetoSelecionado.dataHoraLocacao}"
-							navigator="true" mindate="#{locacaoBean.dataAtual}"
-							pattern="dd/MM/yyyy hh:mm" size="15" effect="explode"
-							style="white-space: nowrap;" readonlyInput="true"
-							showOn="button">
+			<fieldset jsf:id="fieldsetLocacao" class="fieldset">
+				<div jsf:rendered="#{!locacaoBean.locacaoRealizada}">
+					<h:panelGrid columns="2" width="100%" cellspacing="5"
+						columnClasses="coluna-50, coluna-50">
 						
-							<p:ajax event="dateSelect" update="@this panelDataDevolucaoPrevista" />
-						</p:calendar>
-					</h:panelGrid>
-					
-					<h:panelGrid width="100%" id="panelDataDevolucaoPrevista">
-						<h:outputText value="Devolução devolução" />
-						<p:calendar
-							value="#{locacaoBean.objetoSelecionado.dataHoraPrevistaDevolucao}"
-							navigator="true" mindate="#{locacaoBean.objetoSelecionado.dataHoraLocacao}"
-							pattern="dd/MM/yyyy hh:mm" size="15" effect="explode"
-							style="white-space: nowrap;" readonlyInput="true"
-							disabled="#{empty locacaoBean.objetoSelecionado.dataHoraLocacao}"
-							showOn="button">
-							
-							<p:ajax event="dateSelect" update="@this panelPrecoLocacao" />
-						</p:calendar>
-					</h:panelGrid>
-					
-					<h:panelGrid width="100%">
-						<h:outputText value="Tipo Tarifa" />
-						<p:selectOneMenu style="width: 100%;" converter="genericConverter"
-							value="#{locacaoBean.objetoSelecionado.tipoTarifa}">
-							<f:selectItems value="#{locacaoBean.listaTipoTarifaEnum}" var="tarifaEnum" 
-								itemLabel="#{tarifaEnum.display}" itemValue="#{tarifaEnum}"/>
-							
-							<p:ajax event="change" update="@this panelPrecoLocacao" />
-						</p:selectOneMenu>
-					</h:panelGrid>
-					
-					<h:panelGrid width="100%">
-						<h:outputText value="Agência devolução" />
-						<p:selectOneMenu value="#{locacaoBean.objetoSelecionado.agenciaDevolucao}" var="objeto" style="width: 99%;"
+						<h:panelGrid width="100%" columns="1">
+							<h:outputText value="Cliente" />
+							<p:selectOneMenu value="#{locacaoBean.clienteSelecionado}" var="objeto" style="width: 99%;"
 								converter="genericConverter" filter="true" filterMatchMode="contains">
 								<f:selectItem itemLabel="Selecione" itemValue=""/>
-								<f:selectItems value="#{locacaoBean.listaAgencia}" var="agencia"
-										itemLabel=" #{agencia.cnpj} | #{agencia.razaoSocial}" itemValue="#{agencia}" />
+								<f:selectItems value="#{locacaoBean.listaCliente}" var="cliente"
+										itemLabel=" #{cliente.cpf} | #{cliente.nome}" itemValue="#{cliente}" />
 										
-									<p:ajax event="change" update=":formContent"/>
+									<p:ajax event="change" update="@this panelPrecoLocacao" />
 									
-									<p:column filterMatchMode="contains" filterBy="#{agencia.cnpj}">
-										<h:outputText value="#{objeto.cnpj}" />
+									<p:column filterMatchMode="contains" filterBy="#{cliente.pessoa.cpf}">
+										<h:outputText value="#{objeto.cpf}" />
 									</p:column>
 									
-									<p:column filterMatchMode="contains" filterBy="#{agencia.razaoSocial}">
-										<h:outputText value="#{objeto.razaoSocial}" />
+									<p:column filterMatchMode="contains" filterBy="#{cliente.nome}">
+										<h:outputText value="#{objeto.nome}" />
 									</p:column>
 							</p:selectOneMenu>
-					</h:panelGrid>
-				</h:panelGrid>
-				
-				<h:panelGrid id="panelPrecoLocacao" width="100%" columns="1" style="margin: 20px 5px;">
-					<h:panelGrid columns="2">
-						<h:outputText value="Valor Diária KM Livre:" />
-						<h:outputText value="#{locacaoBean.objetoSelecionado.veiculo.precoKmLivreDisplay}" style="font-size: 16px; font-weight: bold;" />
+						</h:panelGrid>
+	
+						<h:panelGrid width="100%">
+							<h:outputText value="Veiculo" />
+							<p:selectOneMenu value="#{locacaoBean.objetoSelecionado.veiculo}" var="objeto" style="width: 99%;"
+								converter="genericConverter" filter="true" filterMatchMode="contains">
+								<f:selectItem itemLabel="Selecione" itemValue=""/>
+								<f:selectItems value="#{locacaoBean.listaVeiculo}" var="veiculo"
+										itemLabel=" #{veiculo.placa} | #{veiculo.modelo}" itemValue="#{veiculo}" />
+										
+									<p:ajax event="change" update="@this panelPrecoLocacao" />
+									
+									<p:column filterMatchMode="contains" filterBy="#{veiculo.placa}">
+										<h:outputText value="#{objeto.placa}" />
+									</p:column>
+									
+									<p:column filterMatchMode="contains" filterBy="#{veiculo.modelo}">
+										<h:outputText value="#{objeto.modelo}" />
+									</p:column>
+							</p:selectOneMenu>
+						</h:panelGrid>
 					</h:panelGrid>
 					
-					<h:panelGrid columns="2" style="margin: 10px 0px;">
-						<h:outputText value="Valor Diária KM Controlado:" />
-						<h:outputText value="#{locacaoBean.objetoSelecionado.veiculo.precoKmControladoDisplay}" style="font-size: 16px; font-weight: bold;"/>
-					</h:panelGrid>
-					
-					<h:panelGrid columns="2">
-						<h:outputText value="Valor Total:" />
-						<h:outputText value="#{locacaoBean.objetoSelecionado.valorLocacaoCalculadoDisplay}" style="font-size: 18px; font-weight: bold;" styleClass="accent-color-primary " />
-					</h:panelGrid>
-				</h:panelGrid>
-				
-				<div class="panel-button-crud">
-					<p:commandButton value="Efetuar Pagamento" onclick="PF('modalPagamento').show();" 
-						disabled="#{locacaoBean.pagamentoAprovado}" styleClass="button"/>
+					<h:panelGrid columns="4" width="100%" cellspacing="5"
+						columnClasses="coluna-15, coluna-15, coluna-20, coluna-50">
 						
-					<p:commandButton value="Finalizar" actionListener="#{locacaoBean.cadastrar()}" 
-						disabled="#{!locacaoBean.pagamentoAprovado}" styleClass="button" update="formContent" />	
+						<h:panelGrid width="100%">
+							<h:outputText value="Data de retirada" />
+							<p:calendar
+								value="#{locacaoBean.objetoSelecionado.dataHoraLocacao}"
+								navigator="true" mindate="#{locacaoBean.dataAtual}"
+								pattern="dd/MM/yyyy hh:mm" size="15" effect="explode"
+								style="white-space: nowrap;" readonlyInput="true"
+								showOn="button">
+							
+								<p:ajax event="dateSelect" update="@this panelDataDevolucaoPrevista" />
+							</p:calendar>
+						</h:panelGrid>
+						
+						<h:panelGrid width="100%" id="panelDataDevolucaoPrevista">
+							<h:outputText value="Devolução devolução" />
+							<p:calendar
+								value="#{locacaoBean.objetoSelecionado.dataHoraPrevistaDevolucao}"
+								navigator="true" mindate="#{locacaoBean.objetoSelecionado.dataHoraLocacao}"
+								pattern="dd/MM/yyyy hh:mm" size="15" effect="explode"
+								style="white-space: nowrap;" readonlyInput="true"
+								disabled="#{empty locacaoBean.objetoSelecionado.dataHoraLocacao}"
+								showOn="button">
+								
+								<p:ajax event="dateSelect" update="@this panelPrecoLocacao" />
+							</p:calendar>
+						</h:panelGrid>
+						
+						<h:panelGrid width="100%">
+							<h:outputText value="Tipo Tarifa" />
+							<p:selectOneMenu style="width: 100%;" converter="genericConverter"
+								value="#{locacaoBean.objetoSelecionado.tipoTarifa}">
+								<f:selectItems value="#{locacaoBean.listaTipoTarifaEnum}" var="tarifaEnum" 
+									itemLabel="#{tarifaEnum.display}" itemValue="#{tarifaEnum}"/>
+								
+								<p:ajax event="change" update="@this panelPrecoLocacao" />
+							</p:selectOneMenu>
+						</h:panelGrid>
+						
+						<h:panelGrid width="100%">
+							<h:outputText value="Agência devolução" />
+							<p:selectOneMenu value="#{locacaoBean.agenciaDevolucaoSelecionada}" var="objeto" style="width: 99%;"
+									converter="genericConverter" filter="true" filterMatchMode="contains">
+									<f:selectItem itemLabel="Selecione" itemValue=""/>
+									<f:selectItems value="#{locacaoBean.listaAgencia}" var="agencia"
+											itemLabel=" #{agencia.cnpj} | #{agencia.razaoSocial}" itemValue="#{agencia}" />
+											
+										<p:ajax event="change" update=":formContent"/>
+										
+										<p:column filterMatchMode="contains" filterBy="#{agencia.cnpj}">
+											<h:outputText value="#{objeto.cnpj}" />
+										</p:column>
+										
+										<p:column filterMatchMode="contains" filterBy="#{agencia.razaoSocial}">
+											<h:outputText value="#{objeto.razaoSocial}" />
+										</p:column>
+								</p:selectOneMenu>
+						</h:panelGrid>
+					</h:panelGrid>
+					
+					<h:panelGrid id="panelPrecoLocacao" width="100%" columns="1" style="margin: 20px 5px;">
+						<h:panelGrid columns="2">
+							<h:outputText value="Valor Diária KM Livre:" />
+							<h:outputText value="#{locacaoBean.objetoSelecionado.veiculo.precoKmLivreDisplay}" style="font-size: 16px; font-weight: bold;" />
+						</h:panelGrid>
+						
+						<h:panelGrid columns="2" style="margin: 10px 0px;">
+							<h:outputText value="Valor Diária KM Controlado:" />
+							<h:outputText value="#{locacaoBean.objetoSelecionado.veiculo.precoKmControladoDisplay}" style="font-size: 16px; font-weight: bold;"/>
+						</h:panelGrid>
+						
+						<h:panelGrid columns="2">
+							<h:outputText value="Valor Total:" />
+							<h:outputText value="#{locacaoBean.objetoSelecionado.valorLocacaoCalculadoDisplay}" style="font-size: 18px; font-weight: bold;" styleClass="accent-color-primary " />
+						</h:panelGrid>
+					</h:panelGrid>
+					
+					<div class="panel-button-crud">
+						<p:commandButton value="Efetuar Pagamento" onclick="PF('modalPagamento').show();" 
+							disabled="#{locacaoBean.pagamentoAprovado}" styleClass="button"/>
+							
+						<p:commandButton value="Finalizar" actionListener="#{locacaoBean.cadastrar()}" 
+							disabled="#{!locacaoBean.pagamentoAprovado}" styleClass="button" update="formContent" />	
+					</div>
+				</div>
+				
+				<div jsf:rendered="#{locacaoBean.locacaoRealizada}">
+					<div style="width: 256px; margin: 0 auto;">
+						<img src="resources/images/icons/256x256/icon_aprovado.png" height="256px"/>
+					</div>
+					<div class="confirmacao-locacao">
+						<ul>
+							<li>
+								<div style="width: 20%;">Número: <span class="texto-negrito">#{locacaoBean.objetoSelecionado.idLocacao}</span></div>
+								<div style="width: 70%;">Cliente: <span class="texto-negrito">#{locacaoBean.objetoSelecionado.cliente.nome}</span></div>
+							</li>
+							<li>
+								<div style="width: 50%;">Data locação: <span class="texto-negrito">#{locacaoBean.objetoSelecionado.dataLocacaoDisplay}</span></div>
+								<div style="width: 50%;">Data devolução: <span class="texto-negrito">#{locacaoBean.objetoSelecionado.dataDevolucapDisplay}</span></div>
+							</li>
+							<li>
+								<div>Valor da locação: <span class="texto-negrito">#{locacaoBean.objetoSelecionado.valorLocacaoCalculadoDisplay}</span></div>
+							</li>
+						</ul>
+						
+						<div class="panel-button-crud">
+							<p:commandButton value="Nova locação" actionListener="#{locacaoBean.inicializarPagina()}" 
+								styleClass="button" update="formContent" />	
+								
+							<p:commandButton value="Imprimir" icon="ui-icon-print"
+								styleClass="button" >
+								<p:printer target="fieldsetLocacao" />
+							</p:commandButton>	
+						</div>
+					</div>
 				</div>
 			</fieldset>
 			
@@ -170,11 +203,7 @@
 						
 						<h:panelGrid width="100%">
 							<h:outputText value="Validade" />
-							<p:calendar
-								navigator="true" mindate="#{locacaoBean.dataAtual}"
-								pattern="MM/yyyy" size="15" effect="explode"
-								style="white-space: nowrap;" 
-								showOn="button" />
+							<p:inputMask mask="99/9999" />
 						</h:panelGrid>
 					</h:panelGrid>
 				</h:panelGrid>

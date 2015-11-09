@@ -9,7 +9,7 @@
     template="/pages/layout/layout.xhtml">
 
 	<ui:define name="restrict">
-		<jsn:titulo label="Clientes" />
+		<jsn:titulo label="Devolução" />
 		
 		<h:form id="formContent">	
 			<fieldset jsf:id="fieldsetDevolucao" class="fieldset">
@@ -24,7 +24,7 @@
 						<input type="submit" class="buttom-filter" 
 							jsf:actionListener="#{devolucaoBean.filtrarLocacao()}" value="Pesquisar" >
 							
-							<f:ajax execute="inputFiltroVeiculo" render="fieldsetGerenciamento"/>
+							<f:ajax execute="inputFiltroVeiculo" render="fieldsetDevolucao"/>
 						</input>		
 					</div>
 				</div>
@@ -38,31 +38,130 @@
 					
 					<p:ajax event="rowSelect" update="formContent"/>
 					
-					<p:column filterMatchMode="contains" headerText="Cliente" styleClass="coluna-20">
+					<p:column filterMatchMode="contains" headerText="Cliente" styleClass="coluna-25">
 						#{objeto.cliente.nome}
 					</p:column>
 					<p:column filterMatchMode="contains" headerText="CPF" styleClass="coluna-15">
 						#{objeto.cliente.cpf}
 					</p:column>
-					<p:column filterMatchMode="contains" headerText="Agência" styleClass="coluna-20">
-						#{objeto.agenciaDevolucao.fantasia}
-					</p:column>
 					<p:column filterMatchMode="contains" headerText="Veículo" styleClass="coluna-25">
 						#{objeto.veiculo.modelo}
 					</p:column>
 					<p:column filterMatchMode="contains" headerText="Preço" styleClass="coluna-15">
-						#{objeto.valor}
+						R$ #{objeto.valorDisplay}
 					</p:column>
 					<p:column filterMatchMode="contains" headerText="D. Devolução" styleClass="coluna-20">
-						#{objeto.dataHoraPrevistaDevolucao}
+						#{objeto.dataPrevisaoDevolucaoDisplay}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="status" styleClass="coluna-15">
+						#{objeto.status.display}
 					</p:column>
 				</p:dataTable>
 				
-				<p:fieldset id="fieldsetDetalhe" rendered="#{!devolucaoBean.disabled || !devolucaoBean.readonly}">
+				<p:fieldset id="fieldsetDetalhe">
 					
+					<div>
+						<span class="accemt-color-second">Multas</span>
+						<ul>
+							<ui:repeat var="multa" value="#{devolucaoBean.listaMultaVO}">
+								<li class="secondaccent-text">#{multa.descricao} - #{multa.precoDisplay}</li>
+							</ui:repeat>
+						</ul>
+					</div>
+					
+					<h:panelGrid columns="4" width="100%">
+						<h:panelGrid width="100%" columns="1">
+							<h:outputText value="Km Atual" />
+							<p:inputText value="#{devolucaoBean.kmAtual}" maxlength="100" 
+								styleClass="input-97" onblur="somenteNumero(this);" />
+						</h:panelGrid>
+						
+						<h:panelGrid width="100%" style="margin-top: 3px; padding-right: 10px; box-sizing: border-box;">
+							<h:outputText value="Valor da Multa" />
+							<h:panelGrid columns="2" cellpadding="0" cellspacing="0" width="100%">
+								<h:outputText value="R$" style="margin-right: 5px" />
+								<p:inputText style="width: 100%; font-weight: bold; color: #d30808 !important;" 
+									value="#{devolucaoBean.valorMulta}"
+									converter="moedaConverter" readonly="true"
+									onkeyup="return mascaraMoeda(this, event);"/>
+							</h:panelGrid>
+						</h:panelGrid>
+						
+						<h:panelGrid width="100%" style="margin-top: 3px; padding-right: 10px; box-sizing: border-box;">
+							<h:outputText value="Valor Adicional" />
+							<h:panelGrid columns="2" cellpadding="0" cellspacing="0" width="100%">
+								<h:outputText value="R$" style="margin-right: 5px" />
+								<p:inputText style="width: 100%; font-weight: bold" 
+									value="#{devolucaoBean.valorAdicional}"
+									converter="moedaConverter"
+									onkeyup="return mascaraMoeda(this, event);">
+								
+									<p:ajax event="change" update="@this valorTotal"/>
+								</p:inputText>
+							</h:panelGrid>
+						</h:panelGrid>
+						
+						<h:panelGrid id="valorTotal" width="100%" style="margin-top: 3px; padding-right: 10px; box-sizing: border-box;">
+							<h:outputText value="Valor Total" />
+							<h:panelGrid columns="2" cellpadding="0" cellspacing="0" width="100%">
+								<h:outputText value="R$" style="margin-right: 5px" />
+								<p:inputText style="width: 100%; font-weight: bold" 
+									value="#{devolucaoBean.valorTotal}"
+									converter="moedaConverter" readonly="true"
+									onkeyup="return mascaraMoeda(this, event);"/>
+							</h:panelGrid>
+						</h:panelGrid>
+					</h:panelGrid>
+					
+					<div class="panel-button-crud">
+						<p:commandButton value="Efetuar Pagamento" onclick="PF('modalPagamento').show();" 
+							disabled="#{!devolucaoBean.devolucaoComPendencia}" styleClass="button"/>
+							
+						<p:commandButton value="Realizar Devolução" actionListener="#{devolucaoBean.alterar()}" 
+							disabled="#{!devolucaoBean.pagamentoAprovado || devolucaoBean.devolucaoComPendencia}" styleClass="button" update="formContent" />	
+					</div>
 				</p:fieldset>
 				
 			</fieldset>
+			
+			<p:dialog id="modalPagamento" widgetVar="modalPagamento" closable="none" width="60%" 
+				header="Pagamento" resizable="false">
+				
+				<h:panelGrid width="100%" columns="1" cellspacing="">
+					<h:panelGrid width="100%">
+						<h:outputText value="Titular do cartão" />
+						<p:inputText value="#{devolucaoBean.pagamentoSelecionado.nomeTitular}" styleClass="input" />
+					</h:panelGrid>
+					<h:panelGrid width="100%">
+						<h:outputText value="CPF" />
+						<p:inputMask value="#{devolucaoBean.pagamentoSelecionado.cpf}" styleClass="input" mask="999.999.999-99"/>
+					</h:panelGrid>
+					<h:panelGrid width="100%">
+						<h:outputText value="Número cartão" />
+						<p:inputText styleClass="input" maxlength="16" />
+					</h:panelGrid>
+					
+					<h:panelGrid width="100%" columns="2" columnClasses="coluna-30, coluna-70">
+						<h:panelGrid width="100%">
+							<h:outputText value="Código segurança" />
+							<p:inputMask mask="999" styleClass="input-96"  />
+						</h:panelGrid>
+						
+						<h:panelGrid width="100%">
+							<h:outputText value="Validade" />
+							<p:inputMask mask="99/9999" />
+						</h:panelGrid>
+					</h:panelGrid>
+				</h:panelGrid>
+				
+				<div class="panel-button-crud">
+					<p:commandButton value="Pagar" actionListener="#{devolucaoBean.efetuarPagamento}" 
+						disabled="#{devolucaoBean.pagamentoAprovado}" update="formContent msgs" styleClass="button"/>
+					
+					<p:commandButton value="Fechar" onclick="PF('modalPagamento').hide();" 
+						styleClass="button"/>		
+				</div>
+			</p:dialog>
 		</h:form>
 	</ui:define>
 </ui:composition>

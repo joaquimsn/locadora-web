@@ -1,6 +1,7 @@
 package br.com.jsn.noleggio.modules.locacao.service;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.enterprise.event.Event;
@@ -38,8 +39,15 @@ public class LocacaoService implements Serializable {
 		return locacaoDAO.buscarLocacoesPorCpf(cpf, StatusLocacaoEnum.ABERTA);
 	}
 	
+	public List<Locacao> buscarLocacoesPendentes() {
+		return locacaoDAO.buscarLocacoesPorStatus(StatusLocacaoEnum.ABERTA);
+	}
+	
+	public List<Locacao> buscarLocacoesPorDataLocacaoMaiorQue(Date dataAtual) {
+		return locacaoDAO.buscarLocacoesPorDataLocacaoMaiorQue(dataAtual);
+	}
+
 	public void validar(Locacao locacao) {
 		eventCliente.fire(locacao);
 	}
-
 }

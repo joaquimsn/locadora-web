@@ -44,6 +44,10 @@ public class AgenciaService implements Serializable {
 		agenciaDAO.delete(agencia.getIdAgencia(), agenciaClass);
 	}
 
+	public Agencia buscarPorId(int idAgenciaDevolucao) {
+		return agenciaDAO.findById(idAgenciaDevolucao);
+	}
+
 	public List<Agencia> buscarTodos() {
 		return agenciaDAO.findAll();
 	}

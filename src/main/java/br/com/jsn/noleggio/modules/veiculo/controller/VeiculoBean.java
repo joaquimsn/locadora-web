@@ -102,7 +102,6 @@ public class VeiculoBean extends AbstractBean implements ICrudBean<Veiculo> {
 		if (true) {
 			ValidationModelBusiness.addMessageInfo("Inativado com sucesso");
 		}
-
 	}
 
 	@Override

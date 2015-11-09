@@ -1,11 +1,13 @@
 package br.com.jsn.noleggio.modules.usuario.dao;
 
+import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 
 import br.com.jsn.noleggio.main.dao.GenericDAO;
 import br.com.jsn.noleggio.modules.usuario.model.Usuario;
 import br.com.jsn.noleggio.modules.usuario.pattern.UsuarioNullObject;
 
+@Stateless
 public class UsuarioDAO extends GenericDAO<Usuario> {
 	private static final long serialVersionUID = -6951369622543792299L;
 

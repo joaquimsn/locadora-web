@@ -15,6 +15,7 @@ import br.com.jsn.noleggio.modules.agencia.model.Agencia;
 import br.com.jsn.noleggio.modules.agencia.service.AgenciaService;
 import br.com.jsn.noleggio.modules.cliente.model.Cliente;
 import br.com.jsn.noleggio.modules.cliente.service.ClienteService;
+import br.com.jsn.noleggio.modules.locacao.enums.StatusLocacaoEnum;
 import br.com.jsn.noleggio.modules.locacao.model.Locacao;
 import br.com.jsn.noleggio.modules.locacao.model.Pagamento;
 import br.com.jsn.noleggio.modules.locacao.service.LocacaoService;
@@ -40,6 +41,7 @@ public class LocacaoBean extends AbstractBean {
 	private Locacao objetoSelecionado;
 	private Pagamento pagamentoSelecionado;
 	private Cliente clienteSelecionado;
+	private Agencia agenciaDevolucaoSelecionada;
 	
 	private List<Veiculo> listaVeiculo;
 	private List<Cliente> listaCliente;
@@ -47,6 +49,7 @@ public class LocacaoBean extends AbstractBean {
 	
 	private Date dataAtual;
 	private boolean pagamentoAprovado;
+	private boolean locacaoRealizada;
 	
 	@Override
 	public String abrirPagina() {
@@ -62,6 +65,7 @@ public class LocacaoBean extends AbstractBean {
 		objetoSelecionado = new Locacao();
 		objetoSelecionado.setTipoTarifa(TipoTarifaEnum.CONTROLADA);
 		pagamentoSelecionado = new Pagamento();
+		locacaoRealizada = false;
 
 		carregarLista();
 	}
@@ -75,23 +79,25 @@ public class LocacaoBean extends AbstractBean {
 	public void cadastrar() {
 		validar();
 
-		if (objetoSelecionado.isValidadoComSucesso()) {
+		if (isPagamentoAprovado()) {
 			preencherCamposLocacao();
 			locacaoService.salvar(objetoSelecionado);
 			
 			objetoSelecionado.getVeiculo().setStatus(StatusVeiculoEnum.LOCADO);
 			veiculoService.alterar(objetoSelecionado.getVeiculo());
-
+			locacaoRealizada = true;
+			
 			ValidationModelBusiness
-					.addMessageInfo("Cadastro realizado com sucesso");
-			inicializarPagina();
+					.addMessageInfo("Locação realizada com sucesso");
 		}
 	}
 
 	private void preencherCamposLocacao() {
-		objetoSelecionado.setAgencia(getSession().getAgencia());
+		objetoSelecionado.setIdAgencia(getSession().getAgencia().getIdAgencia());
+		objetoSelecionado.setIdAgenciaDevolucao(getAgenciaDevolucaoSelecionada().getIdAgencia());
 		objetoSelecionado.setCliente(clienteSelecionado);
 		objetoSelecionado.setIdFuncionario(getSession().getFuncionario().getIdFuncionario());
+		objetoSelecionado.setStatus(StatusLocacaoEnum.ABERTA);
 	}
 
 	public void alterar() {
@@ -159,6 +165,15 @@ public class LocacaoBean extends AbstractBean {
 		return clienteSelecionado;
 	}
 	
+	public Agencia getAgenciaDevolucaoSelecionada() {
+		return agenciaDevolucaoSelecionada;
+	}
+
+	public void setAgenciaDevolucaoSelecionada(
+			Agencia agenciaDevolucaoSelecionada) {
+		this.agenciaDevolucaoSelecionada = agenciaDevolucaoSelecionada;
+	}
+
 	public Pagamento getPagamentoSelecionado() {
 		return pagamentoSelecionado;
 	}
@@ -191,6 +206,10 @@ public class LocacaoBean extends AbstractBean {
 		return TipoTarifaEnum.getEnumList();
 	}
 	
+	public boolean isLocacaoRealizada() {
+		return locacaoRealizada;
+	}
+
 	public Date getDataAtual() {
 		if (dataAtual == null) {
 			dataAtual = new Date();

@@ -159,6 +159,10 @@ a:active {
 	margin: 7px;
 }
 
+.category-list-items {
+	padding: 0;
+}
+
 .category-list-items li {
 	margin: 0;
 	color: #9E9E9E;

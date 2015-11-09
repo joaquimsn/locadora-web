@@ -1,0 +1,61 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:jsn="http://xmlns.jcp.org/jsf/composite/components"
+    xmlns:jsf="http://xmlns.jcp.org/jsf"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core" 
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:p="http://primefaces.org/ui"
+    template="/pages/layout/layout.xhtml">
+
+	<ui:define name="restrict">
+		<jsn:titulo label="Relatório Locações Diárias" />
+		
+		<h:form id="formContent">	
+			<fieldset jsf:id="fieldsetDevolucao" class="fieldset">
+				<p:dataTable id="tableLocacao" selection="#{relatorioBean.objetoSelecionado}" value="#{relatorioBean.listaLocacao}" var="objeto"
+					paginator="true" paginatorPosition="bottom" rows="20" rowKey="#{objeto.idLocacao}" selectionMode="single"
+					filterEvent="enter" filteredValue="#{relatorioBean.listaLocacaoFiltrada}" styleClass="datatable"
+					emptyMessage="Nenhum registro encontrado">
+					
+					<p:ajax event="rowSelect" update="formContent"/>
+					
+					<p:column filterMatchMode="contains" headerText="Cliente" styleClass="coluna-25">
+						#{objeto.cliente.nome}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="CPF" styleClass="coluna-15">
+						#{objeto.cliente.cpf}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="Veículo" styleClass="coluna-25">
+						#{objeto.veiculo.modelo}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="Preço" styleClass="coluna-15">
+						R$ #{objeto.valorDisplay}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="D. Devolução" styleClass="coluna-20">
+						#{objeto.dataPrevisaoDevolucaoDisplay}
+					</p:column>
+					<p:column filterMatchMode="contains" headerText="status" styleClass="coluna-15">
+						#{objeto.status.display}
+					</p:column>
+				</p:dataTable>
+				
+				<p:fieldset id="fieldsetDetalhe">
+					
+				</p:fieldset>
+				
+			</fieldset>
+			
+			<p:dialog id="modalDetalhamento" widgetVar="modatalDetalhamento" width="60%" 
+				header="Detalhamento Locação" resizable="false">
+				
+				<h:panelGrid width="100%" columns="1" cellspacing="">
+					<h:panelGrid width="100%">
+						<h:outputText value="Número" />
+						<p:inputText value="#{relatorioBean.objetoSelecionado.idLocacao}" styleClass="input" />
+					</h:panelGrid>
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

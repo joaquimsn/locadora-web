@@ -1,7 +1,7 @@
 package br.com.jsn.noleggio.main.pattern.producer;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
@@ -15,7 +15,7 @@ public class JPAFactory {
 	private EntityManagerFactory entityManagerFactory;
 	
 	@Produces
-	@RequestScoped
+	@SessionScoped
 	public EntityManager entityManager() {
 		return entityManagerFactory.createEntityManager();
 	}

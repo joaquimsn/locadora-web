@@ -127,7 +127,7 @@ CREATE TABLE locacao (
  data_hora_locacao DATETIME NOT NULL,
  data_hora_prevista_devolucao DATETIME NOT NULL,
  data_hora_devolucao DATETIME,
- agencia_devolucao INT(11) NOT NULL,
+ id_agencia_devolucao INT(11) NOT NULL,
  tipo_tarifa INT(11) NOT NULL,
  km_locacao DOUBLE NOT NULL,
  km_devolucao INT(11) NOT NULL,
@@ -140,7 +140,8 @@ CREATE TABLE locacao (
  id_funcionario INT NOT NULL,
  id_agencia INT NOT NULL,
 
- FOREIGN KEY (id_veiculo) REFERENCES veiculo (id_veiculo)
+ FOREIGN KEY (id_veiculo) REFERENCES veiculo (id_veiculo),
+ FOREIGN KEY (id_cliente) REFERENCES veiculo (id_cliente)
 );
 
 CREATE TABLE pagamento (

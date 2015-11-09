@@ -3,11 +3,12 @@ package br.com.jsn.noleggio.main.dao;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.transaction.Transactional;
 
+@Stateless
 public abstract class GenericDAO<T> implements Serializable {
 	private static final long serialVersionUID = -1346304670895222289L;
 
@@ -19,19 +20,34 @@ public abstract class GenericDAO<T> implements Serializable {
 		this.classe = classe;
 	}
 	
-	@Transactional
 	public void save(T entity) {
-		entityManager.persist(entity);
+		try {
+			entityManager.joinTransaction();
+			entityManager.persist(entity);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
-	@Transactional
 	public T update(T entity) {
-		return entityManager.merge(entity);
+		try {
+			entityManager.joinTransaction();
+			return entityManager.merge(entity);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return entity;
 	}
 
 	public void delete(Object id, Class<T> classe) {
-		T entityToBeRemoved = entityManager.getReference(classe, id);
-		entityManager.remove(entityToBeRemoved);
+		try {
+			entityManager.joinTransaction();
+			T entityToBeRemoved = entityManager.getReference(classe, id);
+			entityManager.remove(entityToBeRemoved);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public T findById(int id) {

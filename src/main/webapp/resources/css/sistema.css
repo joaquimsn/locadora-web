@@ -130,3 +130,16 @@
 	color: #FF9800;
 	box-shadow: 0px 0px 5px #FF9800; 
 }
+
+.confirmacao-locacao {
+	font-size: 16px;
+}
+
+.confirmacao-locacao ul li {
+	display: flex;
+	height: 30px;	
+}
+
+.texto-negrito {
+	font-weight: bold;
+}
