@@ -27,6 +27,14 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.0.1</version>
 		</dependency>
+		
+		<!-- EJB 3.2 -->
+		<dependency>
+		    <groupId>javax.ejb</groupId>
+		    <artifactId>javax.ejb-api</artifactId>
+		    <version>3.2</version>
+		    <scope>provided</scope>
+		</dependency>
 
 		<!-- Implementação do JSF -->
 		<dependency>
