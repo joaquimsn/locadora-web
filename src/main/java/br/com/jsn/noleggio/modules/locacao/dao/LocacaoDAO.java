@@ -39,7 +39,7 @@ public class LocacaoDAO extends GenericDAO<Locacao> {
 	}
 
 	public List<Locacao> buscarLocacoesPorDataLocacaoMaiorQue(Date dataAtual) {
-		String jpql = "SELECT l FROM Locacao l WHERE l.dataLocacao = :data";
+		String jpql = "SELECT l FROM Locacao l WHERE l.dataHoraLocacao > :data";
 		
 		TypedQuery<Locacao> typedQuery = entityManager.createQuery(jpql, classe);
 		typedQuery.setParameter("data", dataAtual);

@@ -134,14 +134,14 @@ CREATE TABLE locacao (
  valor DOUBLE NOT NULL,
  valor_acrescimo DOUBLE,
  status INT,	
- id_veiculo INT(11),
- id_cliente INT(11),
- id_pagamento INT NOT NULL,
- id_funcionario INT NOT NULL,
- id_agencia INT NOT NULL,
+ id_veiculo INT(11) NOT NULL,
+ id_cliente INT(11) NOT NULL,
+ id_pagamento INT(11) NOT NULL,
+ id_funcionario INT(11) NOT NULL,
+ id_agencia INT(11) NOT NULL,
 
  FOREIGN KEY (id_veiculo) REFERENCES veiculo (id_veiculo),
- FOREIGN KEY (id_cliente) REFERENCES veiculo (id_cliente)
+ FOREIGN KEY (id_cliente) REFERENCES cliente (id_cliente)
 );
 
 CREATE TABLE pagamento (

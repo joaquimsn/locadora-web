@@ -20,6 +20,8 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.br.CNPJ;
 
+import com.google.gson.annotations.Expose;
+
 import br.com.jsn.noleggio.main.validation.BusinessValidation;
 import br.com.jsn.noleggio.modules.veiculo.model.Veiculo;
 
@@ -36,6 +38,7 @@ public class Agencia extends BusinessValidation implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="id_agencia")
+	@Expose
 	private int idAgencia;
 
 	@Column(name = "ativo", columnDefinition = "BIT", length = 1)
@@ -68,6 +71,7 @@ public class Agencia extends BusinessValidation implements Serializable {
 	
 	@Size(min = 4, max = 80,
 			message = "Fantasia deve conter entre 4 e 80 caracteres")
+	@Expose
 	private String fantasia;
 
 	@Column(name="insc_estadual")
@@ -84,7 +88,8 @@ public class Agencia extends BusinessValidation implements Serializable {
 	private String responsavel;
 
 	private String telefone;
-
+	
+	@Expose
 	private String uf;
 
 	//bi-directional many-to-one association to Veiculo

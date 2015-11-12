@@ -59,6 +59,10 @@ public class VeiculoService implements Serializable {
 	public List<Veiculo> buscarTodosDisponivelParaLocacao() {
 		return veiculoDAO.findAllByStatus(StatusVeiculoEnum.DISPONIVEL);
 	}
+	
+	public List<Veiculo> buscarTodosPorAgencia(int idAgencia) {
+		return veiculoDAO.findByAgencia(idAgencia);
+	}
 
 	public void validar(Veiculo veiculo) {
 		eventVeiculo.fire(veiculo);

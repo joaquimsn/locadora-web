@@ -252,6 +252,17 @@ public class Veiculo extends BusinessValidation implements Serializable {
 		return this.listaAcessorioVeiculo;
 	}
 	
+	public String getAcessorios() {
+		StringBuilder stringBuilder = new StringBuilder();
+		
+		for (AcessorioVeiculo acessorioVeiculo : getListaAcessorioVeiculos()) {
+			stringBuilder.append(AcessorioVeiculoEnum.getDisplayByValue(acessorioVeiculo.getCodigoAcessorio()));
+			stringBuilder.append(", ");
+		}
+		
+		return stringBuilder.toString();
+	}
+	
 	public List<AcessorioVeiculoEnum> getListaAcessorioVeiculoEnum() {
 		List<AcessorioVeiculoEnum> lista = new ArrayList<AcessorioVeiculoEnum>();
 		

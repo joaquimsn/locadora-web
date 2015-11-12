@@ -33,4 +33,13 @@ public class VeiculoDAO extends GenericDAO<Veiculo> {
 		
 		return typedQuery.getResultList();
 	}
+
+	public List<Veiculo> findByAgencia(int idAgencia) {
+		String jpql = "SELECT v FROM Veiculo v WHERE v.agencia.idAgencia = :idAgencia";
+		
+		TypedQuery<Veiculo> typedQuery = entityManager.createQuery(jpql, classe);
+		typedQuery.setParameter("idAgencia", idAgencia);
+		
+		return typedQuery.getResultList();
+	}
 }
